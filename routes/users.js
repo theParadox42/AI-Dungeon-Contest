@@ -4,6 +4,7 @@ var express     = require("express"),
     mongoose    = require("mongoose"),
     User        = require("../models/user");
 
+// CREATE A USER
 router.get("/register", function(req, res) {
     res.render("users/register");
 });
@@ -45,6 +46,47 @@ router.post("/register", function(req, res) {
         req.flash("error", "Bad request");
         res.redirect("/register");
     }
-})
+});
+
+// LOGIN A USER
+router.get("/login", function(req, res){
+    res.render("users/login");
+});
+router.post("/login", passport.authenticate("local", function(err, foundUser) {
+    if (err) {
+        req.flash("error", "Error Authenticating. " + err.message;
+    } else if (!foundUser) {
+        req.flash("error", "Failed to login, check username and password.");
+    } else {
+        req.flash("Succesfully logged in!");
+        return res.redirect("/");
+    } 
+    res.redirect("/login");
+});
 
 module.exports = router;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
