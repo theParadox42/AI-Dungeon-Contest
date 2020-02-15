@@ -10,13 +10,16 @@
     <script src="/assets/libraries/bootstrap/js/bootstrap.min.js"></script>
 </head>
 <body>
-
 <% if(errorFlashMessage && errorFlashMessage.length > 0){ %>
 <div class="container">
-    <div class="alert alert-danger"><%= errorFlashMessage %></div>
+    <div class="alert alert-danger" role="alert">
+        <%= errorFlashMessage %>
+    </div>
 </div>
 <% } else if(successFlashMessage && successFlashMessage.length > 0){ %>
 <div class="container">
-    <div class="alert alert-success"><%= successFlashMessage %></div>
+    <div class="alert alert-success" role="alert">
+        <%= successFlashMessage %>
+    </div>
 </div>
 <% } %>

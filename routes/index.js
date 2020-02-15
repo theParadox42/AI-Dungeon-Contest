@@ -2,7 +2,7 @@ var express = require("express"),
     router  = express.Router({ mergeParams: true });
 
 router.get("/", function(req, res) {
-    res.send("Welcome!");
+    res.render("home");
 });
 
 router.get("/preview", function(req, res) {

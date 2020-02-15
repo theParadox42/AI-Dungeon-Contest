@@ -8,6 +8,7 @@ router.get("/register", function(req, res) {
     res.render("users/register");
 });
 router.post("/register", function(req, res) {
+    console.log("recieved post request")
     var body = req.body;
     if(typeof body.username == "string" && 
     typeof body.AIDUsername == "string" && 
@@ -18,21 +19,31 @@ router.post("/register", function(req, res) {
             discordUsername: body.discordUsername,
             AIDUsername: body.AIDUsername 
         });
-        User.register(newUser, body.password, function(err, createdUser) {
+        User.findOne({ username: newUser.username }, function (err, user) {
             if (err) {
-                req.flash("error", err.message);
-                return res.redirect("/register");
-            } else if (!createdUser) {
-                req.flash("error", err.message);
-                return res.redirect("/register");
+                req.flash("error", err.messsage);
+                res.redirect("/register");
+            } else if(user) {
+                req.flash("error", "That username is already taken!");
+                res.redirect("/register");
             }
-            passport.authenticate("local")(req, res, function() {
-                req.flash("success", "Welcome to AI Dungeon Contests " + createdUser.username);
-                res.redirect("/");
-            });
-        })
+            User.register(newUser, body.password, function(err, createdUser) {
+                if (err) {
+                    req.flash("error", err.message);
+                    return res.redirect("/register");
+                } else if (!createdUser) {
+                    req.flash("error", "No user created!");
+                    return res.redirect("/register");
+                }
+                passport.authenticate("local")(req, res, function() {
+                    req.flash("success", "Welcome to AI Dungeon Contests " + createdUser.username);
+                    res.redirect("/");
+                });
+            })
+        });
     } else {
         req.flash("error", "Bad request");
+        res.redirect("/register");
     }
 })
 
