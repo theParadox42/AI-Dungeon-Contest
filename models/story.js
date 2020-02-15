@@ -5,6 +5,13 @@ var storySchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    author: {
+        username: String,
+        id: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User"
+        }
+    },
     link: {
         type: String,
         required: String
