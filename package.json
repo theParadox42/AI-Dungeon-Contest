@@ -4,7 +4,10 @@
   "description": "A website for managing AI Dungeon Contests",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js",
+    "run": "node app.js",
+    "dev": "nodemon app.js"
   },
   "repository": {
     "type": "git",
@@ -23,7 +26,18 @@
   "homepage": "https://github.com/theParadox42/AI-Dungeon-Contest#readme",
   "dependencies": {
     "body-parser": "^1.19.0",
+    "dotenv": "^8.2.0",
     "ejs": "^3.0.1",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "express-session": "^1.17.0",
+    "flash": "^1.1.0",
+    "method-override": "^3.0.0",
+    "mongoose": "^5.9.1",
+    "passport": "^0.4.1",
+    "passport-local": "^1.0.0",
+    "passport-local-mongoose": "^6.0.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.2"
   }
 }
