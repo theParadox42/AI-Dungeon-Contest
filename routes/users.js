@@ -9,7 +9,7 @@ router.get("/register", function(req, res) {
     res.render("users/register");
 });
 router.post("/register", function(req, res) {
-    console.log("recieved post request")
+    
     var body = req.body;
     if(typeof body.username == "string" && 
     typeof body.AIDUsername == "string" && 
@@ -58,7 +58,7 @@ router.post("/login", passport.authenticate("local", function(err, foundUser) {
     } else if (!foundUser) {
         req.flash("error", "Failed to login, check username and password.");
     } else {
-        req.flash("Succesfully logged in!");
+        req.flash("success", "Succesfully logged in!");
         return res.redirect("/");
     } 
     res.redirect("/login");
