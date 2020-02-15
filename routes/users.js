@@ -54,7 +54,7 @@ router.get("/login", function(req, res){
 });
 router.post("/login", passport.authenticate("local", function(err, foundUser) {
     if (err) {
-        req.flash("error", "Error Authenticating. " + err.message;
+        req.flash("error", "Error Authenticating. " + err.message);
     } else if (!foundUser) {
         req.flash("error", "Failed to login, check username and password.");
     } else {
