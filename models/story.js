@@ -16,6 +16,12 @@ var storySchema = new mongoose.Schema({
             ref: "User"
         }
     },
+    scores: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Score"
+        }
+    ],
     contest: {
         title: String,
         id: {

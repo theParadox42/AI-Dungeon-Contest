@@ -1,0 +1,15 @@
+<%- include("../partials/header") -%>
+
+<h1>
+    Register!
+</h1>
+
+<form action="/register" method="POST">
+    <label>Username: <input type="text" name="username" placeholder="Username" required></label>
+    <label>AI Dungeon Username: <input type="text" name="AIDUsername" placeholder="AID Username" required></label>
+    <label>Discord Username: <input type="text" name="discordUsername" placeholder="Discord Username" required></label>
+    <label>Password: <input type="password" name="password" placeholder="Enter a password" required></label>
+    <button type="submit">Submit!</button>
+</form>
+
+<%- include("../partials/footer") -%>

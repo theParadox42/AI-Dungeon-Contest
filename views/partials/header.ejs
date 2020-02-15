@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>AI Dungeon Contests</title>
+    <link rel="shortcut icon" href="/assets/images/icon.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/assets/libraries/bootstrap/css/bootstrap.min.css">
+    <script src="/assets/libraries/jQuery/jquery.min.js"></script>
+    <script src="/assets/libraries/bootstrap/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<% if(errorFlashMessage && errorFlashMessage.length > 0){ %>
+<div class="container">
+    <div class="alert alert-danger"><%= errorFlashMessage %></div>
+</div>
+<% } else if(successFlashMessage && successFlashMessage.length > 0){ %>
+<div class="container">
+    <div class="alert alert-success"><%= successFlashMessage %></div>
+</div>
+<% } %>

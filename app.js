@@ -1,13 +1,14 @@
 var _               = require("dotenv").config(),
+    _               = require("ejs"),
     express         = require("express"),
     app             = express(),
     bodyParser      = require("body-parser"),
     flash           = require("flash"),
     methodOverride  = require("method-override"),
     mongoose        = require("mongoose"),
-    mongooseConfig  = require("./config/mongo-connection"),
+    mongooseConfig  = require("./config/mongoose"),
     passport        = require("passport"),
-    localStrategy   = require("passport-local").Strategy,
+    localStrategy   = require("passport-local"),
     User            = require("./models/user");
 
 // Set up app
@@ -24,7 +25,7 @@ mongoose.connect(mongooseConfig.string, mongooseConfig.options);
 app.use(require("./config/express-session"));
 app.use(passport.initialize());
 app.use(passport.session());
-passport.use(new localStrategy(User.authenticate()));
+passport.use(new localStrategy.Strategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
@@ -40,6 +41,6 @@ app.use(require("./routes/index"));
 
 // Run the app
 var PORT = process.env.PORT || 8080;
-app.listen(PORT, function(){
+app.listen(PORT, process.env.IP, function(){
     console.log(`App started on port ${PORT}`);
 });
