@@ -62,7 +62,7 @@ router.post("/login", passport.authenticate("local", function(err, foundUser) {
         return res.redirect("/");
     } 
     res.redirect("/login");
-});
+}));
 
 module.exports = router;
 
