@@ -26,11 +26,18 @@ passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
 // Locals
-app.use((req, res, next) => { res.locals.user = req.user });
+app.use(function(req, res, next) { 
+    res.locals.user = req.user;
+    next();
+});
 
 // Routes
+app.use("/stories", require("./routes/stories"));
+app.use("/contests/", require("./routes/contests")),
+app.use(require("./routes/users"));
+app.use(require("./routes/index"));
 
 var PORT = process.env.PORT || 8080;
-app.listen(PORT, process.env.IP, function(){
+app.listen(PORT, function(){
     console.log(`App started on port ${PORT}`);
 });

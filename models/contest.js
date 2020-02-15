@@ -23,3 +23,5 @@ var contestSchema = new mongoose.Schema({
         }
     ]
 });
+
+module.exports = mongoose.model("Contest", contestSchema);
