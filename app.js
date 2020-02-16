@@ -34,8 +34,8 @@ app.use(flash());
 app.use(require("./config/locals"));
 
 // Routes
-app.use("/stories", require("./routes/stories"));
-app.use("/contests/", require("./routes/contests")),
+app.use("/contests/:tag/stories", require("./routes/stories"));
+app.use("/contests", require("./routes/contests")),
 app.use(require("./routes/users"));
 app.use(require("./routes/index"));
 

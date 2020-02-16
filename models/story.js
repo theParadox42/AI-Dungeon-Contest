@@ -1,14 +1,14 @@
 var mongoose = require("mongoose");
 
+var score = {
+    type: Number,
+    min: 1,
+    max: 10
+};
+
 var storySchema = new mongoose.Schema({
-    title: {
-        type: String,
-        required: true
-    },
-    link: {
-        type: String,
-        required: String
-    },
+    title: String,
+    link: String,
     author: {
         username: String,
         id: {
@@ -16,19 +16,35 @@ var storySchema = new mongoose.Schema({
             ref: "User"
         }
     },
-    scores: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "Score"
-        }
-    ],
     contest: {
-        title: String,
+        tag: String,
         id: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "Contest"
         }
-    }
+    },
+    scores: [
+        {
+            relevancy: score,
+            humor: score,
+            entertainment: score,
+            creativity: score,
+            judge: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "User"
+            }
+        }
+    ],
+    votes: [
+        {
+            score: score,
+            voter: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "User"
+            }
+        }
+    ]
 });
 
 module.exports = mongoose.model("Story", storySchema);
+

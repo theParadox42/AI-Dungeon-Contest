@@ -1,10 +1,8 @@
 var mongoose = require("mongoose"),
 
 var contestSchema = new mongoose.Schema({
-    title: {
-        type: String,
-        required: true
-    },
+    title: String,
+    tag: String,
     host: {
         username: String,
         id: {
@@ -12,11 +10,17 @@ var contestSchema = new mongoose.Schema({
             ref: "User"
         }
     },
-    openingDate: {
-        type: Date,
-        required: true
+    openingDate: Date,
+    closingDate: Date,
+    submissionsOpen: {
+        type: Boolean,
+        default: false
     },
-    submissions: [
+    judgingOpen: {
+        type: Boolean,
+        default: false
+    },
+    stories: [
         {
             type: mongoose.Schema.Types.ObjectId,
             ref: "Story"
