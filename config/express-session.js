@@ -1,7 +1,10 @@
-var expressSession = require("express-session");
+var session = require("express-session"),
+    MongoStoee = require("connect-mongo")(session),
+    mongoose = require("mongoose");
 
-module.exports = expressSession({
+module.exports = session({
     secret: process.env.PASSPORT_SECRET || "secret",
     resave: false,
-    saveUninitialized: false
+    saveUninitialized: false,
+    store: new MongoStore({ mongooseConnection: mongoose.connection })
 });
