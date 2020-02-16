@@ -2,7 +2,7 @@ var express = require("express"),
     router = express.Router({ mergeParams: true }),
     middleware = require("../middleware");
 
-router.get("/contests", function(req, res) {
+router.get("/", function(req, res) {
     Contests.find({}, function(err, contests) {
         if (err) {
             req.flash("error", "Error finding contests!");
@@ -13,7 +13,7 @@ router.get("/contests", function(req, res) {
     });
 });
 
-router.get("/contests/:tag", middleware.contestExists, function(req, res) {
+router.get("/:tag", middleware.contestExists, function(req, res) {
     res.render("contests/show", { contest: req.contest });
 });
 
