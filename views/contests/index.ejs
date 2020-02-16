@@ -1,5 +1,21 @@
 <%- include("../partials/header") -%>
 
-<h1>Contests!</h1>
+<div class="container">
+    <h1>Contests!</h1>
+    <% if (isAdmin) { %>
+    <a href="/contests/new" class="btn btn-success">Create a contest!</a>
+    <% } %>
+    <% contests.forEach(function(contest) { %>
+    <% if(contest.status != "hidden" || isAdmin) { %>
+    <div>
+        <h1><%= contest.title %></h1>
+        <p>Status: <%= contest.status %></p>
+        <% if (isAdmin) { %>
+        <a href="/contests/<%= contest.tag %>/manage" class="btn btn-warning">Manage this contest</a>
+        <% } %>
+    </div>
+    <% } %>
+    <% }); %>
+</div>
 
 <%- include("../partials/header") -%>

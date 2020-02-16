@@ -11,9 +11,16 @@ middleware.loggedIn = function(req, res, next) {
     req.flash("error", "Login to do that!");
     res.redirect("/login");
 };
+middleware.isntLoggedIn = function(req, res, next) {
+    if (req.isAuthenticated()) {
+        req.flash("error", "Logout first!");
+        return res.redirect("back");
+    }
+    next();
+};
 middleware.isAdmin = function(req, res, next) {
     middleware.loggedIn(req, res, function() {
-        if (req.user.isAdmin) {
+        if (res.locals.isAdmin) {
             next();
         } else {
             req.flash("error", "You need to be an admin to do that!");
@@ -23,7 +30,7 @@ middleware.isAdmin = function(req, res, next) {
 };
 middleware.isJudge = function(req, res, next) {
     middleware.loggedIn(req, res, function() {
-        if (req.user.isJudge) {
+        if (req.locals.isJudge) {
             next();
         } else {
             req.flash("error", "You need to be an judge to do that!");

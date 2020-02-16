@@ -1,4 +1,7 @@
 body {
     /* for the fixed navbar */
-    padding-top: 70px;
+    margin-top: 70px;
+    padding-top: 10px;
+    background-color: #1e2327;
+    color: #f8f9fa;
 }

@@ -46,5 +46,7 @@ var storySchema = new mongoose.Schema({
     ]
 });
 
+storySchema.index({ title: "text", description: "text" })
+
 module.exports = mongoose.model("Story", storySchema);
 

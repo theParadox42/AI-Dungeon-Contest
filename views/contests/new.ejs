@@ -1,0 +1,23 @@
+<%- include("../partials/header") -%>
+
+<div class="container">
+    <h1>Create a Contest</h1>
+    <form action="/contests" method="POST">
+        <div class="form-group">
+            <label for="contestName">Contest Name</label>
+            <input type="text" name="title" id="contestName" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="contestTag">Contest Tag</label>
+            <input type="text" name="tag" id="contestTag" class="form-control" required>
+            <small>No spaces, keep it simple and short, and has to be unique</small>
+        </div>
+        <div class="form-group">
+            <label for="closeDate">Closing Date</label>
+            <input type="date" name="closeDate" min="<%= moment(Date.now()).format('YYYY-MM-DD') %>" class="form-control">
+            <small>The opening date is whenever you decide to open this contest publicly</small>
+        </div>
+    </form>
+</div>
+
+<%- include("../partials/footer") -%>

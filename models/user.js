@@ -26,14 +26,6 @@ var userSchema = new mongoose.Schema({
     ]
 });
 
-// Checks if user has a role
-userSchema.virtual.isJudge = function() {
-    return this.roles.indexOf("judge") >= 0;
-};
-userSchema.virtual.isAdmin = function() {
-    return this.roles.indexOf("admin") >= 0;
-};
-
 // Gets the highest role a user has
 userSchema.virtual.topRole = function() {
     var topRole = "";

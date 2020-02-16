@@ -1,17 +1,24 @@
 <%- include("../partials/header") -%>
 
-<h1>Post a story!</h1>
-<form action="/stories" method="POST">
-    <label>Story Title: 
-        <input type="text" name="title" required>
-    </label>
-    <label>Story Description: 
-        <input type="text" name="description" required>
-    </label>
-     <label>Story Link: 
-        <input type="text" name="link" required>
-    </label>
-    <button type="submit">Submit!</submit>
-</form>
+<div class="container">
+    <h1>Post a story!</h1>
+    <form action="/stories" method="POST">
+        <div class="form-group">
+            <label>
+                Story Title:
+                <input type="text" name="title" class="form-control" required>
+            </label>
+        </div>
+        <label>Story Description:
+            <input type="text" name="description" class="form-control" required>
+        </label>
+        <label>Story Link:
+            <input type="url" name="link" class="form-control"
+                placeholder="https://play.aidungeon.io/stories?story=storyid"
+                pattern="https://play.aidungeon.io/stories?story=*" required>
+        </label>
+        <button type="submit" class="btn btn-primary">Submit!</submit>
+    </form>
+</div>
 
 <%- include("../partials/footer") -%>

@@ -12,13 +12,10 @@ var contestSchema = new mongoose.Schema({
     },
     openingDate: Date,
     closingDate: Date,
-    submissionsOpen: {
-        type: Boolean,
-        default: false
-    },
-    judgingOpen: {
-        type: Boolean,
-        default: false
+    status: {
+        type: String,
+        enum: ["hidden", "open", "judging", "closed"],
+        default: "hidden"
     },
     stories: [
         {

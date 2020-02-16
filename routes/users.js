@@ -1,14 +1,19 @@
 var express     = require("express"),
     router      = express.Router({ mergeParams: true }),
     passport    = require("passport"),
-    mongoose    = require("mongoose"),
-    User        = require("../models/user");
+    User        = require("../models/user"),
+    middleware  = require("../middleware");
+
+// View
+router.get("/profile", middleware.loggedIn, function(req, res) {
+    res.render("users/profile");
+});
 
 // CREATE A USER
-router.get("/register", function(req, res) {
+router.get("/register", middleware.isntLoggedIn, function(req, res) {
     res.render("users/register");
 });
-router.post("/register", function(req, res) {
+router.post("/register", middleware.isntLoggedIn, function(req, res) {
     
     var body = req.body;
     if (typeof body.username == "string" && 
@@ -47,21 +52,19 @@ router.post("/register", function(req, res) {
 });
 
 // LOGIN A USER
-router.get("/login", function(req, res){
+router.get("/login", middleware.isntLoggedIn, function(req, res){
     res.render("users/login");
 });
-router.post("/login", function(req, res, next) {
-    passport.authenticate("local", function(err, foundUser) {
-        if (err) {
-            req.flash("error", "Error Authenticating. " + err.message);
-        } else if (!foundUser) {
-            req.flash("error", "Failed to login, check username and password.");
-        } else {
-            req.flash("success", "Succesfully logged in!");
-            return res.redirect("/");
-        } 
-        res.redirect("/login");
-    })(req, res, next);
+router.post("/login", middleware.isntLoggedIn, passport.authenticate("local", {
+    successRedirect: "/profile",
+    failureRedirect: "/login",
+    failureFlash: "Bad username or password"
+}));
+
+// LOGOUT
+router.get("/logout", function(req, res) {
+    req.logout();
+    res.redirect("/");
 });
 
 module.exports = router;

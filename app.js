@@ -32,10 +32,12 @@ passport.deserializeUser(User.deserializeUser());
 // Flash and locals
 app.use(flash());
 app.use(require("./config/locals"));
+app.locals.moment = require("moment");
 
 // Routes
 app.use("/contests/:tag/stories", require("./routes/stories"));
-app.use("/contests", require("./routes/contests")),
+app.use("/contests", require("./routes/contests"));
+app.use(require("./routes/search"));
 app.use(require("./routes/users"));
 app.use(require("./routes/index"));
 

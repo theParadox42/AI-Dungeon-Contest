@@ -4,28 +4,28 @@
     <h1>Register!</h1>
     <form action="/register" method="POST">
         <div class="form-group">
-            <label>
+            <label for="username">
                 Username
-                <input type="text" name="username" class="form-control" required>
             </label>
+            <input type="text" name="username" class="form-control" id="username" required>
         </div>
         <div class="form-group">
-            <label>
+            <label for="aidUsername">
                 AI Dungeon Username
-                <input type="text" name="AIDUsername" placeholder="Same as above" class="form-control">
             </label>
+            <input type="text" name="AIDUsername" placeholder="Same as above" id="aidUsername" class="form-control">
         </div>
         <div class="form-group">
-            <label>
+            <label for="discordUsername">
                 Discord Username
-                <input type="text" name="discordUsername" placeholder="Same as above" class="form-control">
             </label>
+            <input type="text" name="discordUsername" placeholder="Same as above" id="discordUsername" class="form-control">
         </div>
         <div class="form-group">
-            <label>
+            <label for="password">
                 Password
-                <input type="password" name="password" class="form-control" required>
             </label>
+            <input type="password" name="password" class="form-control" id="password" required>
         </div>
         <button type="submit" class="btn btn-primary">Submit!</button>
     </form>
