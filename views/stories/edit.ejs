@@ -1,0 +1,17 @@
+<%- include("../partials/header") -%>
+
+<h1>Edit your story!</h1>
+<form action="/stories?_method=PUT" method="POST">
+    <label>Story Title: 
+        <input type="text" name="title" required>
+    </label>
+    <label>Story Description: 
+        <input type="text" name="description" required>
+    </label>
+     <label>Story Link: 
+        <input type="text" name="link" required>
+    </label>
+    <button type="submit">Submit!</submit>
+</form>
+
+<%- include("../partials/footer") -%>
