@@ -6,7 +6,7 @@ router.get("/", function(req, res) {
 });
 
 router.get("*", function(req, res) {
-    res.status(404).render("404", { routeType: "GET" );
+    res.status(404).render("404", { routeType: "GET" });
 });
 
 router.post("*", function(req, res) {
