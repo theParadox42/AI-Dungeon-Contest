@@ -63,6 +63,6 @@ middleware.ownsStory = function(req, res, next) {
             res.redirect("back")
         });
     });
-});
+};
 
 module.exports = middleware;
