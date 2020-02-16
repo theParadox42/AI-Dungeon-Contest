@@ -15,9 +15,11 @@
         <li class="nav-item">
           <a class="nav-link" href="/winners">Winners</a>
         </li>
-        <li>
-          <a class="nav-link" href="/stories">Stories</a>
+        <% if (isJudge) { %>
+        <li class="nav-item">
+          <a class="nav-link" href="/judge">Judge Entries</a>
         </li>
+        <% } %>
       </ul>
       <div class="navbar-nav ml-auto">
         <% if (user) { %>
