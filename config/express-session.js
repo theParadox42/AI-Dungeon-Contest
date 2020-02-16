@@ -1,5 +1,5 @@
 var session = require("express-session"),
-    MongoStoee = require("connect-mongo")(session),
+    MongoStore = require("connect-mongo")(session),
     mongoose = require("mongoose");
 
 module.exports = session({
