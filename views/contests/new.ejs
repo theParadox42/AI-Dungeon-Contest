@@ -11,14 +11,14 @@
             <label for="contestTag">Contest Tag</label>
             <input type="text" name="tag" id="contestTag" class="form-control" aria-describedby="tagHelp" required>
             <small class="form-text text-muted" id="tagHelp">
-                No spaces, keep it simple and short, and has to be unique
+                Keep it short, simple, lowercase, unique, and without spaces.
             </small>
         </div>
         <div class="form-group">
             <label for="closeDate">Closing Date</label>
-            <input type="date" name="closeDate" min="<%= moment(Date.now()).format('YYYY-MM-DD') %>" class="form-control" aria-describedby="dateHelp" required>
+            <input type="date" name="closingDate" min="<%= moment(Date.now()).format('YYYY-MM-DD') %>" class="form-control" id="closeDate" aria-describedby="dateHelp" required>
             <small id="dateHelp" class="form-text text-muted">
-                The opening date is whenever you decide to open this contest publicly
+                Submissions will be blocked after the closing date.
             </small>
         </div>
         <div class="form-group">
@@ -28,8 +28,8 @@
         <div class="form-group">
             <label for="status">Contest Status</label>
             <select class="form-control" name="status" id="status">
-                <option>Hidden</option>
-                <option>Open</option>
+                <option value="hidden">Hidden</option>
+                <option value="open">Open</option>
             </select>
         </div>
         <button type="submit" class="btn btn-primary">

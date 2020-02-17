@@ -10,7 +10,6 @@ var contestSchema = new mongoose.Schema({
             ref: "User"
         }
     },
-    openingDate: Date,
     closingDate: Date,
     status: {
         type: String,
