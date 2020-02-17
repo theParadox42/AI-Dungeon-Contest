@@ -9,7 +9,7 @@ router.get("/profile", middleware.loggedIn, function(req, res) {
     res.redirect(`/profile/${req.user.username}`);
 });
 router.get("/profile/:username", function(req, res) {
-    User.findOne({ username: req.params.username }).populate("levels").exec(function(err, foundUser) {
+    User.findOne({ username: req.params.username }).populate("stories").exec(function(err, foundUser) {
         if (err) {
             req.flash("error", "Error finding user!");
         } else if (!foundUser) {

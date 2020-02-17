@@ -1,18 +1,18 @@
 <%- include("../partials/header") -%>
 
 <div class="container">
-    <h1>Profile for "<%= user.username %>"</h1>
+    <h1>Profile for "<%= profile.username %>"</h1>
     <h2>
-        <% user.roles.forEach(function(role) { %>
+        <% profile.roles.forEach(function(role) { %>
             <span class="badge badge-<%= statusToBootstrap(role) %>">
                 <%= role %>
             </span>
         <% }); %>
     </h2>
     <h3>Stories!</h3>
-    <% if (user.stories.length > 0) { %>
+    <% if (profile.stories.length > 0) { %>
     <div class="row-1 row-sm-2 row-md-3">
-        <% user.stories.forEach(function(story) { %>
+        <% profile.stories.forEach(function(story) { %>
         <div class="col">
             <%- include("../partials/story-card", { story: story }) -%>
         </div>
