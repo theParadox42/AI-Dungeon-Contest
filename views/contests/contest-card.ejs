@@ -1,0 +1,39 @@
+<div class="card bg-black m-1">
+    <div class="card-header">
+        This contest is 
+        <span class="badge badge-<%= statusToBootstrap(contest.status) %>">
+            <%= contest.status %>
+        </span>
+        right now
+    </div>
+    <div class="card-body">
+        <h4 class="card-title"><%= contest.title %></h4>
+        <h6 class="card-subtitle text-muted mb-1">
+            Created by
+            <a href="/profile/<%= contest.creator.username %>">
+                <%= contest.creator.username %>
+            </a>
+        </h6>
+        <p class="mb-2 text-muted">
+            <%= contest.openingDate ? moment(contest.openingDate).format("dddd, MMMM Do") : "Unknown" %> - 
+            <%= contest.closingDate ? moment(contest.closingDate).format("dddd, MMMM Do") : "Unknown" %>
+        </p>
+        <p class="card-text"><%= contest.description %></p>
+        <a href="/contests/<%= contest.tag %>/" class="btn btn-primary m-1">
+            View Contest!
+        </a>
+        <% if (contest.status == "open") { %>
+        <a href="/contests/<%= contest.tag %>/stories/new" class="btn btn-success">Submit a story!</a>
+        <% } %>
+        <% if (isAdmin) { %>
+        <a href="/contests/<%= contest.tag %>/manage" class="btn btn-warning m-1">
+            Edit Contest
+        </a>
+        <form action="/contests/<%= contest.tag %>?_method=DELETE" method="POST" class="d-inline m-1">
+            <button type="submit" class="btn btn-danger">
+                Delete Contest
+            </button>
+        </form>
+        <% } %>
+    </div>
+</div>

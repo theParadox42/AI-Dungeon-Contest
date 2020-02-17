@@ -2,7 +2,12 @@ body {
     margin-top: 70px;
     padding-top: 10px;
 }
-
 .bg-black {
     background-color: rgb(35, 36, 37);
+}
+.text-light-gray {
+    color: rgb(155, 157, 158);
+}
+hr {
+    border-color: rgb(82, 82, 82);
 }

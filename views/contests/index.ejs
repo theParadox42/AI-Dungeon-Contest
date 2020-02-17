@@ -1,15 +1,20 @@
 <%- include("../partials/header") -%>
 
 <div class="container">
-    <h1>Contests!</h1>
-    <% if (isAdmin) { %>
-    <a href="/contests/new" class="btn btn-success">Create a contest!</a>
-    <% } %>
-    <div class="row row-1 row-sm-2 row-md-3">
+    <div class="jumbotron bg-black">
+        <h1 class="display-3">Contests!</h1>
+        <p class="lead">
+            The Discord community will host contests occasionally, usually every other week depending on how long judging takes.
+        </p>
+        <% if (isAdmin) { %>
+        <a href="/contests/new" class="btn btn-success"><span class="badge badge-secondary">Admin</span> Create a contest!</a>
+        <% } %>
+    </div>
+    <div class="row">
         <% contests.forEach(function(contest) { %>
         <% if(contest.status != "hidden" || isAdmin) { %>
-        <div class="col">
-            <%- include("../partials/contest-card", { contest: contest }) -%>
+        <div class="col-12 col-lg-6">
+            <%- include("contest-card", { contest: contest }) -%>
         </div>
         <% } %>
         <% }); %>

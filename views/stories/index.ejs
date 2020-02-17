@@ -2,12 +2,12 @@
 
 <div class="container">
     <h1>View the stories for the <%= contest.title %> contest here!</h1>
-    <div class="row row-1 row-sm-2 row-md-3">
+    <div class="row">
         <% stories.forEach(function(story) { %>
-        <div class="col">
-            <%- include("../partials/story-card", { story: story }) -%>
+        <div class="col-12 col-lg-6">
+            <%- include("story-card", { story: story }) -%>
         </div>
-        <% });
+        <% }); %>
     </div>
 </div>
 

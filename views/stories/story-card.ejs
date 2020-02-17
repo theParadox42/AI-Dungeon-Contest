@@ -1,4 +1,4 @@
-<div class="card m-1">
+<div class="card m-1 bg-black">
     <% if (story.achievment) { %>
     <div class="card-header">
         Achieved
@@ -20,7 +20,7 @@
             </a>
         </h6>
         <p class="card-text"><%= story.description %></p>
-        <a href="/contests/<%= story.contest.tag %>/stories/<%= story._id %>" class="btn btn-primay">
+        <a href="/contests/<%= story.contest.tag %>/stories/<%= story._id %>" class="btn btn-primary">
             Read Story!
         </a>
         <% if (user && (isAdmin || story.author.username == user.username)) { %>
@@ -29,7 +29,7 @@
             Edit Story
         </a>
         <% } %>
-        <form action="/contests/<%= story.contest.tag %>/stories/<%= story._id %>?_method=DELETE" method="POST">
+        <form action="/contests/<%= story.contest.tag %>/stories/<%= story._id %>?_method=DELETE" method="POST" class="d-inline">
             <button type="submit" class="btn btn-danger">
                 Delete story
             </button>

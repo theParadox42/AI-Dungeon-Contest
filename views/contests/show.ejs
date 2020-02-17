@@ -1,25 +1,30 @@
 <%- include("../partials/header") -%>
 
 <div class="container">
-    <h1>Contest <%= contest.title %>!</h1>
+    <h1 class="text-white">
+        Contest: <strong><%= contest.title %>!</strong>
+        <span class="badge badge-<%= statusToBootstrap(contest.status) %>"><%= contest.status %></span>
+    </h1>
     <h3>Description</h3>
-    <div>
+    <div class="text-light-gray">
         <%= contest.description %>
     </div>
     <h3>Prompt</h3>
-    <h5>Use This to Start Your Stories</h5>
-    <code class="container-fluid d-block bg-black">
+    <small class="text-muted">Use this to start your stories</small>
+    <code class="container-fluid d-block bg-black my-3 p-2 rounded">
         <%= contest.prompt %>
     </code>
     <a class="btn btn-lg btn-primary" href="/contests/<%= contest.tag %>/stories">
         View Posted Stories
     </a>
+    <% if (contest.status == "open") { %>
     <a class="btn btn-lg btn-success" href="/contests/<%= contest.tag %>/stories/new">
         Publish a story!
     </a>
+    <% } %>
     <% if (isAdmin) { %>
     <a class="btn btn-lg btn-warning" href="/contests/<%= contest.tag %>/manage">Manage Contest</a>
-    <form action="/contests/<%= contest.tag %>?_method=DELETE" method="POST">
+    <form action="/contests/<%= contest.tag %>?_method=DELETE" method="POST" class="d-inline">
         <button type="submit" class="btn btn-lg btn-danger">
             Delete Contest
         </button>

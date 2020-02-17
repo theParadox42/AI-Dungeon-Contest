@@ -68,6 +68,24 @@ router.get("/:tag", middleware.contestExists, function(req, res) {
 router.get("/:tag/manage", middleware.contestExists, middleware.isAdmin, function (req, res) {
     res.render("contests/manage", { contest: req.contest });
 });
+router.put("/:tag", middleware.contestExists, middleware.isAdmin, function(req, res) {
+    var updateContest = validateContest(req.body, true);
+    if (updateContest) {
+        Contest.findByIdAndUpdate(req.contest._id, { $set: updateContest }, function(err, updatedContest) {
+            if (err) {
+                req.flash("error", "Error updating contest");
+            } else if(!updatedContest) {
+                req.flash("error", "No contest found!");
+            } else {
+                req.flash("success", "Successfully updated contest!");
+            }
+            res.redirect("back");
+        });
+    } else {
+        req.flash("error", "Bad contest format");
+        res.redirect("back");
+    }
+});
 
 router.delete("/:tag", middleware.contestExists, middleware.isAdmin, function(req, res) {
     Contest.findByIdAndRemove(req.contest._id, function(err, deletedContest) {

@@ -6,17 +6,20 @@ var express = require("express"),
 
 // Gets the stories for the current contest
 router.get("/", middleware.contestExists, function(req, res) {
-    Story.find({ "contest.tag": req.params.tag }, function(err, foundStories) {
+    Contest.findById(req.contest._id).populate("stories").exec(function(err, foundContest) {
         if (err) {
-            req.flash("error", "Error finding stories");
-            return res.redirect("back");
+            req.flash("error", "Error finding stories!");
+        } else if (!foundContest) {
+            req.flash("error", "No contest found!");
+        } else {
+            return res.render("stories/index", { stories: foundContest.stories, contest: foundContest });
         }
-        res.render("stories/index", { contest: req.contest, stories: foundStories });
+        res.redirect("back");
     });
 });
 
 // Form to create a story
-router.get("/new", middleware.contestExists, middleware.loggedIn, function(req, res) {
+router.get("/new", middleware.contestIsOpen, middleware.loggedIn, function(req, res) {
     Story.findOne({
         "contest.tag": req.params.tag,
         "author.username": req.user.username
@@ -34,7 +37,7 @@ router.get("/new", middleware.contestExists, middleware.loggedIn, function(req, 
 });
 
 // Create a story
-router.post("/", middleware.contestExists, middleware.loggedIn, function(req, res) {
+router.post("/", middleware.contestIsOpen, middleware.loggedIn, function(req, res) {
     var body = req.body;
     
     // Check the format
@@ -69,6 +72,8 @@ router.post("/", middleware.contestExists, middleware.loggedIn, function(req, re
                         req.flash("error", "No story created!");
                     } else {
                         req.user.stories.push(createdStory._id);
+                        req.user.save();
+                        req.contest.stories.push(createdStory._id);
                         req.user.save();
                         req.flash("success", "Successfully created story!");
                         return res.redirect(`/contests/${req.params.tag}/stories/${createdStory._id}`);

@@ -5,6 +5,10 @@ router.get("/", function(req, res) {
     res.render("home");
 });
 
+router.get("/about", function(req, res) {
+    res.render("about");
+});
+
 router.get("*", function(req, res) {
     res.status(404).render("404", { routeType: "GET" });
 });

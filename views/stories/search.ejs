@@ -3,10 +3,10 @@
 <div class="container">
     <h1><%= query.length > 0 ? `Story search results for "${query}"` : "View all Stories" %></h1>
     <% if (stories.length > 0) { %>
-    <div class="row row-1 row-sm-2 row-md-3">
+    <div class="row">
         <% stories.forEach(function(story) { %>
-        <div class="col">
-            <%- include("../partials/story-card", { story: story }) -%>
+        <div class="col-12 col-lg-6">
+            <%- include("story-card", { story: story }) -%>
         </div>
         <% }); %>
     </div>
