@@ -78,7 +78,7 @@ middleware.storyMatchesContest = function(req, res, next) {
             res.redirect("back")
         });
     });
-});
+};
 middleware.ownsStory = function(req, res, next) {
     middleware.loggedIn(req, res, function() {
         middleware.storyMatchesContest(req, res, function() {
