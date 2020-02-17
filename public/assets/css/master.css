@@ -1,7 +1,8 @@
 body {
-    /* for the fixed navbar */
     margin-top: 70px;
     padding-top: 10px;
-    background-color: #1e2327;
-    color: #f8f9fa;
+}
+
+.bg-black {
+    background-color: rgb(35, 36, 37);
 }

@@ -30,7 +30,7 @@ router.post("/register", middleware.isntLoggedIn, function(req, res) {
     
     var body = req.body;
     if (vs(body.username) &&
-        vs(body.password) {
+        vs(body.password)) {
         
         var newUser = new User({ username: body.username });
         newUser.discordUsername = vs(body.discordUsername) ? body.discordUsername : body.username;
