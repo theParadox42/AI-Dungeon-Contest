@@ -18,7 +18,7 @@ app.locals.moment = require("moment");
 app.use(methodOverride("_method"));
 
 // Set up mongoose
-mongoose.connect(mongooseConfig.string, mongooseConfig.options);
+mongoose.connect(mongooseConfig.string, mongooseConfig.options).catch((e) => { console.log("Failed to connect!", e); });
 
 // Set up passport
 app.use(require("./config/express-session"));

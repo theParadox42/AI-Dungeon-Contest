@@ -3,8 +3,15 @@
 <div class="container">
     <h1 class="text-white">
         Contest: <strong><%= contest.title %>!</strong>
-        <span class="badge badge-<%= statusToBootstrap(contest.status) %>"><%= contest.status %></span>
+        
     </h1>
+    <div>
+        <span class="badge badge-<%= statusToBootstrap(contest.status) %>"><%= contest.status %></span>
+        <span class="text-light-gray">
+            <%= contest.openingDate ? moment(contest.openingDate).format("dddd, MMMM Do") : "Unknown" %> &mdash;
+            <%= contest.closingDate ? moment(contest.closingDate).add(1, "day").format("dddd, MMMM Do") : "Unknown" %>
+        </span>
+    </div>
     <h3>Description</h3>
     <div class="text-light-gray">
         <%= contest.description %>

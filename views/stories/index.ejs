@@ -1,7 +1,8 @@
 <%- include("../partials/header") -%>
 
 <div class="container">
-    <h1>View the stories for the <%= contest.title %> contest here!</h1>
+    <h1>Stories for the <strong><%= contest.title %></strong> contest here!</h1>
+    <% if (stories.length > 0) { %>
     <div class="row">
         <% stories.forEach(function(story) { %>
         <div class="col-12 col-lg-6">
@@ -9,6 +10,14 @@
         </div>
         <% }); %>
     </div>
+    <% } else { %>
+        <p>
+            There aren't any stories for this contest yet.
+            <% if (contest.status == "open") { %>
+            Would you like to <a href="/contest/<%= contest.tag %>/stories/new">create one?</a>
+            <% } %>
+        </p>
+    <% } %>
 </div>
 
 <%- include("../partials/footer") -%>

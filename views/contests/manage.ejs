@@ -26,8 +26,8 @@
         </div>
         <div class="form-group">
             <label for="closeDate">Closing Date</label>
-            <% var closed = moment(contest.closeDate).isBefore(Date.now()) %>
-            <input type="date" name="closingDate" class="form-control" aria-describedby="dateHelp" value="<%= moment(contest.closeDate).format('YYYY-MM-DD') %>" <%= closed ? 'readonly' : 'required' %>>
+            <% var closed = moment(contest.closingDate).isBefore(Date.now()) %>
+            <input type="date" name="closingDate" class="form-control" aria-describedby="dateHelp" value="<%= moment(contest.closingDate).add(1, 'day').format('YYYY-MM-DD') %>" min="<%= moment(contest.openingDate || Date.now()).add(1, 'day').format('YYYY-MM-DD') %>" required>
             <small id="dateHelp" class="form-text text-muted">
                 <%= closed ? "Closing date cannot be changed once it is closed" : "Submissions and changes to the closing date cannot be made after this date" %>
             </small>
@@ -38,7 +38,7 @@
         </div>
         <div class="form-group">
             <label for="status">Contest Status</label>
-            <select class="form-control" name="status" id="status">
+            <select class="form-control" name="status" id="status" aria-describedby="dateHelp">
                 <% if (closed) { %>
                 <option value="judging" <%= contest.status == 'judging' ? 'selected' : undefined %>>
                     Judging
@@ -55,6 +55,7 @@
                 </option>
                 <% } %>
             </select>
+            <small class="text-muted form-text" id="helpStatus">In order to open up judging, make sure the closing date has expired</small>
         </div>
         <button type="submit" class="btn btn-success">Save Changes</button>
     </form>
