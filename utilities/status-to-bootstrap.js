@@ -9,6 +9,12 @@ module.exports = function(status) {
         case "judging":
             return "info";
         break;
+        case "judge":
+            return "info";
+        break;
+        case "admin":
+            return "danger";
+        break;
         case "winner":
             return "warning";
         break;
