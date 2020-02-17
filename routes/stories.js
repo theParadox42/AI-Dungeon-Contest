@@ -115,7 +115,7 @@ router.put("/:storyid", middleware.ownsStory, middleware.contestIsOpen, function
                     updatedStory.save();
                 }
                 req.flash("success", "Successfully updated story!");
-                return res.redirect(`/contests/$(req.contest.tag}/stories/${updatedStory._id}`);
+                return res.redirect(`/contests/${req.contest.tag}/stories/${updatedStory._id}`);
             }
             res.redirect("back");
         });

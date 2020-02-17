@@ -37,7 +37,7 @@ router.post("/", middleware.isAdmin, function(req, res) {
                     username: req.user.username,
                     id: req.user._id
                 };
-                if (newContest.status == "open") {
+                if (newContest.status == "open" && existingContest.status != "open") {
                     newContest.openingDate = Date.now();
                 }
                 Contest.create(newContest, function(err, createdContest) {

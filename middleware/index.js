@@ -1,5 +1,6 @@
 var Contest = require("../models/contest"),
-    Story   = require("../models/story");
+    Story   = require("../models/story"),
+    moment  = require("moment");
 
 var middleware = {};
 
@@ -47,6 +48,12 @@ middleware.contestExists = function(req, res, next) {
         } else if (!foundContest) {
             req.flash("error", "No contest found!");
         } else {
+            // A bit of regular maintenence
+            if ((foundContest.status == "hidden" || "open") && moment(foundContest.closingDate).isBefore(Date.now())) {
+                foundContest.status = "judging";
+                foundContest.save();
+            }
+            // Check if its hidden or not
             if (foundContest.status == "hidden") {
                 if (res.locals.isAdmin) {
                     req.contest = foundContest;

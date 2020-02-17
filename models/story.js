@@ -40,13 +40,10 @@ var storySchema = new mongoose.Schema({
             }
         }
     ],
-    votes: [
+    likes: [
         {
-            score: score,
-            voter: {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: "User"
-            }
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User"
         }
     ],
     achievment: {

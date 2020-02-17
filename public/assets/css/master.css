@@ -11,3 +11,7 @@ body {
 hr {
     border-color: rgb(82, 82, 82);
 }
+.story-iframe {
+    width: 100%;
+    min-height: 400px;
+}

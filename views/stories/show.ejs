@@ -2,7 +2,22 @@
 
 <div class="container">
     <h1><%= story.title %></h1>
-    <h3 class="text-muted"></h3>
+    <h4 class="text-light-gray">
+        Created by <a href="/profile/<%= story.author.username %>"><%= story.author.username %></a> <%= moment(story.createdAt).fromNow() %>
+    </h4>
+    <div>
+        <p>
+            Description: <%= story.description %>
+        </p>
+        <p>
+            Click <a href="<%= story.link %>">here</a> to view the story
+        </p>
+        <iframe src="<%= story.link %>" frameborder="0" class="story-iframe">
+            Your browser doesn't support iframes
+        </iframe>
+    </div>
 </div>
+
+<script src="/assets/js/iframe.js"></script>
 
 <%- include("../partials/footer") -%>
