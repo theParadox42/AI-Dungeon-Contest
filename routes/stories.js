@@ -27,7 +27,19 @@ router.get("/:storyid", middleware.contestExists, function(req, res) {
 
 // Form to create a story
 router.get("/new", middleware.contestExists, middleware.loggedIn, function(req, res) {
-    res.render("stories/new");
+    Story.findOne({
+        "contest.tag": req.params.tag,
+        "author.username": req.user.username
+    }, function(err, foundStory) {
+        if (err) {
+            req.flash("error", "Error validating story");
+            res.redirect("back");
+        } else if(foundStory) {
+            res.redirect(`/contests/${req.params.tag}/stories/${foundStory._id}/edit`);
+        } else {
+            res.render("stories/new");
+        }
+    });
 });
 
 // Create a story
@@ -80,6 +92,7 @@ router.post("/", middleware.contestExists, middleware.loggedIn, function(req, re
 
 // Form to edit a story
 router.get("/:storyid/edit", middleware.contestExists, middleware.ownsStory, function(req, res) {
+    Story.findOne
     res.render("stories/edit");
 });
 // Update a story

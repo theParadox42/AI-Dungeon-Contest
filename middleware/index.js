@@ -47,6 +47,7 @@ middleware.contestExists = function(req, res, next) {
         } else if (!foundContest) {
             req.flash("error", "No contest found!");
         } else {
+            
             req.contest = foundContest;
             return next();
         }
