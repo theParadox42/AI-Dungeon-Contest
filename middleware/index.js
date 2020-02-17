@@ -31,7 +31,7 @@ middleware.isAdmin = function(req, res, next) {
 };
 middleware.isJudge = function(req, res, next) {
     middleware.loggedIn(req, res, function() {
-        if (req.locals.isJudge) {
+        if (res.locals.isJudge) {
             next();
         } else {
             req.flash("error", "You need to be an judge to do that!");
