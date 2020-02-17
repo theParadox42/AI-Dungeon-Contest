@@ -5,16 +5,15 @@
     <% if (isAdmin) { %>
     <a href="/contests/new" class="btn btn-success">Create a contest!</a>
     <% } %>
-    <% contests.forEach(function(contest) { %>
-    <% if(contest.status != "hidden" || isAdmin) { %>
-    <div>
-        <h1><%= contest.title %> <span class="badge badge-secondary">New</span></h1>
-        <% if (isAdmin) { %>
-        <a href="/contests/<%= contest.tag %>/manage" class="btn btn-warning">Manage this contest</a>
+    <div class="row row-1 row-sm-2 row-md-3">
+        <% contests.forEach(function(contest) { %>
+        <% if(contest.status != "hidden" || isAdmin) { %>
+        <div class="col">
+            <%- include("../partials/contest-card") -%>
+        </div>
         <% } %>
+        <% }); %>
     </div>
-    <% } %>
-    <% }); %>
 </div>
 
 <%- include("../partials/footer") -%>

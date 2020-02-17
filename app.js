@@ -1,5 +1,4 @@
 var _               = require("dotenv").config(),
-    _               = require("ejs"),
     express         = require("express"),
     app             = express(),
     bodyParser      = require("body-parser"),
@@ -33,6 +32,7 @@ passport.deserializeUser(User.deserializeUser());
 app.use(flash());
 app.use(require("./config/locals"));
 app.locals.moment = require("moment");
+app.locals.statusToBootstrap = require("./utilities/status-to-bootstrap");
 
 // Routes
 app.use("/contests/:tag/stories", require("./routes/stories"));

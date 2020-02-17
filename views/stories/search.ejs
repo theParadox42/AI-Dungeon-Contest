@@ -3,16 +3,15 @@
 <div class="container">
     <h1><%= query.length > 0 ? `Story search results for "${query}"` : "View all Stories" %></h1>
     <% if (stories.length > 0) { %>
-    <% stories.forEach(function(story) { %>
-    <div>
-        <h3><a href="/contests/<%= story.contest.tag %>/stories/<%= story._id %>"></a><%= story.title %></h3>
-        <p><%= story.description %></p>
-        <p>Contest: <a href="/contests/<%= story.contest.tag %>"><%= story.contest.tag %></a></p>
-        <p>Created by: <a href="/profile/<%= story.author.username %>"><%= story.author.username %></a></p>
+    <div class="row row-1 row-sm-2 row-md-3">
+        <% stories.forEach(function(story) { %>
+        <div class="col">
+            <%- include("../partials/story-card") -%>
+        </div>
+        <% }); %>
     </div>
-    <% }); %>
     <% } else { %>
-    <p>> No results</p>
+    <p><%= query.length > 0 ? `Your search for "${query}" returned no results` : "There aren't any stories yet!" %></p>
     <% } %>
 </div>
 

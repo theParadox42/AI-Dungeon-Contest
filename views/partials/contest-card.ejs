@@ -1,0 +1,34 @@
+<div class="card m-1">
+    <% if (story.achievment) { %>
+    <div class="card-header">
+        This contest is 
+        <span class="badge badge-<%= statusToBootstrap(contest.status) %>">
+            <%= contest.achievment %>
+        </span>
+        right now
+    </div>
+    <% } %>
+    <div class="card-body">
+        <h5 class="card-title"><%= contest.title %></h5>
+        <h6 class="card-subtitle mb-2 text-muted">
+            Created <%= moment(story.createdAt).fromNow() %> by
+            <a href="/profile/<%= story.author.username %>">
+                <%= contest.creator.username %>
+            </a>
+        </h6>
+        <p class="card-text"><%= contest.description %></p>
+        <a href="/contests/<%= contest.tag %>/" class="btn btn-primay">
+            View Contest!
+        </a>
+        <% if (isAdmin) { %>
+        <a href="/contests/<%= contest.tag %>/manage" class="btn btn-warning">
+            Edit Contest
+        </a>
+        <form action="/contests/<%= contest.tag %>?_method=DELETE" method="POST">
+            <button type="submit" class="btn btn-danger">
+                Delete Contest
+            </button>
+        </form>
+        <% } %>
+    </div>
+</div>

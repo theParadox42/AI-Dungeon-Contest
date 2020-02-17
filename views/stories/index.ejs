@@ -2,7 +2,13 @@
 
 <div class="container">
     <h1>View the stories for the <%= contest.title %> contest here!</h1>
-    
+    <div class="row row-1 row-sm-2 row-md-3">
+        <% stories.forEach(function(story) { %>
+        <div class="col">
+            <%- include("../partials/story-card") -%>
+        </div>
+        <% });
+    </div>
 </div>
 
 <%- include("../partials/footer") -%>

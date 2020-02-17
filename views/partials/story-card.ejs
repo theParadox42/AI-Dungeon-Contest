@@ -2,7 +2,7 @@
     <% if (story.achievment) { %>
     <div class="card-header">
         Achieved
-        <span class="badge badge-<%= story.achievment == "winner" ? "warning" : "info" %>">
+        <span class="badge badge-<%= statusToBootstrap(story.achievment) %>">
             <%= story.achievment %>
         </span>
         in

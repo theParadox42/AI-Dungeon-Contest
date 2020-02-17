@@ -11,7 +11,7 @@
             <label for="tag">Tag</label>
             <input type="text" class="form-control" id="tag" name="tag" value="<%= contest.tag %>" placeholder="Contest Tag" aria-describedby="tagHelp" readonly>
             <small id="tagHelp" class="form-text text-muted">
-                You can't change the tag because it is tied to stories associated with it, and theParadox42 is to lazy to update every single one of those stories.
+                You can't change the tag because it is tied to stories associated with it, and theParadox42 is to lazy to update every single one of those stories, in case of an emergency, contact <a href="mailto:contact@paradox42.tech">theParadox42</a>
             </small>
         </div>
         <div class="form-group">
@@ -28,9 +28,7 @@
         </div>
         <div class="form-group">
             <label for="prompt">Contest Prompt</label>
-            <textarea class="form-control" name="prompt" rows="4" id="prompt" placeholder="Enter the prompt in here" required>
-                <%= contest.prompt %>
-            </textarea>
+            <textarea class="form-control" name="prompt" rows="4" id="prompt" placeholder="Enter the prompt in here" required><%= contest.prompt %></textarea>
         </div>
         <div class="form-group">
             <label for="status">Contest Status</label>
