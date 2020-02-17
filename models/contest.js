@@ -6,6 +6,7 @@ var contestSchema = new mongoose.Schema({
         type: String,
         unique: true
     },
+    description: String,
     host: {
         username: String,
         id: {

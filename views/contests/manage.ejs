@@ -15,6 +15,10 @@
             </small>
         </div>
         <div class="form-group">
+            <label for="contestDescription">Contest Description</label>
+            <input type="text" name="description" id="contestDescription" class="form-control" value="<%= contest.description %>" required>
+        </div>
+        <div class="form-group">
             <label for="closeDate">Closing Date</label>
             <% var closed = moment(contest.closeDate).isBefore(Date.now()) %>
             <input type="date" name="closingDate" class="form-control" aria-describedby="dateHelp" value="<%= moment(contest.closeDate).format('YYYY-MM-DD') %>" <%= closed ? 'readonly' : 'required' %>>
