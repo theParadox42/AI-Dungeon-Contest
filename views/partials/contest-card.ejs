@@ -1,20 +1,22 @@
 <div class="card m-1">
-    <% if (story.achievment) { %>
     <div class="card-header">
         This contest is 
         <span class="badge badge-<%= statusToBootstrap(contest.status) %>">
-            <%= contest.achievment %>
+            <%= contest.status %>
         </span>
         right now
     </div>
-    <% } %>
     <div class="card-body">
         <h5 class="card-title"><%= contest.title %></h5>
-        <h6 class="card-subtitle mb-2 text-muted">
-            Created <%= moment(story.createdAt).fromNow() %> by
+        <h6 class="card-subtitle text-muted">
+            Created by
             <a href="/profile/<%= story.author.username %>">
                 <%= contest.creator.username %>
             </a>
+        </h6>
+        <h6 class="card-subtitle mb-2 text-muted">
+            <%= contest.openingDate || "Unknown" %> - 
+            <%= contest.closingDate || "Unknown" %>
         </h6>
         <p class="card-text"><%= contest.description %></p>
         <a href="/contests/<%= contest.tag %>/" class="btn btn-primay">

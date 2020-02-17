@@ -6,8 +6,8 @@
             <%= story.achievment %>
         </span>
         in
-        <a href="/contests/<%= contest.tag %>">
-            <%= contest.title %> Contest!
+        <a href="/contests/<%= story.contest.tag %>">
+            this Contest!
         </a>
     </div>
     <% } %>
@@ -20,16 +20,16 @@
             </a>
         </h6>
         <p class="card-text"><%= story.description %></p>
-        <a href="/contests/<%= contest.tag %>/stories/<%= story._id %>" class="btn btn-primay">
+        <a href="/contests/<%= story.contest.tag %>/stories/<%= story._id %>" class="btn btn-primay">
             Read Story!
         </a>
         <% if (user && (isAdmin || story.author.username == user.username)) { %>
-        <% if (story.author.username == user.username) {
-        <a href="/contests/<%= contest.tag %>/stories/<%= story._id %>/edit" class="btn btn-warning">
+        <% if (story.author.username == user.username) { %>
+        <a href="/contests/<%= story.contest.tag %>/stories/<%= story._id %>/edit" class="btn btn-warning">
             Edit Story
         </a>
         <% } %>
-        <form action="/contests/<%= contest.tag %>/stories/<%= story._id %>?_method=DELETE" method="POST">
+        <form action="/contests/<%= story.contest.tag %>/stories/<%= story._id %>?_method=DELETE" method="POST">
             <button type="submit" class="btn btn-danger">
                 Delete story
             </button>
