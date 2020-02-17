@@ -91,5 +91,14 @@ middleware.ownsStory = function(req, res, next) {
         });
     });
 };
+middleware.contestIsOpen = function(req, res, next) {
+    middleware.contestExists(req, res, function() {
+        if (req.contest.status == "open") {
+            return next();
+        }
+        req.flash("error", "That contest is closed!");
+        res.redirect("back");
+    });
+};
 
 module.exports = middleware;

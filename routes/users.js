@@ -2,7 +2,8 @@ var express     = require("express"),
     router      = express.Router({ mergeParams: true }),
     passport    = require("passport"),
     User        = require("../models/user"),
-    middleware  = require("../middleware");
+    middleware  = require("../middleware"),
+    vs          = require("../utilities/validate-string");
 
 // View
 router.get("/profile", middleware.loggedIn, function(req, res) {
@@ -28,12 +29,12 @@ router.get("/register", middleware.isntLoggedIn, function(req, res) {
 router.post("/register", middleware.isntLoggedIn, function(req, res) {
     
     var body = req.body;
-    if (typeof body.username == "string" && 
-        typeof body.password == "string") {
+    if (vs(body.username) &&
+        vs(body.password) {
         
         var newUser = new User({ username: body.username });
-        newUser.discordUsername = typeof body.discordUsername == "string" ? body.discordUsername : body.username;
-        newUser.AIDUsername = typeof body.AIDUsername == "string" ? body.AIDUsername : body.username;
+        newUser.discordUsername = vs(body.discordUsername) ? body.discordUsername : body.username;
+        newUser.AIDUsername = vs(body.AIDUsername) ? body.AIDUsername : body.username;
         
         User.findOne({ username: newUser.username }, function (err, existingUser) {
             if (err) {

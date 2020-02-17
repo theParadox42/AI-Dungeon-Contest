@@ -69,4 +69,17 @@ router.get("/:tag/manage", middleware.contestExists, middleware.isAdmin, functio
     res.render("contests/manage", { contest: req.contest });
 });
 
+router.delete"/:tag", middleware.contestExists, middleware.isAdmin, function(req, res) {
+    Contest.findByIdAndRemove(req.contest._id, function(err, deletedContest) {
+        if (err) {
+            req.flash("error", "Error deleting contest!");
+        } else if(!deletedContest) {
+            req.flash("error", "No Contest found to delete");
+        } else {
+            req.flash("success", "Successfully deleted contest");
+        }
+        res.redirect("/contests");
+    });
+});
+
 module.exports = router;

@@ -91,11 +91,11 @@ router.get("/:storyid", middleware.storyMatchesContest, function(req, res) {
 
 
 // Form to edit a story
-router.get("/:storyid/edit", middleware.ownsStory, function(req, res) {
+router.get("/:storyid/edit", middleware.ownsStory, middleware.contestIsOpen, function(req, res) {
     res.render("stories/edit", { story: req.story, contest: req.contest });
 });
 // Update a story
-router.put("/:storyid", middleware.ownsStory, function(req, res) {
+router.put("/:storyid", middleware.ownsStory, middleware.contestIsOpen, function(req, res) {
     var updateStory = validateStory(req.body);
     if (updateStory) {
         Story.findByIdAndUpdate(req.story._id, { $set: updateStory }, { new: true }, function(err, updatedStory) {
