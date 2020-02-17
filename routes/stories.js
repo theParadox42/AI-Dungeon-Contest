@@ -27,7 +27,7 @@ router.get("/new", middleware.contestExists, middleware.loggedIn, function(req, 
         } else if(foundStory) {
             res.redirect(`/contests/${req.params.tag}/stories/${foundStory._id}/edit`);
         } else {
-            res.render("stories/new");
+            res.render("stories/new", { contest: req.contest });
         }
     });
 });
@@ -102,7 +102,7 @@ router.get("/:storyid", middleware.contestExists, function(req, res) {
 
 // Form to edit a story
 router.get("/:storyid/edit", middleware.contestExists, middleware.ownsStory, function(req, res) {
-    res.render("stories/edit", { story: req.story });
+    res.render("stories/edit", { story: req.story, contest: req.contest });
 });
 // Update a story
 router.put("/:storyid", middleware.contestExists, middleware.ownsStory, function(req, res) {

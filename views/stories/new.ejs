@@ -2,7 +2,7 @@
 
 <div class="container">
     <h1>Post a story!</h1>
-    <form action="/stories" method="POST">
+    <form action="/contests/<%= contest.tag %>/stories" method="POST">
         <div class="form-group">
             <label for="title">Story Title</label>
             <input type="text" name="title" class="form-control" required>
