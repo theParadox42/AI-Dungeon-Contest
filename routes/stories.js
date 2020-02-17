@@ -1,7 +1,8 @@
 var express = require("express"),
     router = express.Router({ mergeParams: true }),
     middleware = require("../middleware"),
-    Story   = require("../models/story");
+    Story   = require("../models/story"),
+    valdiateStory = require("../utilities/validate-level");
 
 // Gets the stories for the current contest
 router.get("/", middleware.contestExists, function(req, res) {
@@ -34,9 +35,8 @@ router.post("/", middleware.contestExists, middleware.loggedIn, function(req, re
     var body = req.body;
     
     // Check the format
-    if (typeof body.name == "string" &&
-        typeof body.link == "string" &&
-        typeof body.description == "string") {
+    var newStory = validateStory(body);
+    if (newStory) {
         
         // Limit to one submission per contest
         Story.findOne({
@@ -51,18 +51,13 @@ router.post("/", middleware.contestExists, middleware.loggedIn, function(req, re
                 res.redirect(`/contests/${req.params.tag}/stories/${foundStory._id}/edit`);
             } else {
                 // Create object
-                var newStory = {
-                    title: body.title,
-                    link: body.link,
-                    description: body.description,
-                    author: {
-                        username: req.user.username,
-                        id: req.user._id
-                    },
-                    contest: {
-                        tag: req.contest.tag,
-                        id: req.contest._id
-                    }
+                newStory.author = {
+                    username: req.user.username,
+                    id: req.user._id
+                };
+                newStory.contest = {
+                    tag: req.contest.tag,
+                    id: req.contest._id
                 }
                 Story.create(newStory, function(err, createdStory) {
                     if (err) {
@@ -87,9 +82,29 @@ router.post("/", middleware.contestExists, middleware.loggedIn, function(req, re
 router.get("/:storyid/edit", middleware.contestExists, middleware.ownsStory, function(req, res) {
     res.render("stories/edit");
 });
-
+// Update a story
 router.put("/:storyid", middleware.contestExists, middleware.ownsStory, function(req, res) {
-
+    var updateStory = validateStory(req.body);
+    if (updateStory) {
+        Story.findByIdAndUpdate(req.params.storyid, { $set: updateStory }, { new: true }, function(err, updatedStory) {
+            if (err) {
+                req.flash("error", "Error updating story!");
+            } else if (!updatedStory) {
+                req.flash("error", "No story updated!");
+            } else {
+                if (updatedStory.status != "hidden" && !updatedStory.openingDate) {
+                    updatedStory.openingDate = Date.now();
+                    updatedStory.save();
+                }
+                req.flash("success", "Successfully updated story!");
+                return res.redirect(`/contests/$(req.contest.tag}/stories/${updatedStory._id}`);
+            }
+            res.redirect("back");
+        });
+    } else {
+        req.flash("error", "Bad story fomrat!");
+        res.redirect("back");
+    }
 });
 
 module.exports = router;

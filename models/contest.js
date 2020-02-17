@@ -2,7 +2,10 @@ var mongoose = require("mongoose");
 
 var contestSchema = new mongoose.Schema({
     title: String,
-    tag: String,
+    tag: {
+        type: String,
+        unique: true
+    },
     host: {
         username: String,
         id: {
@@ -10,6 +13,7 @@ var contestSchema = new mongoose.Schema({
             ref: "User"
         }
     },
+    openingDate: Date,
     closingDate: Date,
     status: {
         type: String,
