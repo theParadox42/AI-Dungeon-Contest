@@ -3,7 +3,7 @@
 <div class="container">
     <h1><%= story.title %></h1>
     <h4 class="text-light-gray">
-        Created by <a href="/profile/<%= story.author.username %>"><%= story.author.username %></a> <%= moment(story.createdAt).fromNow() %>
+        Created by <a href="/profile/<%= story.author.username %>"><%= story.author.username %></a> <%= moment(story.createdAt).fromNow() %> at the <strong><a href="/contests/<%= contest.tag %>"><%= contest.title %></a></strong> contest.
     </h4>
     <div>
         <p>
@@ -15,9 +15,22 @@
         <iframe src="<%= story.link %>" frameborder="0" class="story-iframe">
             Your browser doesn't support iframes
         </iframe>
+        <% if (isAdmin || (user && user.username == story.author.username)) { %>
+        <div>
+            <% if (user.username == story.author.username) { %>
+            <a class="btn btn-warning" href="/contests/<%= contest.tag %>/stories/<%= story._id %>/edit">Edit Story</a>
+            <% } %>
+            <form action="/contests/<%= contest.tag %>/stories/<%= story._id %>?_method=DELETE" method="POST" class="d-inline">
+                <button type="submit" class="btn btn-danger">
+                    Delete Story
+                </button>
+            </form>
+        </div>
+        <% } %>
     </div>
 </div>
 
-<script src="/assets/js/iframe.js"></script>
+<!-- Doesn't work yet -->
+<!-- <script src="/assets/js/iframe.js"></script> -->
 
 <%- include("../partials/footer") -%>
