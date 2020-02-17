@@ -13,7 +13,10 @@
         </div>
         <div class="form-group">
             <label for="link">Story Link</label>
-            <input type="url" name="link" id="link" class="form-control" placeholder="https://play.aidungeon.io/stories?story=storyid" pattern="https://play.aidungeon.io/stories?story=*" required>
+            <input type="url" name="link" id="link" class="form-control" placeholder="https://play.aidungeon.io/stories?story=storyid" pattern="https?:\/\/play.aidungeon.io\/stories\?story=.*" aria-describedby="linkHelp" required>
+            <small class="form-text text-muted" id="linkHelp">
+                In order to match the pattern it must be a valid link from AI Dungeon
+            </small>
         </div>
         <button type="submit" class="btn btn-primary">
             Submit!
