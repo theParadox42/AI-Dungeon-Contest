@@ -8,6 +8,7 @@ var score = {
 
 var storySchema = new mongoose.Schema({
     title: String,
+    description: String,
     link: String,
     author: {
         username: String,
@@ -22,6 +23,10 @@ var storySchema = new mongoose.Schema({
             type: mongoose.Schema.Types.ObjectId,
             ref: "Contest"
         }
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now()
     },
     scores: [
         {
@@ -43,7 +48,11 @@ var storySchema = new mongoose.Schema({
                 ref: "User"
             }
         }
-    ]
+    ],
+    achievment: {
+        type: String,
+        enum: ["winner", "runner-up", "popular"]
+    }
 });
 
 storySchema.index({ title: "text", description: "text" })

@@ -8,8 +8,7 @@
     <% contests.forEach(function(contest) { %>
     <% if(contest.status != "hidden" || isAdmin) { %>
     <div>
-        <h1><%= contest.title %></h1>
-        <p>Status: <%= contest.status %></p>
+        <h1><%= contest.title %> <span class="badge badge-secondary">New</span></h1>
         <% if (isAdmin) { %>
         <a href="/contests/<%= contest.tag %>/manage" class="btn btn-warning">Manage this contest</a>
         <% } %>

@@ -1,0 +1,39 @@
+<div class="card m-1">
+    <% if (story.achievment) { %>
+    <div class="card-header">
+        Achieved
+        <span class="badge badge-<%= story.achievment == "winner" ? "warning" : "info" %>">
+            <%= story.achievment %>
+        </span>
+        in
+        <a href="/contests/<%= contest.tag %>">
+            <%= contest.title %> Contest!
+        </a>
+    </div>
+    <% } %>
+    <div class="card-body">
+        <h5 class="card-title"><%= story.title %></h5>
+        <h6 class="card-subtitle mb-2 text-muted">
+            Created <%= moment(story.createdAt).fromNow() %> by
+            <a href="/profile/<%= story.author.username %>">
+                <%= story.author.username %>
+            </a>
+        </h6>
+        <p class="card-text"><%= story.description %></p>
+        <a href="/contests/<%= contest.tag %>/stories/<%= story._id %>" class="btn btn-primay">
+            Read Story!
+        </a>
+        <% if (user && (isAdmin || story.author.username == user.username)) { %>
+        <% if (story.author.username == user.username) {
+        <a href="/contests/<%= contest.tag %>/stories/<%= story._id %>/edit" class="btn btn-warning">
+            Edit Story
+        </a>
+        <% } %>
+        <form action="/contests/<%= contest.tag %>/stories/<%= story._id %>?_method=DELETE" method="POST">
+            <button type="submit" class="btn btn-danger">
+                Delete story
+            </button>
+        </form>
+        <% } %>
+    </div>
+</div>

@@ -25,6 +25,7 @@ router.get("/new", middleware.contestExists, middleware.loggedIn, function(req, 
             req.flash("error", "Error validating story");
             res.redirect("back");
         } else if(foundStory) {
+            req.flash("error", "Only 1 entry allowed per contest, edit yours instead!");
             res.redirect(`/contests/${req.params.tag}/stories/${foundStory._id}/edit`);
         } else {
             res.render("stories/new", { contest: req.contest });
@@ -84,28 +85,17 @@ router.post("/", middleware.contestExists, middleware.loggedIn, function(req, re
 
 
 // gets a specific story
-router.get("/:storyid", middleware.contestExists, function(req, res) {
-    Story.findById(req.params.storyid, function(err, foundStory) {
-        if (err) {
-            req.flash("error", "Error finding story");
-        } else if(!foundStory) {
-            req.flash("error", "No story found");
-        } else if(foundStory.contest.tag != req.contest.tag) {
-            req.flash("error", "The story doesn't match the contest!");
-        } else {
-            return res.render("stories/show", { story: foundStory });
-        }
-        res.redirect(`/contests/${req.params.tag}/stories`);
-    });
+router.get("/:storyid", middleware.storyMatchesContest, function(req, res) {
+    res.render("stories/show", { story: req.story, contest: req.contest });
 });
 
 
 // Form to edit a story
-router.get("/:storyid/edit", middleware.contestExists, middleware.ownsStory, function(req, res) {
+router.get("/:storyid/edit", middleware.ownsStory, function(req, res) {
     res.render("stories/edit", { story: req.story, contest: req.contest });
 });
 // Update a story
-router.put("/:storyid", middleware.contestExists, middleware.ownsStory, function(req, res) {
+router.put("/:storyid", middleware.ownsStory, function(req, res) {
     var updateStory = validateStory(req.body);
     if (updateStory) {
         Story.findByIdAndUpdate(req.story._id, { $set: updateStory }, { new: true }, function(err, updatedStory) {

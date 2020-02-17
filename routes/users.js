@@ -6,7 +6,19 @@ var express     = require("express"),
 
 // View
 router.get("/profile", middleware.loggedIn, function(req, res) {
-    res.render("users/profile");
+    res.redirect(`/profile/${req.user.username}`);
+});
+router.get("/profile/:username", function(req, res) {
+    User.findOne({ username: req.params.username }).populate("levels").exec(function(err, foundUser) {
+        if (err) {
+            req.flash("error", "Error finding user!");
+        } else if (!foundUser) {
+            req.flash("error", "No User Found!");
+        } else {
+            return res.render("users/profile", { profile: foundUser });
+        }
+        res.redirect("back");
+    });
 });
 
 // CREATE A USER

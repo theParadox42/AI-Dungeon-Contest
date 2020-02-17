@@ -13,7 +13,7 @@ var userSchema = new mongoose.Schema({
         type: [
             {
                 type: String,
-                enum: ["member", "winner", "judge", "admin"]
+                enum: ["member", "popular", "runner-up", "winner", "judge", "admin"]
             }
         ],
         default: ["member"]
@@ -40,6 +40,8 @@ userSchema.virtual.topRole = function() {
         if (setTopRole(role, "admin")) return;
         if (setTopRole(role, "judge")) return;
         if (setTopRole(role, "winner")) return;
+        if (setTopRole(role, "runner-up")) return;
+        if (setTopRole(role, "popular")) return;
         topRole = "member";
     });
     return topRole;

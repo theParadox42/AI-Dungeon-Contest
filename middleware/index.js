@@ -39,7 +39,7 @@ middleware.isJudge = function(req, res, next) {
     });
 };
 
-// Data checking
+// Data Checking
 middleware.contestExists = function(req, res, next) {
     Contest.findOne({ tag: req.params.tag }, function(err, foundContest) {
         if (err) {
@@ -64,15 +64,25 @@ middleware.contestExists = function(req, res, next) {
 };
 
 // Relations Checking
-middleware.ownsStory = function(req, res, next) {
-    middleware.loggedIn(req, res, function() {
+middleware.storyMatchesContest = function(req, res, next) {
+    middleware.contestExists(req, res, function() {
         Story.findById(req.params.storyid, function(err, foundStory) {
             if (err) {
                 req.flash("error", "Error finding story!");
             } else if(!foundStory) {
                 req.flash("error", "No story found!");
-            } else if (foundStory.author.username == req.user.username) {
+            } else {
                 req.story = foundStory;
+                return next();
+            }
+            res.redirect("back")
+        });
+    });
+});
+middleware.ownsStory = function(req, res, next) {
+    middleware.loggedIn(req, res, function() {
+        middleware.storyMatchesContest(req, res, function() {
+            if (req.story.author.username == req.user.username) {
                 return next();
             } else {
                 req.flash("error", "You do not own that story!");
