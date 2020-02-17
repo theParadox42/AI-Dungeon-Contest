@@ -2,7 +2,7 @@ var express = require("express"),
     router = express.Router({ mergeParams: true }),
     middleware = require("../middleware"),
     Story   = require("../models/story"),
-    valdiateStory = require("../utilities/validate-level");
+    valdiateStory = require("../utilities/validate-story");
 
 // Gets the stories for the current contest
 router.get("/", middleware.contestExists, function(req, res) {
