@@ -47,9 +47,17 @@ middleware.contestExists = function(req, res, next) {
         } else if (!foundContest) {
             req.flash("error", "No contest found!");
         } else {
-            
-            req.contest = foundContest;
-            return next();
+            if (contest.status == "hidden") {
+                if (res.locals.isAdmin) {
+                    req.contest = foundContest;
+                    return next();
+                } else {
+                    req.flash("error", "No contest found!");
+                }
+            } else {
+                req.contest = foundContest;
+                return next();
+            }
         }
         res.redirect("/contests");
     });

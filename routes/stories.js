@@ -15,22 +15,6 @@ router.get("/", middleware.contestExists, function(req, res) {
     });
 });
 
-// gets a specific story
-router.get("/:storyid", middleware.contestExists, function(req, res) {
-    Story.findById(req.params.storyid, function(err, foundStory) {
-        if (err) {
-            req.flash("error", "Error finding story");
-        } else if(!foundStory) {
-            req.flash("error", "No story found");
-        } else if(foundStory.contest.tag != req.contest.tag) {
-            req.flash("error", "The story doesn't match the contest!");
-        } else {
-            return res.render("stories/show", { story: foundStory });
-        }
-        res.redirect(`/contests/${req.params.tag}/stories`);
-    });
-});
-
 // Form to create a story
 router.get("/new", middleware.contestExists, middleware.loggedIn, function(req, res) {
     Story.findOne({
@@ -97,6 +81,24 @@ router.post("/", middleware.contestExists, middleware.loggedIn, function(req, re
         res.redirect("back");
     }
 });
+
+
+// gets a specific story
+router.get("/:storyid", middleware.contestExists, function(req, res) {
+    Story.findById(req.params.storyid, function(err, foundStory) {
+        if (err) {
+            req.flash("error", "Error finding story");
+        } else if(!foundStory) {
+            req.flash("error", "No story found");
+        } else if(foundStory.contest.tag != req.contest.tag) {
+            req.flash("error", "The story doesn't match the contest!");
+        } else {
+            return res.render("stories/show", { story: foundStory });
+        }
+        res.redirect(`/contests/${req.params.tag}/stories`);
+    });
+});
+
 
 // Form to edit a story
 router.get("/:storyid/edit", middleware.contestExists, middleware.ownsStory, function(req, res) {

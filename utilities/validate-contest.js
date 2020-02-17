@@ -3,6 +3,7 @@ var vs = require("./validate-string");
 function validateContest(body) {
     if (vs(body.title) &&
         vs(body.tag) &&
+        body.tag != "new" &&
         vs(body.description) &&
         vs(body.prompt) &&
         body.closingDate &&

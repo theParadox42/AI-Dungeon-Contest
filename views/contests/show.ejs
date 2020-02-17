@@ -1,5 +1,18 @@
 <%- include("../partials/header") -%>
 
-<h1>Contest <%= contest.title %>!</h1>
+<div class="container">
+    <h1>Contest <%= contest.title %>!</h1>
+    <a class="btn btn-lg btn-primary" href="/contests/<%= contest.tag %>/stories">
+        View Posted Stories
+    </a>
+    <a class="btn btn-lg btn-success" href="/contests/<%= contest.tag %>/stories/new">
+        Publish a story!
+    </a>
+    <% if (isAdmin) { %>
+    <a class="btn btn-lg btn-warning" href="/contests/<%= contest.tag %>/manage">Manage Contest</a>
+    <% } if(isJudge && contest.status == "judging") { %>
+    <a class="btn btn-lg btn-info" href="/contests/<%= contest.tag %>/judge">Judge Submissions</a>
+    <% } %>
+</div>
 
-<%- include("../partials/header") -%>
+<%- include("../partials/footer") -%>
