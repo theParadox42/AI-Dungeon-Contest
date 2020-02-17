@@ -64,6 +64,7 @@ middleware.ownsStory = function(req, res, next) {
             } else if(!foundStory) {
                 req.flash("error", "No story found!");
             } else if (foundStory.author.username == req.user.username) {
+                req.story = foundStory;
                 return next();
             } else {
                 req.flash("error", "You do not own that story!");

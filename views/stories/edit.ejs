@@ -4,16 +4,16 @@
     <h1>Edit Story Info</h1>
     <form action="/stories?_method=PUT" method="POST">
         <div class="form-group">
-            <label for="title">Story     Title</label>
-            <input type="text" name="title" class="form-control" id="title" required>
+            <label for="title">Story Title</label>
+            <input type="text" name="title" class="form-control" id="title" value="<%= story.title %>" required>
         </div>
         <div class="form-group">
             <label for="description">Story Description</label>
-            <input type="text" name="description" class="form-control" id="description" required>
+            <input type="text" name="description" class="form-control" id="description" value="<%= story.description %>" required>
         </div>
         <div class="form-group">
             <label for="link">Story Link</label>
-            <input type="url" name="link" class="form-control" placeholder="https://play.aidungeon.io/stories?story=storyid" pattern="https://play.aidungeon.io/stories?story=*" id="link" required>
+            <input type="url" name="link" class="form-control" placeholder="https://play.aidungeon.io/stories?story=storyid" pattern="https://play.aidungeon.io/stories?story=*" id="link" value="<%= story.link %>" required>
         </div>
         <button type="submit" class="btn btn-primary">
             Post Story!

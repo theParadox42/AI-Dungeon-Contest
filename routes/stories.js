@@ -6,7 +6,13 @@ var express = require("express"),
 
 // Gets the stories for the current contest
 router.get("/", middleware.contestExists, function(req, res) {
-    res.render("stories/index");
+    Story.find({ "contest.tag": req.params.tag }, function(err, foundStories) {
+        if (err) {
+            req.flash("error", "Error finding stories");
+            return res.redirect("back");
+        }
+        res.render("stories/index", { contest: req.contest, stories: foundStories });
+    });
 });
 
 // gets a specific story
@@ -77,6 +83,8 @@ router.post("/", middleware.contestExists, middleware.loggedIn, function(req, re
                     } else if(!createdStory) {
                         req.flash("error", "No story created!");
                     } else {
+                        req.user.stories.push(createdStory._id);
+                        req.user.save();
                         req.flash("success", "Successfully created story!");
                         return res.redirect(`/contests/${req.params.tag}/stories/${createdStory._id}`);
                     }
@@ -92,14 +100,13 @@ router.post("/", middleware.contestExists, middleware.loggedIn, function(req, re
 
 // Form to edit a story
 router.get("/:storyid/edit", middleware.contestExists, middleware.ownsStory, function(req, res) {
-    Story.findOne
-    res.render("stories/edit");
+    res.render("stories/edit", { story: req.story });
 });
 // Update a story
 router.put("/:storyid", middleware.contestExists, middleware.ownsStory, function(req, res) {
     var updateStory = validateStory(req.body);
     if (updateStory) {
-        Story.findByIdAndUpdate(req.params.storyid, { $set: updateStory }, { new: true }, function(err, updatedStory) {
+        Story.findByIdAndUpdate(req.story._id, { $set: updateStory }, { new: true }, function(err, updatedStory) {
             if (err) {
                 req.flash("error", "Error updating story!");
             } else if (!updatedStory) {
