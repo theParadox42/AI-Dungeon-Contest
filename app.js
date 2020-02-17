@@ -37,6 +37,7 @@ app.locals.statusToBootstrap = require("./utilities/status-to-bootstrap");
 // Routes
 app.use("/contests/:tag/stories", require("./routes/stories"));
 app.use("/contests", require("./routes/contests"));
+app.use("/judge", require("./routes/judge"));
 app.use(require("./routes/search"));
 app.use(require("./routes/users"));
 app.use(require("./routes/index"));

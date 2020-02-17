@@ -8,6 +8,10 @@ router.get("/", middleware.isJudge, function(req, res) {
     res.render("judge/index");
 });
 
+router.get("/criteria", function(req, res) {
+    res.render("judge/criteria");
+});
+
 router.get("/contests/:tag", middleware.isJudge, middleware.contestExists, function(req, res) {
     Contest.findById(req.contest._id).populate("stories").exec(function(err, foundContest) {
         if (err) {
@@ -19,6 +23,10 @@ router.get("/contests/:tag", middleware.isJudge, middleware.contestExists, funct
         }
         res.redirect("back");
     });
+});
+
+router.get("/contests/:tag/stories/:storyid", function(req, res) {
+    res.render("judge/story");
 });
 
 module.exports = router;
