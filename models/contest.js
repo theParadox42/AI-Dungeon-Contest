@@ -8,7 +8,7 @@ var contestSchema = new mongoose.Schema({
     },
     description: String,
     prompt: String,
-    host: {
+    creator: {
         username: String,
         id: {
             type: mongoose.Schema.Types.ObjectId,
