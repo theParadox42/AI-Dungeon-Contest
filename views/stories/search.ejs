@@ -6,7 +6,7 @@
     <div class="row row-1 row-sm-2 row-md-3">
         <% stories.forEach(function(story) { %>
         <div class="col">
-            <%- include("../partials/story-card") -%>
+            <%- include("../partials/story-card", { story: story }) -%>
         </div>
         <% }); %>
     </div>

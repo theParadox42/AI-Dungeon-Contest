@@ -9,7 +9,7 @@
         <% contests.forEach(function(contest) { %>
         <% if(contest.status != "hidden" || isAdmin) { %>
         <div class="col">
-            <%- include("../partials/contest-card") -%>
+            <%- include("../partials/contest-card", { contest: contest }) -%>
         </div>
         <% } %>
         <% }); %>
