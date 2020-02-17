@@ -32,11 +32,9 @@
         <a href="/contests/<%= contest.tag %>/manage" class="btn btn-warning my-1">
             Edit Contest
         </a>
-        <form action="/contests/<%= contest.tag %>?_method=DELETE" method="POST" class="d-inline my-1">
-            <button type="submit" class="btn btn-danger">
-                Delete Contest
-            </button>
-        </form>
+        <a href="/contests/<%= contest.tag %>/delete" class="btn btn-danger my-1">
+            Delete Contest
+        </a>
         <% } %>
     </div>
 </div>

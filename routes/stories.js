@@ -75,7 +75,7 @@ router.post("/", middleware.contestIsOpen, middleware.loggedIn, function(req, re
                         req.user.stories.push(createdStory._id);
                         req.user.save();
                         req.contest.stories.push(createdStory._id);
-                        req.user.save();
+                        req.contest.save();
                         req.flash("success", "Successfully created story!");
                         return res.redirect(`/contests/${req.params.tag}/stories/${createdStory._id}`);
                     }
@@ -123,6 +123,34 @@ router.put("/:storyid", middleware.ownsStory, middleware.contestIsOpen, function
         req.flash("error", "Bad story fomrat!");
         res.redirect("back");
     }
+});
+
+// Delete a story
+router.delete("/:storyid", middleware.canDelete, function(req, res) {
+    Story.findByIdAndDelete(req.params.storyid, function(err, deletedStory) {
+        if (err) {
+            req.flash("error", "Error deleting story");
+        } else if(!deletedStory) {
+            req.flash("error", "No story deleted!");
+        } else {
+            function findStory(item) {
+                return deletedStory._id.equals(item);
+            }
+            var contestIndex = req.contests.stories.findIndexOf(findStory);
+            if (contestIndex >= 0) {
+                req.contest.stories.splice(contestIndex, 1);
+                req.contest.save();
+            }
+            var userIndex = req.user.stories.findIndexOf(findStory);
+            if (userIndex >= 0) {
+                req.user.stories.splice(userIndex, 1);
+                req.user.save();
+            }
+            req.flash("success", "Succesfully deleted story!");
+            return res.redirect(`/contests/${story.contest.tag}`);
+        }
+        res.redirect("back");
+    });
 });
 
 module.exports = router;

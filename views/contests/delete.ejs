@@ -1,0 +1,12 @@
+<%- include("../partials/header") -%>
+
+<div class="container">
+    <h1 class="text-center display-3">Delete Contest?</h1>
+    <a href="/contests/<%= contest.tag %>" class="btn btn-primary">Cancel</a>
+    <form action="/contests/<%= contest.tag %>?_method=DELETE" method="POST" class="d-inline">
+        <button type="submit" class="btn btn-danger">DELETE CONTEST</button>
+        <small><strong>You cannot undo this action</strong></small>
+    </form>
+</div>
+
+<%- include("../partials/footer") -%>

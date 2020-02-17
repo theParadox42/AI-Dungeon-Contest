@@ -2,6 +2,8 @@ var express = require("express"),
     router = express.Router({ mergeParams: true }),
     middleware = require("../middleware"),
     Contest = require("../models/contest"),
+    Story   = require("../models/story"),
+    User    = require("../models/user"),
     validateContest = require("../utilities/validate-contest");
 
 router.get("/", function(req, res) {
@@ -37,7 +39,7 @@ router.post("/", middleware.isAdmin, function(req, res) {
                     username: req.user.username,
                     id: req.user._id
                 };
-                if (newContest.status == "open" && existingContest.status != "open") {
+                if (newContest.status == "open") {
                     newContest.openingDate = Date.now();
                 }
                 Contest.create(newContest, function(err, createdContest) {
@@ -77,6 +79,10 @@ router.put("/:tag", middleware.contestExists, middleware.isAdmin, function(req, 
             } else if(!updatedContest) {
                 req.flash("error", "No contest found!");
             } else {
+                if (updateContest.status == "open" && updatedContest.status != "open") {
+                    updatedContest.openingDate = Date.now();
+                    updatedContest.save();
+                }
                 req.flash("success", "Successfully updated contest!");
             }
             res.redirect("back");
@@ -87,14 +93,48 @@ router.put("/:tag", middleware.contestExists, middleware.isAdmin, function(req, 
     }
 });
 
+router.get("/:tag/delete", middleware.contestExists, middleware.isAdmin, function(req, res) {
+    res.render("contests/delete", { contest: req.contest });
+});
 router.delete("/:tag", middleware.contestExists, middleware.isAdmin, function(req, res) {
-    Contest.findByIdAndRemove(req.contest._id, function(err, deletedContest) {
+    Contest.findByIdAndDelete(req.contest._id).populate("stories").exec(function(err, deletedContest) {
         if (err) {
             req.flash("error", "Error deleting contest!");
         } else if(!deletedContest) {
             req.flash("error", "No Contest found to delete");
         } else {
-            req.flash("success", "Successfully deleted contest");
+            Story.deleteMany({ "contest.tag": deletedContest.tag }, function(err) {
+                if (err) {
+                    req.flash("error", "Deleted Contest but not stories")
+                } else if(!deletedContest.deletedStories) {
+                    req.flash("error", "No stories found to delete!");
+                } else {
+                    var si = 0;
+                    function findStory(item) {
+                        return deletedStory._id.equals(item);
+                    }
+                    function deleteStory() {
+                        User.findById(deletedContest.stories[si].author.id, function(err, userOwner) {
+                            if (userOwner) {
+                                var userIndex = userOwner.stories.findIndexOf(findStory);
+                                if (userIndex >= 0) {
+                                    userOwner.stories.splice(userIndex, 1);
+                                    userOwner.save();
+                                }
+                            }
+                            si ++;
+                            if (si >= deletedContest.stories.length) {
+                                req.flash("success", "Successfully deleted contest");
+                                res.redirect("/contests");
+                            } else {
+                                deleteStory();
+                            }
+                        });
+                    };
+                    deleteStory();
+                }
+            });
+            return;
         }
         res.redirect("/contests");
     });

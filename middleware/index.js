@@ -107,5 +107,24 @@ middleware.contestIsOpen = function(req, res, next) {
         res.redirect("back");
     });
 };
+middleware.canDelete = function(req, res, next) {
+    middleware.loggedIn(req, res, function() {
+        if (res.locals.isAdmin) {
+            return next();
+        } else if(req.params.storyid) {
+            middleware.storyMatchesContest(req, res, function() {
+                if (req.story.author.username == req.user.username) {
+                    return next();
+                } else {
+                    req.flash("error", "You can't delete that!");
+                    res.redirect("back");
+                }
+            });
+        } else {
+            req.flash("error", "You can't delete that!");
+            res.redirect("back");
+        }
+    });
+};
 
 module.exports = middleware;

@@ -3,7 +3,6 @@
 <div class="container">
     <h1 class="text-white">
         Contest: <strong><%= contest.title %>!</strong>
-        
     </h1>
     <div>
         <span class="badge badge-<%= statusToBootstrap(contest.status) %>"><%= contest.status %></span>
@@ -31,11 +30,7 @@
     <% } %>
     <% if (isAdmin) { %>
     <a class="btn btn-lg btn-warning" href="/contests/<%= contest.tag %>/manage">Manage Contest</a>
-    <form action="/contests/<%= contest.tag %>?_method=DELETE" method="POST" class="d-inline">
-        <button type="submit" class="btn btn-lg btn-danger">
-            Delete Contest
-        </button>
-    </form>
+    <a class="btn btn-lg btn-danger" href="/contests/<%= contest.tag %>/delete">Delete Contest</a>
     <% } if(isJudge && contest.status == "judging") { %>
     <a class="btn btn-lg btn-info" href="/contests/<%= contest.tag %>/judge">Judge Submissions</a>
     <% } %>
