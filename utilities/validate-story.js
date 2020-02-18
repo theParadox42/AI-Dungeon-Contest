@@ -8,7 +8,7 @@ function validateStory(body) {
         return {
             title: body.title,
             description: body.description,
-            link: body.link
+            link: body.link.replace("http:", "https:")
         }
     }
     return false;
