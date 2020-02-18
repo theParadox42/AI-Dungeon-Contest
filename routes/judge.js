@@ -25,8 +25,8 @@ router.get("/contests/:tag", middleware.isJudge, middleware.contestExists, funct
     });
 });
 
-router.get("/contests/:tag/stories/:storyid", function(req, res) {
-    res.render("judge/story");
+router.get("/contests/:tag/stories/:storyid", middleware.isJudge, middleware.storyMatchesContest, function(req, res) {
+    res.render("judge/story", { contest: req.contest, story: req.story });
 });
 
 module.exports = router;
