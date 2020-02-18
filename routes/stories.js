@@ -137,18 +137,18 @@ router.delete("/:storyid", middleware.canDelete, function(req, res) {
             function findStory(item) {
                 return deletedStory._id.equals(item);
             }
-            var contestIndex = req.contests.stories.findIndexOf(findStory);
+            var contestIndex = req.contest.stories.findIndex(findStory);
             if (contestIndex >= 0) {
                 req.contest.stories.splice(contestIndex, 1);
                 req.contest.save();
             }
-            var userIndex = req.user.stories.findIndexOf(findStory);
+            var userIndex = req.user.stories.findIndex(findStory);
             if (userIndex >= 0) {
                 req.user.stories.splice(userIndex, 1);
                 req.user.save();
             }
             req.flash("success", "Succesfully deleted story!");
-            return res.redirect(`/contests/${story.contest.tag}`);
+            return res.redirect(`/contests/${req.params.tag}`);
         }
         res.redirect("back");
     });
