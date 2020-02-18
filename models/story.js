@@ -10,6 +10,7 @@ var storySchema = new mongoose.Schema({
     title: String,
     description: String,
     link: String,
+    referenceId: String,
     author: {
         username: String,
         id: {
