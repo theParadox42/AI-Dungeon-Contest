@@ -106,17 +106,17 @@ router.delete("/:tag", middleware.contestExists, middleware.isAdmin, function(re
             Story.deleteMany({ "contest.tag": deletedContest.tag }, function(err) {
                 if (err) {
                     req.flash("error", "Deleted Contest but not stories")
-                } else if(!deletedContest.deletedStories) {
+                } else if(!deletedContest.stories) {
                     req.flash("error", "No stories found to delete!");
                 } else {
                     var si = 0;
                     function findStory(item) {
-                        return deletedStory._id.equals(item);
+                        return deletedContest.stories[si]._id.equals(item);
                     }
                     function deleteStory() {
                         User.findById(deletedContest.stories[si].author.id, function(err, userOwner) {
                             if (userOwner) {
-                                var userIndex = userOwner.stories.findIndexOf(findStory);
+                                var userIndex = userOwner.stories.findIndex(findStory);
                                 if (userIndex >= 0) {
                                     userOwner.stories.splice(userIndex, 1);
                                     userOwner.save();

@@ -77,7 +77,8 @@ router.post("/", middleware.contestIsOpen, middleware.loggedIn, function(req, re
                         req.contest.stories.push(createdStory._id);
                         req.contest.save();
                         req.flash("success", "Successfully created story!");
-                        return res.redirect(`/contests/${req.params.tag}/stories/${createdStory._id}`);
+                        res.redirect(`/contests/${req.params.tag}/stories/${createdStory._id}`);
+                        return;
                     }
                     res.redirect("back");
                 });
