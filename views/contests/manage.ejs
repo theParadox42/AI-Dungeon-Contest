@@ -26,10 +26,9 @@
         </div>
         <div class="form-group">
             <label for="closeDate">Closing Date</label>
-            <% var closed = moment(contest.closingDate).isBefore(Date.now()) %>
-            <input type="date" name="closingDate" class="form-control" aria-describedby="dateHelp" value="<%= moment(contest.closingDate).add(1, 'day').format('YYYY-MM-DD') %>" min="<%= moment(contest.openingDate || Date.now()).add(1, 'day').format('YYYY-MM-DD') %>" required>
+            <input type="date" name="closingDate" class="form-control" aria-describedby="dateHelp" value="<%= moment(contest.closingDate).add(1, 'day').format('YYYY-MM-DD') %>" min="<%= moment(contest.openingDate).add(2, 'day').format('YYYY-MM-DD') %>" required>
             <small id="dateHelp" class="form-text text-muted">
-                <%= closed ? "Closing date cannot be changed once it is closed" : "Submissions and changes to the closing date cannot be made after this date" %>
+                Submissions will be blocked after the closing date. The opening date is configured automatically.
             </small>
         </div>
         <div class="form-group">
@@ -39,7 +38,7 @@
         <div class="form-group">
             <label for="status">Contest Status</label>
             <select class="form-control" name="status" id="status" aria-describedby="dateHelp">
-                <% if (closed) { %>
+                <% if (moment(contest.closingDate).isBefore(Date.now())) { %>
                 <option value="judging" <%= contest.status == 'judging' ? 'selected' : undefined %>>
                     Judging
                 </option>

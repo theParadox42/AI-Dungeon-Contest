@@ -7,7 +7,7 @@ router.get("/stories", function(req, res) {
     var query = typeof search == "string" ? 
         Story.find({}) : 
         Story.find({ $text: { $search: req.query.q} });
-    query.exec(function(err, stories) {
+    query.sort("-createdAt").exec(function(err, stories) {
         if (err) {
             req.flash("error", "Error finding stories");
             return res.redirect("/");

@@ -11,7 +11,7 @@
     </h4>
     <h3>Stories!</h3>
     <% if (profile.stories.length > 0) { %>
-    <div class="row-1">
+    <div class="row">
         <% profile.stories.forEach(function(story) { %>
         <div class="col-12 col-lg-6">
             <%- include("../stories/story-card", { story: story }) -%>

@@ -11,7 +11,7 @@ function validateStory(body) {
             description: body.description,
             link: link,
             referenceId: link.replace("https:/"+"/play.aidungeon.io/stories?story=", "")
-        }
+        };
     }
     return false;
 };
