@@ -121,7 +121,7 @@ router.put("/:storyid", middleware.ownsStory, middleware.contestIsOpen, function
             res.redirect("back");
         });
     } else {
-        req.flash("error", "Bad story fomrat!");
+        req.flash("error", "Bad story format!");
         res.redirect("back");
     }
 });
