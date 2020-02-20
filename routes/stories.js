@@ -1,5 +1,6 @@
 var express = require("express"),
     router = express.Router({ mergeParams: true }),
+    request = require("request"),
     middleware = require("../middleware"),
     Story   = require("../models/story"),
     Contest = require("../models/contest"),
@@ -93,6 +94,7 @@ router.post("/", middleware.contestIsOpen, middleware.loggedIn, function(req, re
 
 // gets a specific story
 router.get("/:storyid", middleware.storyMatchesContest, function(req, res) {
+    request("https://api.aidungeon.io");
     res.render("stories/show", { story: req.story, contest: req.contest });
 });
 
