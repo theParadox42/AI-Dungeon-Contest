@@ -4,8 +4,8 @@ function validateStory(body) {
     if (vs(body.title) &&
         vs(body.description) &&
         vs(body.link) &&
-        body.link.match(/https?:\/\/play.aidungeon.io\/stories\?story=.*/)) {
-        var link = body.link.replace("http:", "https:");
+        body.link.match(/https?:\/\/(play|beta).aidungeon.io\/stories\?story=.*/)) {
+        var link = body.link.replace("http:", "https:").replace("/beta", "/play");
         return {
             title: body.title,
             description: body.description,
