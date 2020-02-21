@@ -102,7 +102,8 @@ router.get("/:storyid", middleware.storyMatchesContest, function(req, res) {
             req.flash("error", "Error retrieving story data");
             res.redirect(`/contests/${req.params.tag}/stories`);
         } else {
-            res.render("stories/show", { story: req.story, contest: req.contest, storyBody: JSON.parse(body).story });
+            console.log(JSON.parse(body));
+            res.render("stories/show", { story: req.story, contest: req.contest, storyData: JSON.parse(body) });
         }
     });
 });
