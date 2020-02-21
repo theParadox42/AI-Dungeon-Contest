@@ -7,7 +7,11 @@
     <p>Feel free to create an account and enter, check out the contests, or view other submissions!</p>
     <a class="btn btn-primary btn-lg" href="/contests" role="button">View Contests</a>
     <a class="btn btn-secondary btn-lg" href="/about" role="button">Learn more</a>
+    <% if (user) { %>
+    <a href="/profile" class="btn btn-success btn-lg">Go To Your Profile</a>
+    <% } else { %>
     <a class="btn btn-success btn-lg" href="/register" role="button">Sign Up!</a>
+    <% } %>
 </div>
 
 <%- include("./partials/footer") -%>

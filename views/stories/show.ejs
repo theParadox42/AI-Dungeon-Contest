@@ -25,6 +25,9 @@
         </div>
         <% } %>
         <div class="story-box bg-black p-3 my-3">
+            <% if (typeof storyData == "string" && storyData == "error") { %>
+            <h3 class="text-danger m-0">Error retrieving story data, make sure link is valid.</h3>
+            <% } else { %>
             <h2>Story: <%= storyData.title %></h2>
             <p>
                 Created by <strong>
@@ -39,11 +42,9 @@
             <p class="story-input"><i class="fas fa-arrow-right"></i> <%= text.value %></p>
             <% } %>
             <% }); %>
+            <% } %>
         </div>
     </div>
 </div>
-
-<!-- Doesn't work yet -->
-<!-- <script src="/assets/js/iframe.js"></script> -->
 
 <%- include("../partials/footer") -%>

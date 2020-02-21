@@ -1,10 +1,11 @@
-var express = require("express"),
-    router = express.Router({ mergeParams: true }),
-    request = require("request"),
-    middleware = require("../middleware"),
-    Story   = require("../models/story"),
-    Contest = require("../models/contest"),
-    validateStory = require("../utilities/validate-story");
+var express         = require("express"),
+    router          = express.Router({ mergeParams: true }),
+    request         = require("request"),
+    middleware      = require("../middleware"),
+    Story           = require("../models/story"),
+    Contest         = require("../models/contest"),
+    validateStory   = require("../utilities/validate-story"),
+    sortStories     = require("../utilities/sort-stories");
 
 // Gets the stories for the current contest
 router.get("/", middleware.contestExists, function(req, res) {
@@ -14,7 +15,7 @@ router.get("/", middleware.contestExists, function(req, res) {
         } else if (!foundContest) {
             req.flash("error", "No contest found!");
         } else {
-            return res.render("stories/index", { stories: foundContest.stories, contest: foundContest });
+            return res.render("stories/index", { stories: sortStories(foundContest.stories), contest: foundContest });
         }
         res.redirect("back");
     });
@@ -98,13 +99,13 @@ router.get("/:storyid", middleware.storyMatchesContest, function(req, res) {
         validateStory.fixStory(req.story);
     }
     request("https://api.aidungeon.io/explore/sessions/" +req.story.referenceId, function(error, response, body) {
+        var storyData;
         if (error || response.statusCode != 200) {
-            req.flash("error", "Error retrieving story data");
-            res.redirect(`/contests/${req.params.tag}/stories`);
+            storyData = "error";
         } else {
-            console.log(JSON.parse(body));
-            res.render("stories/show", { story: req.story, contest: req.contest, storyData: JSON.parse(body) });
+            storyData = JSON.parse(body);
         }
+        res.render("stories/show", { story: req.story, contest: req.contest, storyData: storyData });
     });
 });
 
