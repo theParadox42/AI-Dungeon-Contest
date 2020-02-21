@@ -48,15 +48,16 @@ middleware.contestExists = function(req, res, next) {
         } else if (!foundContest) {
             req.flash("error", "No contest found!");
         } else {
-            // A bit of regular maintenence
-            var today = new Date().getUTCDate();
-            console.log()
-            if ((foundContest.status == "open") && moment(foundContest.closingDate).isBefore(today)) {
-                foundContest.status = "judging";
-                foundContest.save();
-            } else if (foundContest.status != "hidden" && moment(foundContest.closingDate).isAfter(today)) {
-                foundContest.status = "open";
-                foundContest.save();
+            if (foundContest.status != "hidden") {
+                // A bit of regular maintenence
+                var today = new Date().toISOString();
+                if (moment(foundContest.closingDate).isAfter(today)) {
+                    foundContest.status = "open";
+                    foundContest.save();
+                } else if(foundContest.status == "open") {
+                    foundContest.status = "judging";
+                    foundContest.save();
+                }
             }
             // Check if its hidden or not
             if ((foundContest.status == "hidden" && res.locals.isAdmin) || foundContest.status != "hidden") {

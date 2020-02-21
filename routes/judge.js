@@ -37,7 +37,7 @@ router.get("/contests/:tag", middleware.isJudge, middleware.contestIsJudging, fu
             var total = foundContest.stories.length;
             return res.render("judge/contest", { 
                 contest: foundContest, 
-                ration: { judged: judged, total: total }
+                ratio: { judged: judged, total: total }
             });
         }
         res.redirect("back");
@@ -50,7 +50,13 @@ router.get("/contests/:tag/stories", middleware.isJudge, middleware.contestIsJud
         } else if (!foundContest) {
             req.flash("error", "No contest found!");
         } else {
-            return res.render("judge/stories");
+            var judged = foundContest.stories.filter(function (story) {
+                return story.scores.length > 0;
+            }); 
+            var unjudged = foundContest.stories.filter(function (story) {
+                return story.scores.length == 0;
+            }); 
+            return res.render("judge/stories", { stories: { judged: judged, unjudged: unjudged } });
         }
         res.redirect("back");
     });

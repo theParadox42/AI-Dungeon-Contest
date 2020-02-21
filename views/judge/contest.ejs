@@ -1,8 +1,12 @@
 <%- include("../partials/header") -%>
 
 <div class="container">
-    <h1>Judge Contest</h1>
-    <small class="text-muted">This page is a WIP</small>
+    <h1>
+        Judge Contest "<strong><%= contest.title %>"</strong>
+    </h1>
+    <h3><%= ratio.judged %> out of <%= ratio.total %> stories judged</h3>
+    <a href="/contests/<%= contest.tag %>" class="btn btn-primary">View Contest</a>
+    <a href="/judge/contests/<%= contest.tag %>/stories" class="btn btn-info">Judge Stories</a>
 </div>
 
 <%- include("../partials/footer") -%>
