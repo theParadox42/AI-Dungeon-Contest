@@ -4,7 +4,7 @@
     <h1>
         Judge Contest "<strong><%= contest.title %>"</strong>
     </h1>
-    <h3><%= ratio.judged %> out of <%= ratio.total %> stories judged</h3>
+    <h5 class="text-muted"><%= ratio.judged %> out of <%= ratio.total %> stories judged</h5>
     <a href="/contests/<%= contest.tag %>" class="btn btn-primary">View Contest</a>
     <a href="/judge/contests/<%= contest.tag %>/stories" class="btn btn-info">Judge Stories</a>
 </div>
