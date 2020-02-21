@@ -11,7 +11,15 @@ body {
 hr {
     border-color: rgb(82, 82, 82);
 }
-.story-iframe {
-    width: 100%;
-    min-height: 400px;
+.story-box {
+    border-radius: 20px;
+}
+.story-output {
+    color: rgb(190, 190, 190);
+}
+.story-input {
+    font-weight: bold;
+}
+.shadow-light {
+    box-shadow: 0 0.5rem 1rem rgba(255, 255, 255, 0.15) !important;
 }

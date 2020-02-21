@@ -1,5 +1,6 @@
 var express = require("express"),
     router = express.Router({ mergeParams: true }),
+    request = require("request"),
     middleware = require("../middleware"),
     Story   = require("../models/story"),
     Contest = require("../models/contest"),
@@ -93,7 +94,18 @@ router.post("/", middleware.contestIsOpen, middleware.loggedIn, function(req, re
 
 // gets a specific story
 router.get("/:storyid", middleware.storyMatchesContest, function(req, res) {
-    res.render("stories/show", { story: req.story, contest: req.contest });
+    if (!req.story.referenceId) {
+        validateStory.fixStory(req.story);
+    }
+    request("https://api.aidungeon.io/explore/sessions/" +req.story.referenceId, function(error, response, body) {
+        if (error || response.statusCode != 200) {
+            req.flash("error", "Error retrieving story data");
+            res.redirect(`/contests/${req.params.tag}/stories`);
+        } else {
+            console.log(JSON.parse(body));
+            res.render("stories/show", { story: req.story, contest: req.contest, storyData: JSON.parse(body) });
+        }
+    });
 });
 
 

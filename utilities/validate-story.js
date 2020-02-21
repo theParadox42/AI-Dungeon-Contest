@@ -16,4 +16,12 @@ function validateStory(body) {
     return false;
 };
 
+validateStory.fixStory = function(story) {
+    story.title = story.title || "Unnamed";
+    story.description = story.description || "No description";
+    story.link = story.link || "https:/" + "/play.aidungeon.io/stories?story=notastory";
+    story.referenceId = story.link.replace("https:/" + "/play.aidungeon.io/stories?story=", "")
+    story.save();
+}
+
 module.exports = validateStory;

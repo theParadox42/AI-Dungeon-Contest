@@ -12,9 +12,6 @@
         <p>
             Click <a href="<%= story.link %>">here</a> to view the story
         </p>
-        <iframe src="<%= story.link %>" frameborder="0" class="story-iframe">
-            Your browser doesn't support iframes
-        </iframe>
         <% if (isAdmin || (user && user.username == story.author.username)) { %>
         <div>
             <% if (user.username == story.author.username) { %>
@@ -27,6 +24,22 @@
             </form>
         </div>
         <% } %>
+        <div class="story-box bg-black p-3 my-3">
+            <h2>Story: <%= storyData.title %></h2>
+            <p>
+                Created by <strong>
+                    <a href="/profilelink/aid/<%= storyData.user.username %>"><%= storyData.user.username %></a>
+                </strong>
+                <%= moment(storyData.createdAt).fromNow() %>
+            </p>
+            <% storyData.story.forEach(function(text) { %>
+            <% if (text.type == "output") { %> 
+            <p class="story-output"><%= text.value %></p>
+            <% } else { %>
+            <p class="story-input"><i class="fas fa-arrow-right"></i> <%= text.value %></p>
+            <% } %>
+            <% }); %>
+        </div>
     </div>
 </div>
 

@@ -21,6 +21,18 @@ router.get("/profile/:username", function(req, res) {
         res.redirect("back");
     });
 });
+router.get("/profilelink/aid/:aidusername", function(req, res) {
+    User.findOne({ AIDUsername: req.params.aidusername }, function(err, foundUser) {
+        if (err) {
+            req.flash("error", "Error finding user!");
+        } else if(!foundUser) {
+            req.flash("error", "No user found!");
+        } else {
+            return res.redirect("/profile/" + foundUser.username);
+        }
+        res.redirect("back");
+    });
+})
 
 // CREATE A USER
 router.get("/register", middleware.isntLoggedIn, function(req, res) {
