@@ -49,7 +49,7 @@ middleware.contestExists = function(req, res, next) {
             req.flash("error", "No contest found!");
         } else {
             // A bit of regular maintenence
-            var today = new Date().getUTCDate()
+            var today = new Date().toISOString();
             if ((foundContest.status == "open") && moment(foundContest.closingDate).isBefore(today)) {
                 foundContest.status = "judging";
                 foundContest.save();
