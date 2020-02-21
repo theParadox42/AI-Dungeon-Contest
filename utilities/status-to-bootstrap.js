@@ -1,29 +1,27 @@
 module.exports = function(status) {
     switch(status) {
+        // Contest Status
+        case "pending":
+            return "info";
         case "open":
             return "success";
-        break;
         case "closed":
             return "danger";
-        break;
         case "judging":
-            return "info";
-        break;
-        case "judge":
-            return "info";
-        break;
+            return "primary";
+        // User Status
         case "admin":
             return "danger";
-        break;
+        case "judge":
+            return "primary";
+        case "writer":
+            return "info";
         case "winner":
             return "warning";
-        break;
         case "runner-up":
-            return "primary";
-        break;
+            return "warning";
         case "popular":
-            return "success";
-        break;
+            return "warning";
         default:
             return "secondary";
     }

@@ -1,12 +1,12 @@
 var express = require("express"),
-    router = express.Router({ mergeParams: true }),
-    Story   = require("../models/story");
+    router  = express.Router({ mergeParams: true }),
+    Story   = require("../models/story"),
+    vs      = require("../utilities/validate-string");
 
 router.get("/stories", function(req, res) {
-    var search = req.query.q;
-    var query = typeof search == "string" ? 
-        Story.find({}) : 
-        Story.find({ $text: { $search: req.query.q} });
+    var query = vs(req.query.q) ? 
+        Story.find({ $text: { $search: req.query.q} }) :
+        Story.find({});
     query.sort("-createdAt").exec(function(err, stories) {
         if (err) {
             req.flash("error", "Error finding stories");

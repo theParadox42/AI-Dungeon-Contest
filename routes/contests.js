@@ -1,21 +1,22 @@
-var express = require("express"),
-    router = express.Router({ mergeParams: true }),
-    middleware = require("../middleware"),
-    Contest = require("../models/contest"),
-    Story   = require("../models/story"),
-    User    = require("../models/user"),
-    validateContest = require("../utilities/validate-contest");
+var express         = require("express"),
+    router          = express.Router({ mergeParams: true }),
+    middleware      = require("../middleware"),
+    Contest         = require("../models/contest"),
+    Story           = require("../models/story"),
+    User            = require("../models/user"),
+    validateContest = require("../utilities/validate-contest"),
+    contestQuery    = require("../utilities/contest-query");
 
 router.get("/", function(req, res) {
-    Contest.find({}, function(err, contests) {
+    Contest.find(contestQuery(req, res), function(err, contests) {
         if (err) {
             req.flash("error", "Error finding contests!");
             res.redirect("/");
         } else {
             contests = contests || [];
-            var valueMap = ["open", "judging", "closed", "hidden"];
+            var valueMap = ["hidden", "pending", "open", "judging", "closed"];
             var sortedContests = contests.sort(function(a, b) {
-                return valueMap.indexOf(a) - valueMap.indexOf(b);
+                return valueMap.indexOf(a.status) - valueMap.indexOf(b.status);
             });
             res.render("contests/index", { contests: sortedContests });
         }
