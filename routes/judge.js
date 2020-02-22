@@ -69,16 +69,24 @@ router.get("/contests/:tag/stories/:storyid", middleware.isJudge, middleware.con
     }
     request("https://api.aidungeon.io/explore/sessions/" + req.story.referenceId, function(error, response, body) {
         var storyData;
+        var userVerified = false;
         if (error || response.statusCode != 200) {
             storyData = "error";
         } else {
             storyData = JSON.parse(body);
             if (storyData.user.username == req.story.author.username) {
-                storyData.user.verified = true;
+                userVerified = true;
             }
         }
-        res.render("judge/story", { story: req.story, storyData: storyData });
+        res.render("judge/story", { story: req.story, storyData: storyData, userVerified: userVerified });
     });
+});
+
+router.post("/contests/:tag/stories/:storyid/score", middleware.isJudge, middleware.contestIsJudging, middleware.storyMatchesContest, function(req, res) {
+    var scores = req.body;
+    // Story.findByIdAndUpdate(req.params.storyid, { $push: { "scores"}})
+    req.flash("error", "Scoring hasn't been implemented")
+    res.redirect("back");
 });
 
 module.exports = router;

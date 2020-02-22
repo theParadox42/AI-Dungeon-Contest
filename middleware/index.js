@@ -98,8 +98,11 @@ middleware.storyMatchesContest = function(req, res, next) {
             } else if(!foundStory) {
                 req.flash("error", "No story found!");
             } else {
-                req.story = foundStory;
-                return next();
+                if (foundStory.contest.tag == req.contest.tag) {
+                    req.story = foundStory;
+                    return next();
+                }
+                req.flash("error", "Story doesn't belong to contest!");
             }
             res.redirect(`/contests/${req.contest.tag}/stories`)
         });
