@@ -36,8 +36,8 @@ router.get("/contests/:tag", middleware.isJudge, middleware.contestIsJudging, fu
                 return story.scores.length > 0;
             }).length;
             var total = foundContest.stories.length;
-            return res.render("judge/contest", { 
-                contest: foundContest, 
+            return res.render("judge/contest", {
+                contest: foundContest,
                 ratio: { judged: judged, total: total }
             });
         }
@@ -53,10 +53,10 @@ router.get("/contests/:tag/stories", middleware.isJudge, middleware.contestIsJud
         } else {
             var judged = foundContest.stories.filter(function (story) {
                 return story.scores.length > 0;
-            }); 
+            });
             var unjudged = foundContest.stories.filter(function (story) {
                 return story.scores.length == 0;
-            }); 
+            });
             return res.render("judge/stories", { stories: { judged: judged, unjudged: unjudged } });
         }
         res.redirect(`/judge/contests/${req.contest.tag}/stories`);
@@ -84,9 +84,17 @@ router.get("/contests/:tag/stories/:storyid", middleware.isJudge, middleware.con
 
 router.post("/contests/:tag/stories/:storyid/score", middleware.isJudge, middleware.contestIsJudging, middleware.storyMatchesContest, function(req, res) {
     var scores = req.body;
-    // Story.findByIdAndUpdate(req.params.storyid, { $push: { "scores"}})
-    req.flash("error", "Scoring hasn't been implemented")
-    res.redirect("back");
+    var scoreIndex = req.story.scores.findIndex(function(score) {
+        return req.user._id.equals(score.judge);
+    });
+    if (scoreIndex >= 0) {
+        req.story.scores.push(scores);
+    } else {
+        req.story[scoreIndex] = scores;
+    }
+    req.story.save();
+    req.flash("success", "Rated Story!");
+    res.redirect(`/judge/contests/${req.contest.tag}/stories`);
 });
 
 module.exports = router;
