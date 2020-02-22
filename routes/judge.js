@@ -1,8 +1,9 @@
-var express = require("express"),
-    router = express.Router({ mergeParams: true }),
-    middleware = require("../middleware"),
-    Story = require("../models/story"),
-    Contest = require("../models/contest");
+var express     = require("express"),
+    router      = express.Router({ mergeParams: true }),
+    request     = require("request"),
+    middleware  = require("../middleware"),
+    Story       = require("../models/story"),
+    Contest     = require("../models/contest");
 
 router.get("/", middleware.isJudge, function(req, res) {
     res.render("judge/index");
@@ -20,7 +21,7 @@ router.get("/contests", middleware.isJudge, function(req, res) {
             contests = contests || [];
             return res.render("judge/contests", { contests: contests });
         }
-        res.redirect("back");
+        res.redirect("/judge");
     });
 });
 
@@ -40,7 +41,7 @@ router.get("/contests/:tag", middleware.isJudge, middleware.contestIsJudging, fu
                 ratio: { judged: judged, total: total }
             });
         }
-        res.redirect("back");
+        res.redirect(`/judge/contests/${req.contest.tag}`);
     });
 });
 router.get("/contests/:tag/stories", middleware.isJudge, middleware.contestIsJudging, function(req, res) {
@@ -58,12 +59,26 @@ router.get("/contests/:tag/stories", middleware.isJudge, middleware.contestIsJud
             }); 
             return res.render("judge/stories", { stories: { judged: judged, unjudged: unjudged } });
         }
-        res.redirect("back");
+        res.redirect(`/judge/contests/${req.contest.tag}/stories`);
     });
 });
 
 router.get("/contests/:tag/stories/:storyid", middleware.isJudge, middleware.contestIsJudging, middleware.storyMatchesContest, function(req, res) {
-    res.render("judge/story", { story: req.story });
+    if (!req.story.referenceId) {
+        req.story = validateStory.fixStory(req.story);
+    }
+    request("https://api.aidungeon.io/explore/sessions/" + req.story.referenceId, function(error, response, body) {
+        var storyData;
+        if (error || response.statusCode != 200) {
+            storyData = "error";
+        } else {
+            storyData = JSON.parse(body);
+            if (storyData.user.username == req.story.author.username) {
+                storyData.user.verified = true;
+            }
+        }
+        res.render("judge/story", { story: req.story, storyData: storyData });
+    });
 });
 
 module.exports = router;
