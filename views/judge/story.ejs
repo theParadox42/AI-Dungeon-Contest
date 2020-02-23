@@ -1,8 +1,59 @@
 <%- include("../partials/header") -%>
 
 <div class="container">
-    <h1>Judge Contest</h1>
-    <small class="text-muted">This page is a WIP</small>
+    <h1>Judge Story: "<strong><%= story.title %></strong>"</h1>
+    <a href="/contests/<%= story.contest.tag %>/stories/<%= story._id %>" class="btn btn-sm btn-primary">View Story</a>
+    <a href="<%= story.link %>" class="btn btn-sm btn-secondary" target="_blank">
+        Read story on aidungeon.io
+    </a>
+    <p>Description: <%= story.description %></p>
+    <p class="badge badge-<%= userVerified ? 'success' : 'danger' %>">
+        <%= userVerified ? 'Verified' : 'Unverified' %>
+    </p>
+    <small class="text-muted">Verified means that the story's username matches the user's AID username. If it is marked as unverified it might mean they didn't write the story.</small>
+    <div class="story-box bg-black p-3 my-3">
+        <% if (typeof storyData == "string" && storyData == "error") { %>
+        <h3 class="text-danger m-0">Error retrieving story data, make sure link is valid.</h3>
+        <% } else { %>
+        <h2>Story: <%= storyData.title %></h2>
+        <p>
+            Created by <strong>
+                <a href="/profilelink/aid/<%= storyData.user.username %>"><%= storyData.user.username %></a>
+            </strong>
+            <%= moment(storyData.createdAt).fromNow() %>
+        </p>
+        <% storyData.story.forEach(function(text) { %>
+        <% if (text.type == "output") { %>
+        <p class="story-output"><%= text.value %></p>
+        <% } else { %>
+        <p class="story-input"><i class="fas fa-arrow-right"></i> <%= text.value %></p>
+        <% } %>
+        <% }); %>
+        <% } %>
+    </div>
+    <div>
+        <h3>Score Story</h3>
+        <a href="/judge/criteria">View the criteria</a>
+        <form action="/judge/contests/<%= story.contest.tag %>/stories/<%= story._id %>/score" method="POST">
+            <div class="form-group row">
+                <label class="col-3 text-center" for="relevancyRange">Relevant</label>
+                <input class="form-control col-9" name="relevancy" id="relevancyRange" type="range" min="1" max="10" step="0.1" value="5">
+            </div>
+            <div class="form-group row">
+                <label class="col-3 text-center" for="humorRange">Humorous</label>
+                <input class="form-control col-9" name="humor" id="humorRange" type="range" min="1" max="10" step="0.1" value="5">
+            </div>
+            <div class="form-group row">
+                <label class="col-3 text-center" for="entertainmentRange">Entertaining</label>
+                <input class="form-control col-9" name="entertainment" id="entertainmentRange" type="range" min="1" max="10" step="0.1" value="5">
+            </div>
+            <div class="form-group row">
+                <label class="col-3 text-center" for="creativityRange">Creative</label>
+                <input class="form-control col-9" name="creativity" id="creativityRange" type="range" min="1" max="10" step="0.1" value="5">
+            </div>
+            <button class="btn btn-primary" type="submit">Score Story</button>
+        </form>
+    </div>
 </div>
 
 <%- include("../partials/footer") -%>

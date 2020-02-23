@@ -1,7 +1,7 @@
 <%- include("../partials/header") -%>
 
 <div class="container">
-    <h1 class="text-white">
+    <h1>
         Contest: <strong><%= contest.title %>!</strong>
     </h1>
     <div>
@@ -32,7 +32,7 @@
     <a class="btn btn-lg btn-warning" href="/contests/<%= contest.tag %>/manage">Manage Contest</a>
     <a class="btn btn-lg btn-danger" href="/contests/<%= contest.tag %>/delete">Delete Contest</a>
     <% } if(isJudge && contest.status == "judging") { %>
-    <a class="btn btn-lg btn-info" href="/contests/<%= contest.tag %>/judge">Judge Submissions</a>
+    <a class="btn btn-lg btn-info" href="/judge/contests/<%= contest.tag %>">Judge Submissions</a>
     <% } %>
 </div>
 

@@ -22,6 +22,7 @@ validateStory.fixStory = function(story) {
     story.link = story.link || "https:/" + "/play.aidungeon.io/stories?story=notastory";
     story.referenceId = story.link.replace("https:/" + "/play.aidungeon.io/stories?story=", "")
     story.save();
+    return story;
 }
 
 module.exports = validateStory;
