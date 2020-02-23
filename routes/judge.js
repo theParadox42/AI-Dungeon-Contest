@@ -76,6 +76,7 @@ router.post("/contests/:tag/stories/:storyid/score", middleware.isJudge, middlew
         validateScore("humor") &&
         validateScore("entertainment") &&
         validateScore("creativity")) {
+        scores.judge = req.user._id;
         var scoreIndex = req.story.scores.findIndex(function (score) {
             return req.user._id.equals(score.judge);
         });
