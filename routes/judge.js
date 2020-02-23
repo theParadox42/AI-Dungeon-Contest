@@ -24,27 +24,7 @@ router.get("/contests", middleware.isJudge, function(req, res) {
         res.redirect("/judge");
     });
 });
-
 router.get("/contests/:tag", middleware.isJudge, middleware.contestIsJudging, function(req, res) {
-    Contest.findById(req.contest._id).populate("stories").exec(function(err, foundContest) {
-        if (err) {
-            req.flash("error", "Error finding contest!");
-        } else if (!foundContest) {
-            req.flash("error", "No contest found!");
-        } else {
-            var judged = foundContest.stories.filter(function(story) {
-                return story.scores.length > 0;
-            }).length;
-            var total = foundContest.stories.length;
-            return res.render("judge/contest", {
-                contest: foundContest,
-                ratio: { judged: judged, total: total }
-            });
-        }
-        res.redirect(`/judge/contests/${req.contest.tag}`);
-    });
-});
-router.get("/contests/:tag/stories", middleware.isJudge, middleware.contestIsJudging, function(req, res) {
     Contest.findById(req.contest._id).populate("stories").exec(function (err, foundContest) {
         if (err) {
             req.flash("error", "Error finding contest!");
@@ -57,7 +37,7 @@ router.get("/contests/:tag/stories", middleware.isJudge, middleware.contestIsJud
             var unjudged = foundContest.stories.filter(function (story) {
                 return story.scores.length == 0;
             });
-            return res.render("judge/stories", { stories: { judged: judged, unjudged: unjudged } });
+            return res.render("judge/contest", { stories: { judged: judged, unjudged: unjudged }, contest: foundContest });
         }
         res.redirect(`/judge/contests/${req.contest.tag}/stories`);
     });
@@ -83,18 +63,34 @@ router.get("/contests/:tag/stories/:storyid", middleware.isJudge, middleware.con
 });
 
 router.post("/contests/:tag/stories/:storyid/score", middleware.isJudge, middleware.contestIsJudging, middleware.storyMatchesContest, function(req, res) {
-    var scores = req.body;
-    var scoreIndex = req.story.scores.findIndex(function(score) {
-        return req.user._id.equals(score.judge);
-    });
-    if (scoreIndex >= 0) {
-        req.story.scores.push(scores);
-    } else {
-        req.story[scoreIndex] = scores;
+    var scores = {};
+    function validateScore(key) {
+        var v = parseInt(req.body[key], 10);
+        if (typeof v == "number" && v >= 1 && v <= 10) {
+            scores[key] = v;
+            return true;
+        }
+        return false;
     }
-    req.story.save();
-    req.flash("success", "Rated Story!");
-    res.redirect(`/judge/contests/${req.contest.tag}/stories`);
+    if (validateScore("relevancy") &&
+        validateScore("humor") &&
+        validateScore("entertainment") &&
+        validateScore("creativity")) {
+        var scoreIndex = req.story.scores.findIndex(function (score) {
+            return req.user._id.equals(score.judge);
+        });
+        if (scoreIndex >= 0) {
+            req.story.scores[scoreIndex] = scores;
+        } else {
+            req.story.scores.push(scores);
+        }
+        req.story.save();
+        req.flash("success", "Rated Story!");
+        res.redirect(`/judge/contests/${req.contest.tag}`);
+    } else {
+        req.flash("error", "Bad scoring format!");
+        res.redirect("back");
+    }
 });
 
 module.exports = router;

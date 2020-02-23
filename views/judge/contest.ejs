@@ -1,12 +1,40 @@
 <%- include("../partials/header") -%>
 
 <div class="container">
-    <h1>
-        Judge Contest "<strong><%= contest.title %>"</strong>
-    </h1>
-    <h5 class="text-muted"><%= ratio.judged %> out of <%= ratio.total %> stories judged</h5>
-    <a href="/contests/<%= contest.tag %>" class="btn btn-primary">View Contest</a>
-    <a href="/judge/contests/<%= contest.tag %>/stories" class="btn btn-info">Judge Stories</a>
+    <h1>Judge Stories for contest <strong>"<%= contest.title %>"</strong></h1>
+    <h5 class="text-muted">
+        <%= stories.judged.length %> out of <%= stories.unjudged.length + stories.judged.length %> stories judged
+    </h5>
+    <div class="mb-2">
+        <a href="/contests/<%= contest.tag %>" class="btn btn-primary">View Contest</a>
+        <a href="/judge/contests" class="btn btn-info">Go Back to Contests</a>
+    </div>
+    <h4>Stories not yet judged</h4>
+    <% if (stories.unjudged.length > 0) { %>
+    <div class="row">
+        <% stories.unjudged.forEach(function(story) { %>
+        <div class="col-12 col-lg-6">
+            <% story.hasJudgeButton = true; %>
+            <%- include("../stories/story-card", { story: story }) -%>
+        </div>
+        <% }); %>
+    </div>
+    <% } else { %>
+    <p>There are no unjudged stories!</p>
+    <% } %>
+    <h4 class="my-2">Stories already Judged</h4>
+    <% if (stories.judged.length > 0) { %>
+    <div class="row">
+        <% stories.judged.forEach(function(story) { %>
+        <div class="col-12 col-lg-6">
+            <% story.hasJudgeButton = true; %>
+            <%- include("../stories/story-card", { story: story }) -%>
+        </div>
+        <% }); %>
+    </div>
+    <% } else { %>
+    <p>There are no judged stories!</p>
+    <% } %>
 </div>
 
 <%- include("../partials/footer") -%>
