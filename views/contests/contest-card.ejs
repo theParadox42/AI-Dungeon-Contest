@@ -16,7 +16,7 @@
         </h6>
         <p class="mb-2 text-muted">
             <%= contest.openingDate ? moment(contest.openingDate).format("dddd, MMMM Do") : "Unknown" %> &mdash;
-            <%= contest.closingDate ? moment(contest.closingDate).add(1, "day").format("dddd, MMMM Do") : "Unknown" %>
+            <%= contest.closingDate ? moment(contest.closingDate).format("dddd, MMMM Do") : "Unknown" %>
         </p>
         <p class="card-text"><%= contest.description %></p>
         <a href="/contests/<%= contest.tag %>/" class="btn btn-primary my-1">
