@@ -1,0 +1,42 @@
+<%- include("../partials/header") -%>
+
+<div class="container">
+    <h1>Manage the contest here!</h1>
+    <div>
+        <a href="/contests/<%= contest.tag %>" class="btn btn-primary btn-sm">Visit the contest!</a>
+    </div>
+    <p>
+        <small class="text-muted">Make sure you save changes before leaving!</small>
+    </p>
+    <form action="/contests/<%= contest.tag %>?_method=PUT" method="POST">
+        <div class="form-group">
+            <label for="title">Title</label>
+            <input type="text" class="form-control" id="title" name="title" value="<%= contest.title %>" placeholder="Contest Title" required>
+        </div>
+        <div class="form-group">
+            <label for="tag">Tag</label>
+            <input type="text" class="form-control" id="tag" name="tag" value="<%= contest.tag %>" placeholder="Contest Tag" aria-describedby="tagHelp" readonly>
+            <small id="tagHelp" class="form-text text-muted">
+                You can't change the tag because it is tied to stories associated with it, and theParadox42 is to lazy to update every single one of those stories, in case of an emergency, contact <a href="mailto:contact@paradox42.tech">theParadox42</a>
+            </small>
+        </div>
+        <div class="form-group">
+            <label for="contestDescription">Contest Description</label>
+            <input type="text" name="description" id="contestDescription" class="form-control" value="<%= contest.description %>" required>
+        </div>
+        <div class="form-group">
+            <label for="closeDate">Closing Date</label>
+            <input type="date" name="closingDate" class="form-control" aria-describedby="dateHelp" value="<%= moment(contest.closingDate).add(1, 'day').format('YYYY-MM-DD') %>" min="<%= moment(contest.openingDate).add(2, 'day').format('YYYY-MM-DD') %>" required>
+            <small id="dateHelp" class="form-text text-muted">
+                Submissions will be blocked after the closing date. The opening date is configured automatically.
+            </small>
+        </div>
+        <div class="form-group">
+            <label for="prompt">Contest Prompt</label>
+            <textarea class="form-control" name="prompt" rows="4" id="prompt" placeholder="Enter the prompt in here" required><%= contest.prompt %></textarea>
+        </div>
+        <button type="submit" class="btn btn-success">Save Changes</button>
+    </form>
+</div>
+
+<%- include("../partials/footer") -%>
