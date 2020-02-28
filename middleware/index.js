@@ -40,7 +40,7 @@ middleware.isJudge = function(req, res, next) {
     });
 };
 
-// Data Checking
+// Contest Checking
 middleware.contestExists = function(req, res, next) {
     Contest.findOne({ tag: req.params.tag }, function(err, foundContest) {
         if (err) {
@@ -48,29 +48,44 @@ middleware.contestExists = function(req, res, next) {
         } else if (!foundContest) {
             req.flash("error", "No contest found!");
         } else {
-            // A bit of regular maintenence
-            var today = new Date().toISOString();
-            if ((foundContest.status == "open") && moment(foundContest.closingDate).isBefore(today)) {
-                foundContest.status = "judging";
-                foundContest.save();
-            } else if (foundContest.status != "hidden" && moment(foundContest.closingDate).isAfter(today)) {
-                foundContest.status = "open";
-                foundContest.save();
+            if (foundContest.status != "hidden") {
+                // A bit of regular maintenence
+                var today = new Date().toISOString();
+                if (moment(foundContest.closingDate).isAfter(today)) {
+                    foundContest.status = "open";
+                    foundContest.save();
+                } else if(foundContest.status == "open") {
+                    foundContest.status = "judging";
+                    foundContest.save();
+                }
             }
             // Check if its hidden or not
-            if (foundContest.status == "hidden") {
-                if (res.locals.isAdmin) {
-                    req.contest = foundContest;
-                    return next();
-                } else {
-                    req.flash("error", "No contest found!");
-                }
-            } else {
+            if ((foundContest.status == "hidden" && res.locals.isAdmin) || foundContest.status != "hidden") {
                 req.contest = foundContest;
                 return next();
+            } else {
+                req.flash("error", "No contest found!");
             }
         }
         res.redirect("/contests");
+    });
+};
+middleware.contestIsOpen = function (req, res, next) {
+    middleware.contestExists(req, res, function () {
+        if (req.contest.status == "open") {
+            return next();
+        }
+        req.flash("error", "That contest isn't open!");
+        res.redirect("/contests");
+    });
+};
+middleware.contestIsJudging = function(req, res, next) {
+    middleware.contestExists(req, res, function() {
+        if (req.contest.status == "judging") {
+            return next();
+        }
+        req.flash("error", "That contest isn't judging!");
+        res.redirect("/judge/contests");
     });
 };
 middleware.newStatusIsValid = function(req, res, next) {
