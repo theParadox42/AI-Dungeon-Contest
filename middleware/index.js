@@ -73,6 +73,25 @@ middleware.contestExists = function(req, res, next) {
         res.redirect("/contests");
     });
 };
+middleware.newStatusIsValid = function(req, res, next) {
+    middleware.contestExists(req, res, function() {
+        var contest = req.contest;
+        var status = req.params.status;
+        var options = ["hidden", "open", "judging", "closed"];
+        if (options.includes(status)) {
+            var approved = (contest.status == "open" && status == "hidden") ||
+                contest.status == "hidden"
+                ((contest.status == "judging" || contest.status == "closed") && status != "open");
+            if (approved) {
+                return next();
+            }
+            req.flash("error", "That status currently isn't an option")
+        } else {
+            req.flash("error", "Nonvalid status option");
+        }
+        res.redirect("back");
+    });
+}
 
 // Relations Checking
 middleware.storyMatchesContest = function(req, res, next) {

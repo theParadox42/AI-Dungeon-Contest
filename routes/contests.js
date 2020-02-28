@@ -5,6 +5,7 @@ var express         = require("express"),
     Story           = require("../models/story"),
     User            = require("../models/user"),
     validateContest = require("../utilities/validate-contest"),
+    vs              = require("../utilities/validate-string"),
     contestQuery    = require("../utilities/contest-query");
 
 router.get("/", function(req, res) {
@@ -95,6 +96,10 @@ router.put("/:tag", middleware.contestExists, middleware.isAdmin, function(req, 
         req.flash("error", "Bad contest format");
         res.redirect("back");
     }
+});
+router.get("/:tag/status/:status", middleware.newStatusIsValid, middleware.isAdmin, function(req, res) {
+    console.log(req.params.status);
+    res.render("contests/status", { contest: req.contest, newStatus: req.params.status });
 });
 
 router.get("/:tag/delete", middleware.contestExists, middleware.isAdmin, function(req, res) {
