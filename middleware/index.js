@@ -81,11 +81,10 @@ middleware.newStatusIsValid = function(req, res, next) {
         if (options.includes(status)) {
             var approved = (contest.status == "open" && status == "hidden") ||
                 contest.status == "hidden" ||
-                ((contest.status == "judging" || contest.status == "closed") && status != "open");
-            if (approved) {
-                return next();
-            }
-            req.flash("error", "That status currently isn't an option")
+                ((contest.status == "judging" || contest.status == "closed") && status != "open") &&
+                contest.status != status;
+            if (approved) return next();
+            req.flash("error", "That status currently isn't an option");
         } else {
             req.flash("error", "Nonvalid status option");
         }

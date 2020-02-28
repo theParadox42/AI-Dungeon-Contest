@@ -4,7 +4,8 @@ var contestSchema = new mongoose.Schema({
     title: String,
     tag: {
         type: String,
-        unique: true
+        unique: true,
+        required: true
     },
     description: String,
     prompt: String,

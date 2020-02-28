@@ -5,9 +5,9 @@ var express         = require("express"),
     Story           = require("../models/story"),
     User            = require("../models/user"),
     validateContest = require("../utilities/validate-contest"),
-    vs              = require("../utilities/validate-string"),
     contestQuery    = require("../utilities/contest-query");
 
+// Contest Page
 router.get("/", function(req, res) {
     Contest.find(contestQuery(req, res), function(err, contests) {
         if (err) {
@@ -23,11 +23,11 @@ router.get("/", function(req, res) {
         }
     });
 });
-
+// Create form
 router.get("/new", middleware.isAdmin, function (req, res) {
     res.render("contests/new");
 });
-
+// Create contest
 router.post("/", middleware.isAdmin, function(req, res) {
     var newContest = validateContest(req.body);
     if (newContest) {
@@ -64,19 +64,21 @@ router.post("/", middleware.isAdmin, function(req, res) {
         res.redirect("back");
     }
 });
-
+// Get specific contest
 router.get("/:tag", middleware.contestExists, function(req, res) {
     res.render("contests/show", { contest: req.contest });
 });
-
+// Contest managing menu
 router.get("/:tag/manage", middleware.contestExists, middleware.isAdmin, function (req, res) {
     res.render("contests/manage", { contest: req.contest });
 });
+// Edit the specifics of a contest
 router.get("/:tag/edit", middleware.contestExists, middleware.isAdmin, function(req, res) {
     res.render("contests/edit", { contest: req.contest });
 });
+// Update a contest
 router.put("/:tag", middleware.contestExists, middleware.isAdmin, function(req, res) {
-    var updateContest = validateContest(req.body, true);
+    var updateContest = validateContest(req.body, true, true);
     if (updateContest) {
         Contest.findByIdAndUpdate(req.contest._id, { $set: updateContest }, function(err, updatedContest) {
             if (err) {
@@ -84,11 +86,8 @@ router.put("/:tag", middleware.contestExists, middleware.isAdmin, function(req, 
             } else if(!updatedContest) {
                 req.flash("error", "No contest found!");
             } else {
-                if (updateContest.status == "open" && updatedContest.status != "open") {
-                    updatedContest.openingDate = Date.now();
-                    updatedContest.save();
-                }
                 req.flash("success", "Successfully updated contest!");
+                return res.redirect(`/contests/${updatedContest.tag}/manage`);
             }
             res.redirect("back");
         });
@@ -97,10 +96,11 @@ router.put("/:tag", middleware.contestExists, middleware.isAdmin, function(req, 
         res.redirect("back");
     }
 });
-
+// Menu to change the status
 router.get("/:tag/status/:status", middleware.newStatusIsValid, middleware.isAdmin, function(req, res) {
     res.render("contests/status", { contest: req.contest, newStatus: req.params.status });
 });
+// Update the status
 router.post("/:tag/status/:status", middleware.newStatusIsValid, middleware.isAdmin, function(req, res) {
     Contest.findByIdAndUpdate(req.contest._id, { $set: { status: req.params.status } }, function(err, updatedContest){
         if (err) {
@@ -108,18 +108,22 @@ router.post("/:tag/status/:status", middleware.newStatusIsValid, middleware.isAd
         } else if (!updatedContest) {
             req.flash("error", "No contest found to update!");
         } else {
+            if (req.params.status == "open" && updatedContest.status != "open") {
+                updatedContest.openingDate = Date.now();
+                updatedContest.save();
+            }
             req.flash("success", "Succesfully set the status of the contest!");
         }
         res.redirect(`/contests/${ req.params.tag }/manage`);
     });
 });
-
+// Get the delete confirmation
 router.get("/:tag/delete", middleware.contestExists, middleware.isAdmin, function(req, res) {
     res.render("contests/delete", { contest: req.contest });
 });
+// Delete contest and associated contests
 router.delete("/:tag", middleware.contestExists, middleware.isAdmin, function(req, res) {
     Contest.findByIdAndDelete(req.contest._id).populate("stories").exec(function(err, deletedContest) {
-        console.log(deletedContest);
         if (err) {
             req.flash("error", "Error deleting contest!");
         } else if(!deletedContest) {
@@ -130,6 +134,8 @@ router.delete("/:tag", middleware.contestExists, middleware.isAdmin, function(re
                     req.flash("error", "Deleted Contest but not stories")
                 } else if(!deletedContest.stories) {
                     req.flash("error", "No stories found to delete!");
+                } else if(deletedContest.stories.length <= 0) {
+                    req.flash("success", "Deleted contest!");
                 } else {
                     var si = 0;
                     function findStory(item) {
@@ -154,7 +160,9 @@ router.delete("/:tag", middleware.contestExists, middleware.isAdmin, function(re
                         });
                     };
                     deleteStory();
+                    return;
                 }
+                res.redirect("back");
             });
             return;
         }
