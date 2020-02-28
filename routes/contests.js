@@ -97,9 +97,21 @@ router.put("/:tag", middleware.contestExists, middleware.isAdmin, function(req, 
         res.redirect("back");
     }
 });
+
 router.get("/:tag/status/:status", middleware.newStatusIsValid, middleware.isAdmin, function(req, res) {
-    console.log(req.params.status);
     res.render("contests/status", { contest: req.contest, newStatus: req.params.status });
+});
+router.post("/:tag/status/:status", middleware.newStatusIsValid, middleware.isAdmin, function(req, res) {
+    Contest.findByIdAndUpdate(req.contest._id, { $set: { status: req.params.status } }, function(err, updatedContest){
+        if (err) {
+            req.flash("error", "Error setting status");
+        } else if (!updatedContest) {
+            req.flash("error", "No contest found to update!");
+        } else {
+            req.flash("success", "Succesfully set the status of the contest!");
+        }
+        res.redirect(`/contests/${ req.params.tag }/manage`);
+    });
 });
 
 router.get("/:tag/delete", middleware.contestExists, middleware.isAdmin, function(req, res) {
