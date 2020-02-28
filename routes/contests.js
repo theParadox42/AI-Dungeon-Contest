@@ -71,6 +71,9 @@ router.get("/:tag", middleware.contestExists, function(req, res) {
 router.get("/:tag/manage", middleware.contestExists, middleware.isAdmin, function (req, res) {
     res.render("contests/manage", { contest: req.contest });
 });
+router.get("/:tag/edit", middleware.contestExists, middleware.isAdmin, function(req, res) {
+    res.render("contests/edit", { contest: req.contest });
+});
 router.put("/:tag", middleware.contestExists, middleware.isAdmin, function(req, res) {
     var updateContest = validateContest(req.body, true);
     if (updateContest) {
@@ -99,6 +102,7 @@ router.get("/:tag/delete", middleware.contestExists, middleware.isAdmin, functio
 });
 router.delete("/:tag", middleware.contestExists, middleware.isAdmin, function(req, res) {
     Contest.findByIdAndDelete(req.contest._id).populate("stories").exec(function(err, deletedContest) {
+        console.log(deletedContest);
         if (err) {
             req.flash("error", "Error deleting contest!");
         } else if(!deletedContest) {
