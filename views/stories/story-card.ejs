@@ -23,6 +23,9 @@
         <a href="/contests/<%= story.contest.tag %>/stories/<%= story._id %>" class="btn btn-primary m-1">
             Read Story!
         </a>
+        <% if (story.hasJudgeButton) { %>
+        <a href="/judge/contests/<%= story.contest.tag %>/stories/<%= story._id %>" class="btn btn-info">Judge Story</a>
+        <% } %>
         <% if (user && (isAdmin || story.author.username == user.username)) { %>
         <% if (story.author.username == user.username) { %>
         <a href="/contests/<%= story.contest.tag %>/stories/<%= story._id %>/edit" class="btn btn-warning m-1">

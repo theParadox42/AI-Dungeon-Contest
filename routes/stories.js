@@ -96,9 +96,9 @@ router.post("/", middleware.contestIsOpen, middleware.loggedIn, function(req, re
 // gets a specific story
 router.get("/:storyid", middleware.storyMatchesContest, function(req, res) {
     if (!req.story.referenceId) {
-        validateStory.fixStory(req.story);
+        req.story = validateStory.fixStory(req.story);
     }
-    request("https://api.aidungeon.io/explore/sessions/" +req.story.referenceId, function(error, response, body) {
+    request("https://api.aidungeon.io/explore/sessions/" + req.story.referenceId, function(error, response, body) {
         var storyData;
         if (error || response.statusCode != 200) {
             storyData = "error";

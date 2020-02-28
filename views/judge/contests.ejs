@@ -1,0 +1,14 @@
+<%- include("../partials/header") -%>
+
+<div class="container">
+    <h1>Judge Contests</h1>
+    <% if (contests.length > 0) { %>
+    <% contests.forEach(function(contest) { %>
+    <%- include("../contests/contest-card", { contest: contest }) -%>
+    <% }); %>
+    <% } else { %>
+    <p>There aren't any contests for you to judge</p>
+    <% } %>
+</div>
+
+<%- include("../partials/footer") -%>

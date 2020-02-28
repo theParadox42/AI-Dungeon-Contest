@@ -16,7 +16,7 @@
         </h6>
         <p class="mb-2 text-muted">
             <%= contest.openingDate ? moment(contest.openingDate).format("dddd, MMMM Do") : "Unknown" %> &mdash;
-            <%= contest.closingDate ? moment(contest.closingDate).add(1, "day").format("dddd, MMMM Do") : "Unknown" %>
+            <%= contest.closingDate ? moment(contest.closingDate).format("dddd, MMMM Do") : "Unknown" %>
         </p>
         <p class="card-text"><%= contest.description %></p>
         <a href="/contests/<%= contest.tag %>/" class="btn btn-primary my-1">
@@ -26,7 +26,7 @@
         <a href="/contests/<%= contest.tag %>/stories/new" class="btn btn-success my-1">Submit a story!</a>
         <% } %>
         <% if (isJudge && contest.status == "judging") { %>
-        <a href="/contests/<%= contest.tag %>/judge" class="btn btn-info my-1">Judge Contest</a>
+        <a href="/judge/contests/<%= contest.tag %>" class="btn btn-info my-1">Judge Contest</a>
         <% } %>
         <% if (isAdmin) { %>
         <a href="/contests/<%= contest.tag %>/manage" class="btn btn-warning my-1">

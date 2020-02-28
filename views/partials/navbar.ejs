@@ -16,8 +16,14 @@
 					<a class="nav-link" href="/about">About</a>
 				</li>
 				<% if (isJudge) { %>
-				<li class="nav-item">
-					<a class="nav-link" href="/judge">Judge Entries</a>
+				<li class="nav-item dropdown">
+					<a class="nav-link dropdown-toggle" href="/judge" id="judgeDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						Judging
+					</a>
+					<div class="dropdown-menu bg-dark shadow-light" aria-labelledby="judgeDropdown">
+						<a class="dropdown-item bg-dark text-light" href="/judge/criteria">View Criteria</a>
+						<a class="dropdown-item bg-dark text-light" href="/judge/contests">Judge Contests</a>
+					</div>
 				</li>
 				<% } %>
 			</ul>
