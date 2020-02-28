@@ -29,4 +29,8 @@ router.get("/contests/:tag/stories/:storyid", function(req, res) {
     res.render("judge/story");
 });
 
+router.get("/contests/:tag/finalize", function(req, res) {
+    res.render("judge/finalize");
+});
+
 module.exports = router;

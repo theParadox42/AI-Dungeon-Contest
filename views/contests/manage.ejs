@@ -18,7 +18,7 @@
         </form>
         <h3>Status <span class="badge badge-<%= statusToBootstrap(contest.status) %>"><%= contest.status %></span></h3>
         <% if (contest.status == "judging") { %>
-        <a href="/judge/contests/<%= contest.tag %>/finalize" class="btn btn-success mb-1">Close the Contest</a>
+        <a href="/judge/contests/<%= contest.tag %>/finalize" class="btn btn-success mb-1">Declare the Winners</a>
         <% } else if (contest.status == "closed") { %>
         <a href="/contests/<%= contest.tag %>/status/judging" class="btn btn-success mb-1">Judge the Contest</a>
         <% } if (contest.status == "pending") { %>
