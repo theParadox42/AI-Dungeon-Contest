@@ -1,0 +1,12 @@
+<%- include("../partials/header") -%>
+
+<div class="container text-center">
+    <h1>Change the Status of the Contest "<%= contest.title %>"</h1>
+    <p>Change the status from <span class="badge badge-<%= statusToBootstrap(contest.status) %>"><%= contest.status %></span> to <span class="badge badge-<%= statusToBootstrap(newStatus) %>"><%= newStatus %></span></p>
+    <a href="/contests/<%= contest.tag %>/manage" class="btn btn-secondary">Cancel</a>
+    <form action="/contests/<%= contest.tag %>/status/<%= newStatus %>" method="POST" class="d-inline">
+        <button class="btn btn-primary">Change Contests' Status</button>
+    </form>
+</div>
+
+<%- include("../partials/footer") -%>

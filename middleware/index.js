@@ -40,7 +40,7 @@ middleware.isJudge = function(req, res, next) {
     });
 };
 
-// Contest Checking
+// Data Checking
 middleware.contestExists = function(req, res, next) {
     Contest.findOne({ tag: req.params.tag }, function(err, foundContest) {
         if (err) {
@@ -48,46 +48,49 @@ middleware.contestExists = function(req, res, next) {
         } else if (!foundContest) {
             req.flash("error", "No contest found!");
         } else {
-            if (foundContest.status != "hidden") {
-                // A bit of regular maintenence
-                var today = new Date().toISOString();
-                if (moment(foundContest.closingDate).isAfter(today)) {
-                    foundContest.status = "open";
-                    foundContest.save();
-                } else if(foundContest.status == "open") {
-                    foundContest.status = "judging";
-                    foundContest.save();
-                }
+            // A bit of regular maintenence
+            var today = new Date().toISOString();
+            if ((foundContest.status == "open") && moment(foundContest.closingDate).isBefore(today)) {
+                foundContest.status = "judging";
+                foundContest.save();
+            } else if (foundContest.status != "hidden" && moment(foundContest.closingDate).isAfter(today)) {
+                foundContest.status = "open";
+                foundContest.save();
             }
             // Check if its hidden or not
-            if ((foundContest.status == "hidden" && res.locals.isAdmin) || foundContest.status != "hidden") {
+            if (foundContest.status == "hidden") {
+                if (res.locals.isAdmin) {
+                    req.contest = foundContest;
+                    return next();
+                } else {
+                    req.flash("error", "No contest found!");
+                }
+            } else {
                 req.contest = foundContest;
                 return next();
-            } else {
-                req.flash("error", "No contest found!");
             }
         }
         res.redirect("/contests");
     });
 };
-middleware.contestIsOpen = function (req, res, next) {
-    middleware.contestExists(req, res, function () {
-        if (req.contest.status == "open") {
-            return next();
-        }
-        req.flash("error", "That contest isn't open!");
-        res.redirect("/contests");
-    });
-};
-middleware.contestIsJudging = function(req, res, next) {
+middleware.newStatusIsValid = function(req, res, next) {
     middleware.contestExists(req, res, function() {
-        if (req.contest.status == "judging") {
-            return next();
+        var contest = req.contest;
+        var status = req.params.status;
+        var options = ["hidden", "open", "judging", "closed"];
+        if (options.includes(status)) {
+            var approved = (contest.status == "open" && status == "hidden") ||
+                contest.status == "hidden" ||
+                ((contest.status == "judging" || contest.status == "closed") && status != "open") &&
+                contest.status != status;
+            if (approved) return next();
+            req.flash("error", "That status currently isn't an option");
+        } else {
+            req.flash("error", "Nonvalid status option");
         }
-        req.flash("error", "That contest isn't judging!");
-        res.redirect("/judge/contests");
+        res.redirect("back");
     });
-};
+}
 
 // Relations Checking
 middleware.storyMatchesContest = function(req, res, next) {
@@ -98,13 +101,10 @@ middleware.storyMatchesContest = function(req, res, next) {
             } else if(!foundStory) {
                 req.flash("error", "No story found!");
             } else {
-                if (foundStory.contest.tag == req.contest.tag) {
-                    req.story = foundStory;
-                    return next();
-                }
-                req.flash("error", "Story doesn't belong to contest!");
+                req.story = foundStory;
+                return next();
             }
-            res.redirect(`/contests/${req.contest.tag}/stories`)
+            res.redirect("back")
         });
     });
 };
@@ -116,8 +116,17 @@ middleware.ownsStory = function(req, res, next) {
             } else {
                 req.flash("error", "You do not own that story!");
             }
-            res.redirect(`/contests/${req.contest.tag}/stories/${req.story._id}`)
+            res.redirect("back")
         });
+    });
+};
+middleware.contestIsOpen = function(req, res, next) {
+    middleware.contestExists(req, res, function() {
+        if (req.contest.status == "open") {
+            return next();
+        }
+        req.flash("error", "That contest is closed!");
+        res.redirect("back");
     });
 };
 middleware.canDelete = function(req, res, next) {

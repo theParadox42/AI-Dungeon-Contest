@@ -9,7 +9,7 @@
         </div>
         <div class="form-group">
             <label for="contestTag">Contest Tag</label>
-            <input type="text" name="tag" id="contestTag" class="form-control" aria-describedby="tagHelp" required>
+            <input type="text" name="tag" id="contestTag" class="form-control" aria-describedby="tagHelp" pattern="^[a-z0-9_-]*$" required>
             <small class="form-text text-muted" id="tagHelp">
                 Keep it short, simple, lowercase, unique, descriptive, and without spaces.
             </small>

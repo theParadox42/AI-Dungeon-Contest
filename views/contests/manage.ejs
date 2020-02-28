@@ -1,63 +1,37 @@
 <%- include("../partials/header") -%>
 
 <div class="container">
-    <h1>Manage the contest here!</h1>
+    <h1 class="text-center"><strong>Manage the contest here!</strong></h1>
     <div>
-        <a href="/contests/<%= contest.tag %>" class="btn btn-primary btn-sm">Visit the contest!</a>
+        <h3>General</h3>
+        <a href="/contests/<%= contest.tag %>" class="btn btn-primary mb-1">Visit the contest!</a>
+        <a href="/contests/<%= contest.tag %>/stories" class="btn btn-secondary mb-1">View the stories</a>
+        <% if (contest.status == "judging") { %>
+        <h3>Judging</h3>
+        <a href="/judge/contests/<%= contest.tag %>" class="btn btn-info mb-1">Judge the contest</a>
+        <a href="/judge/contests/<%= contest.tag %>/finalize" class="btn btn-success mb-1">Declare the Winners</a>
+        <% } %>
+        <h3>Actions</h3>
+        <a href="/contests/<%= contest.tag %>/edit" class="btn btn-warning mb-1">Edit the details</a>
+        <form action="/contests/<%= contest.tag %>?_method=DELETE" method="POST" class="d-inline">
+            <button class="btn btn-danger mb-1">Delete Contest</button>
+        </form>
+        <h3>Status <span class="badge badge-<%= statusToBootstrap(contest.status) %>"><%= contest.status %></span></h3>
+        <% if (contest.status == "judging") { %>
+        <a href="/judge/contests/<%= contest.tag %>/finalize" class="btn btn-success mb-1">Declare the Winners</a>
+        <% } else if (contest.status == "closed") { %>
+        <a href="/contests/<%= contest.tag %>/status/judging" class="btn btn-success mb-1">Judge the Contest</a>
+        <% } if (contest.status == "pending") { %>
+        <a href="/contests<%= contest.tag %>/status/open" class="btn btn-primary mb-1">Accept Contest and Open</a>
+        <a href="/contests/<%= contest.tag %>/status/hidden" class="btn btn-secondary mb-1">Accept Contest but keep Hidden</a>
+        <% } else if (contest.status != "hidden") { %>
+        <a href="/contests/<%= contest.tag %>/status/hidden" class="btn btn-secondary mb-1">Hide Contest</a>
+        <% } else { %>
+        <a href="/contests/<%= contest.tag %>/status/open" class="btn btn-success mb-1">Open the Contest</a>
+        <% } %>
+        <br>
+        <small class="text-muted">Certain status's will be set automatically and some status changes will require the contest to be closed</small>
     </div>
-    <p>
-        <small class="text-muted">Make sure you save changes before leaving!</small>
-    </p>
-    <form action="/contests/<%= contest.tag %>?_method=PUT" method="POST">
-        <div class="form-group">
-            <label for="title">Title</label>
-            <input type="text" class="form-control" id="title" name="title" value="<%= contest.title %>" placeholder="Contest Title" required>
-        </div>
-        <div class="form-group">
-            <label for="tag">Tag</label>
-            <input type="text" class="form-control" id="tag" name="tag" value="<%= contest.tag %>" placeholder="Contest Tag" aria-describedby="tagHelp" readonly>
-            <small id="tagHelp" class="form-text text-muted">
-                You can't change the tag because it is tied to stories associated with it, and theParadox42 is to lazy to update every single one of those stories, in case of an emergency, contact <a href="mailto:contact@paradox42.tech">theParadox42</a>
-            </small>
-        </div>
-        <div class="form-group">
-            <label for="contestDescription">Contest Description</label>
-            <input type="text" name="description" id="contestDescription" class="form-control" value="<%= contest.description %>" required>
-        </div>
-        <div class="form-group">
-            <label for="closeDate">Closing Date</label>
-            <input type="date" name="closingDate" class="form-control" aria-describedby="dateHelp" value="<%= moment(contest.closingDate).add(1, 'day').format('YYYY-MM-DD') %>" min="<%= moment(contest.openingDate).add(2, 'day').format('YYYY-MM-DD') %>" required>
-            <small id="dateHelp" class="form-text text-muted">
-                Submissions will be blocked after the closing date. The opening date is configured automatically.
-            </small>
-        </div>
-        <div class="form-group">
-            <label for="prompt">Contest Prompt</label>
-            <textarea class="form-control" name="prompt" rows="4" id="prompt" placeholder="Enter the prompt in here" required><%= contest.prompt %></textarea>
-        </div>
-        <div class="form-group">
-            <label for="status">Contest Status</label>
-            <select class="form-control" name="status" id="status" aria-describedby="dateHelp">
-                <% if (moment(contest.closingDate).isBefore(Date.now())) { %>
-                <option value="judging" <%= contest.status == 'judging' ? 'selected' : undefined %>>
-                    Judging
-                </option>
-                <option value="closed" <%= contest.status == 'closed' ? 'selected' : undefined %>>
-                    Closed
-                </option>
-                <% } else { %>
-                <option value="hidden" <%= contest.status == 'hidden' ? 'selected' : undefined %>>
-                    Hidden
-                </option>
-                <option value="open" <%= contest.status == 'open' ? 'selected' : undefined %>>
-                    Open
-                </option>
-                <% } %>
-            </select>
-            <small class="text-muted form-text" id="helpStatus">In order to open up judging, make sure the closing date has expired</small>
-        </div>
-        <button type="submit" class="btn btn-success">Save Changes</button>
-    </form>
 </div>
 
 <%- include("../partials/footer") -%>

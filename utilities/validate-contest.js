@@ -1,22 +1,20 @@
 var vs = require("./validate-string");
 
-function validateContest(body, noTag) {
+function validateContest(body, noTag, noStatus) {
     if (vs(body.title) &&
-        ((vs(body.tag) &&
-        body.tag != "new") ||
-        noTag) &&
+        ((vs(body.tag) && body.tag.match(/^[a-zA-Z0-9_-]*$/) && body.tag != "new") || noTag) &&
+        (vs(body.status) || noStatus) && 
         vs(body.description) &&
         vs(body.prompt) &&
-        body.closingDate &&
-        vs(body.status)) {
+        body.closingDate) {
         var validatedContest = {
             title: body.title,
             description: body.description,
             prompt: body.prompt,
-            closingDate: new Date(body.closingDate),
-            status: body.status
+            closingDate: new Date(body.closingDate)
         }
         if (!noTag) validatedContest.tag = body.tag;
+        if (!noStatus) validateContest.status = body.status;
         return validatedContest;
     }
     return false;
