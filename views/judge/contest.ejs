@@ -14,7 +14,7 @@
     <div class="row">
         <% stories.unjudged.forEach(function(story) { %>
         <div class="col-12 col-lg-6">
-            <% story.hasJudgeButton = true; %>
+            <% story.judgingMode = true; %>
             <%- include("../stories/story-card", { story: story }) -%>
         </div>
         <% }); %>
@@ -27,7 +27,7 @@
     <div class="row">
         <% stories.judged.forEach(function(story) { %>
         <div class="col-12 col-lg-6">
-            <% story.hasJudgeButton = true; %>
+            <% story.judgingMode = true; %>
             <%- include("../stories/story-card", { story: story }) -%>
         </div>
         <% }); %>

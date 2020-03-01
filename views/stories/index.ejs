@@ -6,6 +6,9 @@
     <div class="row">
         <% stories.forEach(function(story) { %>
         <div class="col-12 col-lg-6 mb-2">
+            <% if (user && user.isJudge && contest.status == "judging") { %>
+                <% story.judgingMode = true %>
+            <% } %>
             <%- include("story-card", { story: story }) -%>
         </div>
         <% }); %>

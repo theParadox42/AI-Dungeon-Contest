@@ -8,7 +8,7 @@
         <span class="badge badge-<%= statusToBootstrap(contest.status) %>"><%= contest.status %></span>
         <span class="text-light-gray">
             <%= contest.openingDate ? moment(contest.openingDate).format("dddd, MMMM Do") : "Unknown" %> &mdash;
-            <%= contest.closingDate ? moment(contest.closingDate).add(1, "day").format("dddd, MMMM Do") : "Unknown" %>
+            <%= contest.closingDate ? moment(contest.closingDate).format("dddd, MMMM Do") : "Unknown" %>
         </span>
     </div>
     <h3>Description</h3>
@@ -29,7 +29,7 @@
     </a>
     <% } %>
     <% if (isAdmin) { %>
-    <a class="btn btn-lg mb-1 mb-1 btn-warning" href="/contests/<%= contest.tag %>/manage">Manage Contest</a>
+    <a class="btn btn-lg mb-1 btn-warning" href="/contests/<%= contest.tag %>/manage">Manage Contest</a>
     <a class="btn btn-lg mb-1 btn-danger" href="/contests/<%= contest.tag %>/delete">Delete Contest</a>
     <% } if(isJudge && contest.status == "judging") { %>
     <a class="btn btn-lg mb-1 btn-info" href="/contests/<%= contest.tag %>/judge">Judge Submissions</a>
