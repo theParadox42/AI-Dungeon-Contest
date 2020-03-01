@@ -32,10 +32,17 @@ router.get("/contests/:tag", middleware.isJudge, middleware.contestIsJudging, fu
             req.flash("error", "No contest found!");
         } else {
             var judged = foundContest.stories.filter(function (story) {
-                return story.scores.length > 0;
+                return story.scores.some(function(score) {
+                    return score.judge.equals(user._id);
+                });
+            });
+            judged.sort(function(s1, s2) {
+                return s1.scores.length - s2.scores.length;
             });
             var unjudged = foundContest.stories.filter(function (story) {
-                return story.scores.length == 0;
+                return !story.scores.some(function(score) {
+                    return score.judge.equals(user._id);
+                });
             });
             return res.render("judge/contest", { stories: { judged: judged, unjudged: unjudged }, contest: foundContest });
         }

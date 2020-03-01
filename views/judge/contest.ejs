@@ -9,7 +9,7 @@
         <a href="/contests/<%= contest.tag %>" class="btn btn-primary">View Contest</a>
         <a href="/judge/contests" class="btn btn-info">Go Back to Contests</a>
     </div>
-    <h4>Stories not yet judged</h4>
+    <h4>Stories You Haven't Judged</h4>
     <% if (stories.unjudged.length > 0) { %>
     <div class="row">
         <% stories.unjudged.forEach(function(story) { %>
@@ -20,9 +20,9 @@
         <% }); %>
     </div>
     <% } else { %>
-    <p>There are no unjudged stories!</p>
+    <p>There aren't any stories you haven't judged!</p>
     <% } %>
-    <h4 class="my-2">Stories already Judged</h4>
+    <h4 class="my-2">Stories You've Judged</h4>
     <% if (stories.judged.length > 0) { %>
     <div class="row">
         <% stories.judged.forEach(function(story) { %>
@@ -33,7 +33,7 @@
         <% }); %>
     </div>
     <% } else { %>
-    <p>There are no judged stories!</p>
+    <p>You haven't judged any stories yet!</p>
     <% } %>
 </div>
 
