@@ -33,7 +33,7 @@ router.get("/contests/:tag", middleware.isJudge, middleware.contestIsJudging, fu
         } else {
             var judged = foundContest.stories.filter(function (story) {
                 return story.scores.some(function(score) {
-                    return score.judge.equals(user._id);
+                    return score.judge.equals(req.user._id);
                 });
             });
             judged.sort(function(s1, s2) {
@@ -41,7 +41,7 @@ router.get("/contests/:tag", middleware.isJudge, middleware.contestIsJudging, fu
             });
             var unjudged = foundContest.stories.filter(function (story) {
                 return !story.scores.some(function(score) {
-                    return score.judge.equals(user._id);
+                    return score.judge.equals(req.user._id);
                 });
             });
             return res.render("judge/contest", { stories: { judged: judged, unjudged: unjudged }, contest: foundContest });
