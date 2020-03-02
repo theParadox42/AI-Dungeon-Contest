@@ -157,6 +157,8 @@ middleware.canDelete = function(req, res, next) {
                     res.redirect("back");
                 }
             });
+        } else if(req.params.username == req.user.username) {
+            return next();
         } else {
             req.flash("error", "You can't delete that!");
             res.redirect("back");

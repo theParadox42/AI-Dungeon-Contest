@@ -104,7 +104,7 @@ router.get("/logout", function(req, res) {
     res.redirect("/");
 });
 
-// Other
+// User Management
 router.get("/profile/:username/manage", middleware.isAdmin, function(req, res) {
     User.findOne({ username: req.params.username }, function(err, profile) {
         if (err) {
@@ -126,6 +126,46 @@ router.get("/profile/:username/manage", middleware.isAdmin, function(req, res) {
                 });
             });
             return res.render("users/manage", { profile: profile, roleList: roleList });
+        }
+        res.redirect("/");
+    });
+});
+// Update Roles
+router.put("/profile/:username/roles", middleware.isAdmin, function(req, res) {
+    User.findOne({ username: req.params.username }, function(err, profile) {
+        if (err) {
+            req.flash("error", "Error finding user");
+        } else if (!profile) {
+            req.flash("error", "No user found!");
+        } else {
+            var rolesThatCanChange = ["writer", "judge", "admin"];
+            req.body.roles.forEach(function(role) {
+                if (rolesThatCanChange.includes(role) && !profile.roles.includes(role)) {
+                    profile.roles.push(role);
+                }
+            });
+            profile.save();
+            return res.redirect("/profile/" + profile.username);
+        }
+        res.redirect(`/profile/${req.params.username}/manage`);
+    });
+});
+// Delete User
+router.delete("/profile/:username", middleware.canDelete, function(req, res) {
+    User.findOneAndDelete({ username: req.params.username }).populate("stories").exec(function(err, deletedUser) {
+        if (err) {
+            req.flash("error", "Error deleting user");
+        } else if (!deletedUser) {
+            req.flash("error", "No user found to delete!");
+        } else {
+            if (deletedUser.username == req.user.username) {
+                req.logout();
+            }
+            // do stuff
+            Story.deleteMany({ "author.username": req.parame.username }, function(err) {
+                res.send("not yet finished");
+            });
+            return;
         }
         res.redirect("/");
     });
