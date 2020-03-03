@@ -69,7 +69,7 @@ router.post("/", middleware.contestIsOpen, middleware.loggedIn, function(req, re
                     tag: req.contest.tag,
                     id: req.contest._id
                 }
-                newContest.votes = [req.user._id];
+                newStory.votes = [req.user._id];
                 Story.create(newStory, function(err, createdStory) {
                     if (err) {
                         req.flash("error", "Error creating story!");
