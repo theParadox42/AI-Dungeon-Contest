@@ -1,6 +1,6 @@
 {
-  "name": "ai-dungeon-contest",
-  "version": "1.1.1",
+  "name": "ai-dungeon-contests",
+  "version": "1.1.2",
   "description": "A website for managing AI Dungeon Contests",
   "main": "app.js",
   "scripts": {
@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://theParadox42@github.com/theParadox42/AI-Dungeon-Contest.git"
+    "url": "git+https://theParadox42@github.com/theParadox42/AI-Dungeon-Contests.git"
   },
   "keywords": [
     "AI Dungeon",
@@ -21,9 +21,9 @@
   "author": "theParadox42",
   "license": "GPL-2.0-only",
   "bugs": {
-    "url": "https://github.com/theParadox42/AI-Dungeon-Contest/issues"
+    "url": "https://github.com/theParadox42/AI-Dungeon-Contests/issues"
   },
-  "homepage": "https://github.com/theParadox42/AI-Dungeon-Contest#readme",
+  "homepage": "https://github.com/theParadox42/AI-Dungeon-Contests#readme",
   "dependencies": {
     "body-parser": "^1.19.0",
     "connect-flash-plus": "^0.2.1",
