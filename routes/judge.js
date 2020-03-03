@@ -3,6 +3,7 @@ var express     = require("express"),
     request     = require("request"),
     middleware  = require("../middleware"),
     Contest     = require("../models/contest"),
+    User        = require("../models/user"),
     storyRating = require("../utilities/story-rating");
 
 // Judging Home Page
@@ -145,17 +146,24 @@ router.post("/contests/:tag/finalize", middleware.isAdmin, middleware.contestIsJ
             req.flash("error", "No contest found!");
         } else {
             var winners = getWinners(contest.stories);
-            // var awardKeys = 
-            if (winners.winner) {
-                contest.winners.winner = winners.winner._id;
-                winners.winner.roles.push("winner");
-                winners.winner.save();
+            var awardKeys = {
+                "winner": "winner",
+                "runnerUp": "runner-up"//,
+                // Comes with a future release
+                // "mostPopular": "popular"
+            };
+            for (var key in awardKeys) {
+                if (winners[key]) {
+                    contest.winners[key] = winners[key]._id;
+                    winners[key].achievement = awardKeys[key];
+                    winners[key].save();
+                    User.findByIdAndUpdate(winners[key].author.id, { $push: { roles: awardKeys[key] }}).exec();
+                }
             }
-            if (winners.runnerUp) contest.winners.runnerUp = winners.runnerUp._id;
-            if (winners.mostPopular) contest.winners.mostPopular = winners.mostPopular._id;
+            contest.status = "closed";
             contest.save();
-            winners.runnerUp.roles.push("runner-up");
-            winners.mostPopular.roles.push("")
+            req.flash("success", "Successfully Closed Contest!");
+            res.redirect(`/contests/${contest.tag}`)
             return;
         }
         res.redirect(`/judge/contests/${req.params.tag}`);

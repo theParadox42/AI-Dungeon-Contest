@@ -48,7 +48,7 @@ var storySchema = new mongoose.Schema({
             ref: "User"
         }
     ],
-    achievment: {
+    achievement: {
         type: String,
         enum: ["winner", "runner-up", "popular"]
     }
