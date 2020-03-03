@@ -1,0 +1,15 @@
+<%- include("../partials/header") -%>
+
+<div class="container">
+    <h1>Delete <%= profile.username %>?</h1>
+    <form action="/profile/<%= profile.username %>?_method=DELETE" method="POST">
+        <div class="form-group">
+            <input type="checkbox" class="form-check-input" id="check" name="check">
+            <label for="check">Are you sure?</label>
+        </div>
+        <button class="btn btn-danger" type="submit">Delete <%= profile.username %></button>
+        <small class="text-muted form-text">This will also delete all stories associated with them</small>
+    </form>
+</div>
+
+<%- include("../partials/footer") -%>
