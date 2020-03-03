@@ -56,32 +56,5 @@ var storySchema = new mongoose.Schema({
 
 storySchema.index({ title: "text", description: "text" })
 
-storySchema.path.averageScore = function(story) {
-    story = story || this;
-    var categories = ["relevancy", "humor", "entertainment", "creativity"];
-    var totalScore = 0;
-    story.scores.forEach(function(score) {
-        categories.forEach(function(category) {
-            score += Math.max(Math.min(10, score[category]), 0);
-        });
-    });
-    totalScore /= story.scores.length * categories.length;
-    console.log("what");
-    return totalScore;
-};
-storySchema.method.getRating = function(story) {
-    console.log(this);
-    var categories = ["relevancy", "humor", "entertainment", "creativity"];
-    var totalScore = 0;
-    story.scores.forEach(function (score) {
-        categories.forEach(function (category) {
-            score += Math.max(Math.min(10, score[category]), 0);
-        });
-    });
-    totalScore /= story.scores.length * categories.length;
-    console.log("what");
-    return totalScore;
-}
-
 module.exports = mongoose.model("Story", storySchema);
 

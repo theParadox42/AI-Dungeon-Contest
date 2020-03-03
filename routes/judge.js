@@ -2,7 +2,8 @@ var express     = require("express"),
     router      = express.Router({ mergeParams: true }),
     request     = require("request"),
     middleware  = require("../middleware"),
-    Contest     = require("../models/contest");
+    Contest     = require("../models/contest"),
+    storyRating = require("../utilities/story-rating");
 
 // Judging Home Page
 router.get("/", middleware.isJudge, function(req, res) {
@@ -26,7 +27,7 @@ router.get("/contests", middleware.isJudge, function(req, res) {
 });
 // Show Stories and info for specific contest
 router.get("/contests/:tag", middleware.isJudge, middleware.contestIsJudging, function(req, res) {
-    Contest.findById(req.contest._id).populate("stories").exec(function (err, foundContest) {
+    Contest.findById(req.contest._id).populate("stories winners").exec(function (err, foundContest) {
         if (err) {
             req.flash("error", "Error finding contest!");
         } else if (!foundContest) {
@@ -101,6 +102,27 @@ router.post("/contests/:tag/stories/:storyid/score", middleware.isJudge, middlew
         res.redirect("back");
     }
 });
+// Get the winners and stuff
+function getWinners(stories) {
+    var awardStories = {};
+    if (stories.length > 0) {
+        stories.forEach(function (story) {
+            storyRating(story);
+        });
+        stories.sort(function (s1, s2) {
+            return s2.rating - s1.rating;
+        });
+        awardStories.winner = stories[0];
+        awardStories.runnerUp = stories[1];
+        /* Not until Voting Functionality Exists
+        stories.sort(function (s1, s2) {
+            return s2.votes.length - s1.votes.length;
+        });
+        awardStories.mostPopular = stories[0];
+        */
+    }
+    return awardStories;
+}
 // Finalize contest info
 router.get("/contests/:tag/finalize", middleware.isAdmin, middleware.contestIsJudging, function(req, res) {
     Contest.findOne({ tag: req.params.tag }).populate("stories").exec(function(err, contest) {
@@ -109,22 +131,32 @@ router.get("/contests/:tag/finalize", middleware.isAdmin, middleware.contestIsJu
         } else if (!contest) {
             req.flash("error", "No contest found!");
         } else {
-            var awardStories = {};
-            if (contest.stories.length > 0) {
-                var ratedStories = contest.stories.slice().sort(function(s1, s2) {
-                    return s2.rating - s1.rating;
-                });
-                var votedStories = contest.stories.slice().sort(function(s1, s2) {
-                    return s2.votes.length - s1.votes.length;
-                });
-                awardStories.winner = ratedStories[0];
-                awardStories.runnerUp = ratedStories[1];
-                awardStories.mostPopular = votedStories[0];
-
-
-                console.log(contest.stories[0]);
+            return res.render("judge/finalize", { contest: contest, stories: getWinners(contest.stories) });
+        }
+        res.redirect(`/judge/contests/${req.params.tag}`);
+    });
+});
+// Implement the changes
+router.post("/contests/:tag/finalize", middleware.isAdmin, middleware.contestIsJudging, function(req, res) {
+    Contest.findOne({ tag: req.params.tag }).populate("stories").exec(function(err, contest) {
+        if (err) {
+            req.flash("error", "Error finding contest!");
+        } else if (!contest) {
+            req.flash("error", "No contest found!");
+        } else {
+            var winners = getWinners(contest.stories);
+            // var awardKeys = 
+            if (winners.winner) {
+                contest.winners.winner = winners.winner._id;
+                winners.winner.roles.push("winner");
+                winners.winner.save();
             }
-            return res.render("judge/finalize", { contest: contest, stories: awardStories });
+            if (winners.runnerUp) contest.winners.runnerUp = winners.runnerUp._id;
+            if (winners.mostPopular) contest.winners.mostPopular = winners.mostPopular._id;
+            contest.save();
+            winners.runnerUp.roles.push("runner-up");
+            winners.mostPopular.roles.push("")
+            return;
         }
         res.redirect(`/judge/contests/${req.params.tag}`);
     });
