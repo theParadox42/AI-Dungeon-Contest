@@ -9,9 +9,6 @@
             </span>
         <% }); %>
     </h4>
-    <% if (isAdmin) { %>
-    <a class="btn btn-warning" href="/profile/<%= profile.username %>/manage">Manage User</a>
-    <% } %>
     <h3>Stories!</h3>
     <% if (profile.stories.length > 0) { %>
     <div class="row">
