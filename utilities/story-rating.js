@@ -6,6 +6,6 @@ module.exports = story => {
             totalScore += Math.max(Math.min(10, score[category]), 0);
         });
     });
-    totalScore /= story.scores.length * categories.length;
-    story.rating = totalScore
+    totalScore /= (story.scores.length * categories.length) || 1
+    story.rating = totalScore;
 };
