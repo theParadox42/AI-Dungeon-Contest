@@ -1,3 +1,11 @@
+/*
+ * Welcome to the AI Dungeon Contests Backend/Frontend
+ * All the frontend stuff is in ./public and ./views
+ * All the backend stuff is literally everything else
+ * Enjoy coding!
+ */
+
+// Dependencies
 var _               = require("dotenv").config(),
     express         = require("express"),
     app             = express(),
@@ -12,13 +20,13 @@ var _               = require("dotenv").config(),
 
 // Set up app
 app.set("view engine", "ejs");
-app.use(express.static(__dirname + "/public"));
+app.use(express.static(`${__dirname}/public`));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.locals.moment = require("moment");
 app.use(methodOverride("_method"));
 
 // Set up mongoose
-mongoose.connect(mongooseConfig.string, mongooseConfig.options).catch((e) => { console.log("Failed to connect!", e); });
+mongoose.connect(mongooseConfig.string, mongooseConfig.options).catch((e) => { console.warn("Failed to connect!", e); });
 
 // Set up passport
 app.use(require("./config/express-session"));

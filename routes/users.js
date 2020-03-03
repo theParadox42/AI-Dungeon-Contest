@@ -112,12 +112,22 @@ router.get("/profile/:username/manage", middleware.isAdmin, function(req, res) {
         } else if (!profile) {
             req.flash("error", "No user found!");
         } else {
-            var roles = ["r-member", "r-popular", "r-runner-up", "r-winner", "judge", "writer", "admin"];
+            var roles = ["s-member", "s-popular", "s-runner-up", "s-winner", "judge", "writer"];
+            if (req.user.roles.indexOf("super-admin") >= 0) {
+                roles.push("admin");
+                if (req.user.username == req.params.username || req.params.username == "theParadox42") {
+                    roles.push("s-super-admin");
+                } else {
+                    roles.push("super-admin");
+                }
+            } else {
+                roles.push("s-admin", "s-super-admin");
+            }
             var roleList = [];
             roles.forEach(function(role) {
-                var static = role.includes("r-")
+                var static = role.includes("s-");
                 if (static) {
-                    role = role.replace("r-", "");
+                    role = role.replace("s-", "");
                 }
                 roleList.push({
                     name: role,
@@ -139,9 +149,20 @@ router.put("/profile/:username/roles", middleware.isAdmin, function(req, res) {
             req.flash("error", "No user found!");
         } else {
             var rolesThatCanChange = ["writer", "judge", "admin"];
-            req.body.roles.forEach(function(role) {
-                if (rolesThatCanChange.includes(role) && !profile.roles.includes(role)) {
+            if (req.user.roles.indexOf("super-admin") >= 0) {
+                rolesThatCanChange.push("admin");
+                if (req.user.username != req.params.username && req.params.username != "theParadox42") {
+                    rolesThatCanChange.push("super-admin");
+                }
+            }
+            rolesThatCanChange.forEach(function(role) {
+                if (req.body.roles.includes(role) && !profile.roles.includes(role)) {
                     profile.roles.push(role);
+                } else if(!req.body.roles.includes(role) && profile.roles.includes(role)) {
+                    var i = profile.roles.indexOf(role);
+                    if (i >= 0) {
+                        profile.roles.splice(i, 1);
+                    }
                 }
             });
             profile.save();

@@ -10,12 +10,14 @@ module.exports = function(status) {
         case "judging":
             return "primary";
         // User Status
+        case "super-admin":
+            return "light";
         case "admin":
             return "danger";
-        case "judge":
-            return "primary";
         case "writer":
             return "info";
+        case "judge":
+            return "primary";
         case "winner":
             return "warning";
         case "runner-up":
