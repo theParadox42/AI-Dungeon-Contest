@@ -156,6 +156,7 @@ router.put("/profile/:username/roles", middleware.isAdmin, function(req, res) {
                     rolesThatCanChange.push("super-admin");
                 }
             }
+            req.body.roles = typeof req.body.roles == "object" && typeof req.body.roles.length == "number" ? req.body.roles : [];
             rolesThatCanChange.forEach(function(role) {
                 if (req.body.roles.includes(role) && !profile.roles.includes(role)) {
                     profile.roles.push(role);
