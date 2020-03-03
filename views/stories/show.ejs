@@ -12,8 +12,15 @@
         <p>
             Click <a href="<%= story.link %>">here</a> to view the story
         </p>
-        <% if (isAdmin || (user && user.username == story.author.username)) { %>
         <div>
+            <% if (story.voted) { %>
+            <button class="btn btn-info" disabled>Voted!</button>
+            <% } else { %>
+            <form action="/contests/<%= contest.tag %>/stories/<%= story._id %>/vote" method="POST" class="d-inline">
+                <button class="btn btn-info" type="submit">Vote Up!</button>
+            </form>
+            <% } %>
+            <% if (isAdmin || (user && user.username == story.author.username)) { %>
             <% if (user.username == story.author.username) { %>
             <a class="btn btn-warning" href="/contests/<%= contest.tag %>/stories/<%= story._id %>/edit">Edit Story</a>
             <% } %>
@@ -22,8 +29,8 @@
                     Delete Story
                 </button>
             </form>
+            <% } %>
         </div>
-        <% } %>
         <div class="story-box bg-black p-3 my-3">
             <% if (typeof storyData == "string" && storyData == "error") { %>
             <h3 class="text-danger m-0">Error retrieving story data, make sure link is valid.</h3>

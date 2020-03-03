@@ -69,6 +69,7 @@ router.post("/", middleware.contestIsOpen, middleware.loggedIn, function(req, re
                     tag: req.contest.tag,
                     id: req.contest._id
                 }
+                newContest.votes = [req.user._id];
                 Story.create(newStory, function(err, createdStory) {
                     if (err) {
                         req.flash("error", "Error creating story!");
@@ -106,6 +107,9 @@ router.get("/:storyid", middleware.storyMatchesContest, function(req, res) {
         } else {
             storyData = JSON.parse(body);
         }
+        if (story.votes.some(vote => req.user._id.equals(vote)) {
+            story.voted = true;
+        }
         res.render("stories/show", { story: req.story, contest: req.contest, storyData: storyData });
     });
 });
@@ -116,7 +120,7 @@ router.get("/:storyid/edit", middleware.ownsStory, middleware.contestIsOpen, fun
     res.render("stories/edit", { story: req.story, contest: req.contest });
 });
 // Update a story
-router.put("/:storyid", middleware.ownsStory, middleware.contestIsOpen, function(req, res) {
+router.put("/:storyid", middleware.ownsStory, middleware.contestIsOpen, middleware.storyMatchesContest, function(req, res) {
     var updateStory = validateStory(req.body);
     if (updateStory) {
         Story.findByIdAndUpdate(req.story._id, { $set: updateStory }, { new: true }, function(err, updatedStory) {
@@ -139,7 +143,17 @@ router.put("/:storyid", middleware.ownsStory, middleware.contestIsOpen, function
         res.redirect("back");
     }
 });
-
+// Vote story
+router.post("/:storyid/vote", middleware.loggedIn, middleware.storyMatchesContest, function(req, res) {
+    if (req.story.votes.some(vote => req.user._id.equals(vote)) {
+        req.flash("error", "You have already voted for that story!");
+    } else {
+        req.story.votes.push(req.user._id);
+        req.story.save();
+        req.flash("success", "Voted story!");
+    }
+    res.redirect(`/contests/${req.contest.tag}/stories/${req.story._id}`);
+});
 // Delete a story
 router.delete("/:storyid", middleware.canDelete, function(req, res) {
     deleteStory(req.params.storyid, function(err, success) {
