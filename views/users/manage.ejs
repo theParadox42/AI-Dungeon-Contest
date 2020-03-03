@@ -1,0 +1,28 @@
+<%- include("../partials/header") -%>
+
+<div class="container">
+    <h1>Manage <%= profile.username %></h1>
+    <div class="text-muted">
+        <h5><strong>Discord:</strong> <%= profile.discordUsername %></h5>
+        <h5><strong>AI Dungeon:</strong> <%= profile.AIDUsername %></h5>
+    </div>
+    <h3>Manage Roles</h3>
+    <form action="/profile/<%= profile.username %>/roles?_method=PUT" method="POST">
+        <% roleList.forEach(function(role) { %>
+        <div class="form-group">
+            <input type="checkbox" name="roles[]" id="<%= role.name %>Box" value="<%= role.name %>" class="form-check-input"<%= role.checked ? " checked" : "" %><%= role.static ? " disabled readonly" : "" %>>
+            <label for="<%= role.name %>Box"><%= role.name %></label>
+        </div>
+        <% }) %>
+        <p>
+            <small class="text-muted">
+                If you need a role added/removed just hit me up <a href="https://paradox42.tech/p/contact" target="_blank">here</a>
+            </small>
+        </p>
+        <button class="btn btn-primary" type="submit">Save Roles</button>
+    </form>
+    <hr>
+    <a href="/profile/<%= profile.username %>/delete" class="btn btn-danger">Delete User</a>
+</div>
+
+<%- include("../partials/footer") -%>

@@ -4,6 +4,7 @@ var express     = require("express"),
     User        = require("../models/user"),
     middleware  = require("../middleware"),
     vs          = require("../utilities/validate-string");
+    deleteStory = require("../utilities/delete-story");
 
 // View
 router.get("/profile", middleware.loggedIn, function(req, res) {
@@ -32,7 +33,19 @@ router.get("/profilelink/aid/:aidusername", function(req, res) {
         }
         res.redirect("back");
     });
-})
+});
+router.get("/profilelink/discord/:discordusername", function(req, res) {
+    User.findOne({ discordUsername: req.params.discordUsername }, function(err, foundUser) {
+        if (err) {
+            req.flash("error", "Error finding user!");
+        } else if(!foundUser) {
+            req.flash("error", "No user found!");
+        } else {
+            return res.redirect("/profile/" + foundUser.username);
+        }
+        res.redirect("back");
+    });
+});
 
 // CREATE A USER
 router.get("/register", middleware.isntLoggedIn, function(req, res) {
@@ -90,6 +103,119 @@ router.post("/login", middleware.isntLoggedIn, passport.authenticate("local", {
 router.get("/logout", function(req, res) {
     req.logout();
     res.redirect("/");
+});
+
+// User Management
+router.get("/profile/:username/manage", middleware.isAdmin, function(req, res) {
+    User.findOne({ username: req.params.username }, function(err, profile) {
+        if (err) {
+            req.flash("error", "Error finding user!");
+        } else if (!profile) {
+            req.flash("error", "No user found!");
+        } else {
+            var roles = ["s-member", "s-popular", "s-runner-up", "s-winner", "judge", "writer"];
+            if (req.user.roles.indexOf("super-admin") >= 0) {
+                roles.push("admin");
+                if (req.user.username == req.params.username || req.params.username == "theParadox42") {
+                    roles.push("s-super-admin");
+                } else {
+                    roles.push("super-admin");
+                }
+            } else {
+                roles.push("s-admin", "s-super-admin");
+            }
+            var roleList = [];
+            roles.forEach(function(role) {
+                var static = role.includes("s-");
+                if (static) {
+                    role = role.replace("s-", "");
+                }
+                roleList.push({
+                    name: role,
+                    checked: profile.roles.includes(role),
+                    static: static
+                });
+            });
+            return res.render("users/manage", { profile: profile, roleList: roleList });
+        }
+        res.redirect("/");
+    });
+});
+// Update Roles
+router.put("/profile/:username/roles", middleware.isAdmin, function(req, res) {
+    User.findOne({ username: req.params.username }, function(err, profile) {
+        if (err) {
+            req.flash("error", "Error finding user");
+        } else if (!profile) {
+            req.flash("error", "No user found!");
+        } else {
+            var rolesThatCanChange = ["writer", "judge", "admin"];
+            if (req.user.roles.indexOf("super-admin") >= 0) {
+                rolesThatCanChange.push("admin");
+                if (req.user.username != req.params.username && req.params.username != "theParadox42") {
+                    rolesThatCanChange.push("super-admin");
+                }
+            }
+            rolesThatCanChange.forEach(function(role) {
+                if (req.body.roles.includes(role) && !profile.roles.includes(role)) {
+                    profile.roles.push(role);
+                } else if(!req.body.roles.includes(role) && profile.roles.includes(role)) {
+                    var i = profile.roles.indexOf(role);
+                    if (i >= 0) {
+                        profile.roles.splice(i, 1);
+                    }
+                }
+            });
+            profile.save();
+            return res.redirect("/profile/" + profile.username);
+        }
+        res.redirect(`/profile/${req.params.username}/manage`);
+    });
+});
+// Delete User
+router.get("/profile/:username/delete", middleware.canDelete, function(req, res) {
+    User.findOne({ username: req.params.username }, function(err, profile) {
+        if (err) {
+            req.flash("error", "Error finding user to delete");
+        } else if (!profile) {
+            req.flash("error", "No profile found!");
+        } else {
+            return res.render("users/delete", { profile: profile });
+        }
+        res.redirect(`/profile/${req.params.username}`);
+    });
+});
+router.delete("/profile/:username", middleware.canDelete, function(req, res) {
+    if (req.body.check) {
+        User.findOneAndDelete({ username: req.params.username }, function(err, deletedUser) {
+            if (err) {
+                req.flash("error", "Error deleting user");
+            } else if (!deletedUser) {
+                req.flash("error", "No user found to delete!");
+            } else {
+                if (deletedUser.username == req.user.username) {
+                    req.logout();
+                }
+                var di = 0;
+                function deleteStoryRecurse() {
+                    if (di < deletedUser.stories.length) {
+                        deleteStory(deletedUser.stories[di], function() {
+                            deleteStoryRecurse();
+                            di++;
+                        });
+                    } else {
+                        req.flash("success", "Succesfully Deleted User!");
+                        res.redirect("/");
+                    }
+                }
+                return deleteStoryRecurse();
+            }
+            res.redirect("/");
+        });
+    } else {
+        req.flash("error", "You didn't check the box!");
+        res.redirect(`/profile/${req.params.username}/delete`);
+    }
 });
 
 module.exports = router;

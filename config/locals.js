@@ -3,7 +3,9 @@ module.exports = function (req, res, next) {
     res.locals.user = req.user;
     // Roles
     if (req.user) {
-        res.locals.isAdmin = req.user.roles.indexOf("admin") >= 0;
+        res.locals.isAdmin = req.user.roles.some(function(role) {
+            return role.includes("admin");
+        });
         res.locals.isJudge = res.locals.isAdmin || req.user.roles.indexOf("judge") >= 0;
         res.locals.isWriter = res.locals.isAdmin || req.user.roles.indexOf("writer") >= 0;
     } else {
