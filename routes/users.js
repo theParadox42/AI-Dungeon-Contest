@@ -4,6 +4,7 @@ var express     = require("express"),
     User        = require("../models/user"),
     middleware  = require("../middleware"),
     vs          = require("../utilities/validate-string");
+    deleteStory = require("../utilities/delete-story");
 
 // View
 router.get("/profile", middleware.loggedIn, function(req, res) {
@@ -172,23 +173,49 @@ router.put("/profile/:username/roles", middleware.isAdmin, function(req, res) {
     });
 });
 // Delete User
-router.delete("/profile/:username", middleware.canDelete, function(req, res) {
-    User.findOneAndDelete({ username: req.params.username }).populate("stories").exec(function(err, deletedUser) {
+router.get("/profile/:username/delete", middleware.canDelete, function(req, res) {
+    User.findOne({ username: req.params.username }, function(err, profile) {
         if (err) {
-            req.flash("error", "Error deleting user");
-        } else if (!deletedUser) {
-            req.flash("error", "No user found to delete!");
+            req.flash("error", "Error finding user to delete");
+        } else if (!profile) {
+            req.flash("error", "No profile found!");
         } else {
-            if (deletedUser.username == req.user.username) {
-                req.logout();
-            }
-            Story.deleteMany({ "author.username": req.params.username }, function(err) {
-                res.send("not yet finished");
-            });
-            return;
+            return res.render("users/delete", { profile: profile });
         }
-        res.redirect("/");
+        res.redirect(`/profile/${req.params.username}`);
     });
+});
+router.delete("/profile/:username", middleware.canDelete, function(req, res) {
+    if (req.body.check) {
+        User.findOneAndDelete({ username: req.params.username }, function(err, deletedUser) {
+            if (err) {
+                req.flash("error", "Error deleting user");
+            } else if (!deletedUser) {
+                req.flash("error", "No user found to delete!");
+            } else {
+                if (deletedUser.username == req.user.username) {
+                    req.logout();
+                }
+                var di = 0;
+                function deleteStoryRecurse() {
+                    if (di < deletedUser.stories.length) {
+                        deleteStory(deletedUser.stories[di], function() {
+                            deleteStoryRecurse();
+                            di++;
+                        });
+                    } else {
+                        req.flash("success", "Succesfully Deleted User!");
+                        res.redirect("/");
+                    }
+                }
+                return deleteStoryRecurse();
+            }
+            res.redirect("/");
+        });
+    } else {
+        req.flash("error", "You didn't check the box!");
+        res.redirect(`/profile/${req.params.username}/delete`);
+    }
 });
 
 module.exports = router;

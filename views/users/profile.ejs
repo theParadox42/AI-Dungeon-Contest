@@ -11,6 +11,8 @@
     </h4>
     <% if (isAdmin) { %>
     <a class="btn btn-warning btn-sm" href="/profile/<%= profile.username %>/manage">Manage User</a>
+    <% } if (isAdmin || user.username == profile.username) { %> 
+    <a href="/profile/<%= profile.username %>/delete" class="btn btn-danger btn-sm">Delete User</a>
     <% } %>
     <h3>Stories!</h3>
     <% if (profile.stories.length > 0) { %>

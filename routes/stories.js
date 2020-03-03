@@ -5,7 +5,8 @@ var express         = require("express"),
     Story           = require("../models/story"),
     Contest         = require("../models/contest"),
     validateStory   = require("../utilities/validate-story"),
-    sortStories     = require("../utilities/sort-stories");
+    sortStories     = require("../utilities/sort-stories"),
+    deleteStory     = require("../utilities/delete-story");
 
 // Gets the stories for the current contest
 router.get("/", middleware.contestExists, function(req, res) {
@@ -141,29 +142,13 @@ router.put("/:storyid", middleware.ownsStory, middleware.contestIsOpen, function
 
 // Delete a story
 router.delete("/:storyid", middleware.canDelete, function(req, res) {
-    Story.findByIdAndDelete(req.params.storyid, function(err, deletedStory) {
+    deleteStory(req.params.storyid, function(err, success) {
         if (err) {
-            req.flash("error", "Error deleting story");
-        } else if(!deletedStory) {
-            req.flash("error", "No story deleted!");
+            req.flash("error", err);
         } else {
-            function findStory(item) {
-                return deletedStory._id.equals(item);
-            }
-            var contestIndex = req.contest.stories.findIndex(findStory);
-            if (contestIndex >= 0) {
-                req.contest.stories.splice(contestIndex, 1);
-                req.contest.save();
-            }
-            var userIndex = req.user.stories.findIndex(findStory);
-            if (userIndex >= 0) {
-                req.user.stories.splice(userIndex, 1);
-                req.user.save();
-            }
-            req.flash("success", "Succesfully deleted story!");
-            return res.redirect(`/contests/${req.params.tag}`);
+            req.flash("success", success);
         }
-        res.redirect("back");
+        res.redirect(`/profile/${req.user.username}`);
     });
 });
 
