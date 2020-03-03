@@ -23,7 +23,7 @@
         <a href="/contests/<%= story.contest.tag %>/stories/<%= story._id %>" class="btn btn-primary m-1">
             Read Story!
         </a>
-        <% if (story.hasJudgeButton) { %>
+        <% if (story.judgingMode) { %>
         <a href="/judge/contests/<%= story.contest.tag %>/stories/<%= story._id %>" class="btn btn-info">Judge Story</a>
         <% } %>
         <% if (user && (isAdmin || story.author.username == user.username)) { %>
@@ -37,6 +37,9 @@
                 Delete story
             </button>
         </form>
+        <% } %>
+        <% if (story.judgingMode) { %>
+        <p>This story has been judged <%= story.scores.length %> times</p>
         <% } %>
     </div>
 </div>
