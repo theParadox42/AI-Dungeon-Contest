@@ -182,8 +182,7 @@ router.delete("/profile/:username", middleware.canDelete, function(req, res) {
             if (deletedUser.username == req.user.username) {
                 req.logout();
             }
-            // do stuff
-            Story.deleteMany({ "author.username": req.parame.username }, function(err) {
+            Story.deleteMany({ "author.username": req.params.username }, function(err) {
                 res.send("not yet finished");
             });
             return;

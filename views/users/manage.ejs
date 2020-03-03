@@ -22,11 +22,7 @@
         <button class="btn btn-primary" type="submit">Save Roles</button>
     </form>
     <hr>
-    <form action="/profile/<%= user.username %>?_method=DELETE" method="POST">
-        <button class="btn btn-danger">Delete User!</button>
-        <br>
-        <small class="text-muted">This will also delete all stories associated with them</small>
-    </form>
+    <a href="/profile/<%= profile.username %>/delete" class="btn btn-danger">Delete User</a>
 </div>
 
 <%- include("../partials/footer") -%>
