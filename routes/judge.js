@@ -2,17 +2,17 @@ var express     = require("express"),
     router      = express.Router({ mergeParams: true }),
     request     = require("request"),
     middleware  = require("../middleware"),
-    Story       = require("../models/story"),
     Contest     = require("../models/contest");
 
+// Judging Home Page
 router.get("/", middleware.isJudge, function(req, res) {
     res.render("judge/index");
 });
-
+// Judging Criteria
 router.get("/criteria", function(req, res) {
     res.render("judge/criteria");
 });
-
+// Show Contests Open For Judging
 router.get("/contests", middleware.isJudge, function(req, res) {
     Contest.find({ status: "judging" }, function (err, contests) {
         if (err) {
@@ -24,6 +24,7 @@ router.get("/contests", middleware.isJudge, function(req, res) {
         res.redirect("/judge");
     });
 });
+// Show Stories and info for specific contest
 router.get("/contests/:tag", middleware.isJudge, middleware.contestIsJudging, function(req, res) {
     Contest.findById(req.contest._id).populate("stories").exec(function (err, foundContest) {
         if (err) {
@@ -49,7 +50,7 @@ router.get("/contests/:tag", middleware.isJudge, middleware.contestIsJudging, fu
         res.redirect(`/judge/contests/${req.contest.tag}/stories`);
     });
 });
-
+// Judge story
 router.get("/contests/:tag/stories/:storyid", middleware.isJudge, middleware.contestIsJudging, middleware.storyMatchesContest, function(req, res) {
     if (!req.story.referenceId) {
         req.story = validateStory.fixStory(req.story);
@@ -68,7 +69,7 @@ router.get("/contests/:tag/stories/:storyid", middleware.isJudge, middleware.con
         res.render("judge/story", { story: req.story, storyData: storyData, userVerified: userVerified });
     });
 });
-
+// The post route for posting judging scores
 router.post("/contests/:tag/stories/:storyid/score", middleware.isJudge, middleware.contestIsJudging, middleware.storyMatchesContest, function(req, res) {
     var scores = {};
     function validateScore(key) {
@@ -100,9 +101,14 @@ router.post("/contests/:tag/stories/:storyid/score", middleware.isJudge, middlew
         res.redirect("back");
     }
 });
+// Finalize contest info
+router.get("/contests/:tag/finalize", middleware.isAdmin, middleware.contestIsJudging, function(req, res) {
+    Contest.findOne({ tag: req.params.tag }).populate("stories").exec(function(err, contest) {
+        contest.stories.sort(function(s1, s2) {
 
-router.get("/contests/:tag/finalize", function(req, res) {
-    res.render("judge/finalize");
+        });
+        res.render("judge/finalize");
+    });
 });
 
 module.exports = router;

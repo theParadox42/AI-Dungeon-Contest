@@ -55,5 +55,17 @@ var storySchema = new mongoose.Schema({
 
 storySchema.index({ title: "text", description: "text" })
 
+storySchema.virtual.rating = function(story) {
+    var categories = ["relevancy", "humor", "entertainment", "creativity"];
+    var totalScore = 0;
+    story.scores.forEach(function(score) {
+        categories.forEach(function(category) {
+            score += Math.max(Math.min(10, score[category]), 0);
+        });
+    });
+    totalScore /= story.scores.length * categories.length;
+    return totalScore;
+};
+
 module.exports = mongoose.model("Story", storySchema);
 
