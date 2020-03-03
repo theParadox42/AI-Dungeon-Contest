@@ -104,10 +104,23 @@ router.post("/contests/:tag/stories/:storyid/score", middleware.isJudge, middlew
 // Finalize contest info
 router.get("/contests/:tag/finalize", middleware.isAdmin, middleware.contestIsJudging, function(req, res) {
     Contest.findOne({ tag: req.params.tag }).populate("stories").exec(function(err, contest) {
-        contest.stories.sort(function(s1, s2) {
-
-        });
-        res.render("judge/finalize");
+        if (err) {
+            req.flash("error", "Error finding contest!");
+        } else if (!contest) {
+            req.flash("error", "No contest found!");
+        } else {
+            var awardStories;
+            if (contest.stories.length > 0) {
+                var ratedStories = contest.stories.slice().sort(function(s1, s2) {
+                    return s2.rating - s1.rating;
+                });
+                var votedStories = contest.stories.splice().sort(function(s1, s2) {
+                    return s2.votes.length - s1.votes.length;
+                });
+            }
+            return res.render("judge/finalize", { contest: contest, stories: awardStories });
+        }
+        res.redirect(`/judge/contests/${req.params.tag}`);
     });
 });
 
