@@ -41,13 +41,14 @@ var storySchema = new mongoose.Schema({
             }
         }
     ],
-    likes: [
+    averageScore: Number,
+    votes: [
         {
             type: mongoose.Schema.Types.ObjectId,
             ref: "User"
         }
     ],
-    achievment: {
+    achievement: {
         type: String,
         enum: ["winner", "runner-up", "popular"]
     }

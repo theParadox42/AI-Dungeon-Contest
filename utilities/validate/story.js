@@ -1,4 +1,4 @@
-var vs = require("./validate-string");
+var vs = require("./string");
 
 function validateStory(body) {
     if (vs(body.title) &&

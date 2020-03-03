@@ -1,14 +1,11 @@
 <div class="card bg-black">
-    <% if (story.achievment) { %>
+    <% if (story.achievement) { %>
     <div class="card-header">
         Achieved
-        <span class="badge badge-<%= statusToBootstrap(story.achievment) %>">
-            <%= story.achievment %>
+        <span class="badge badge-<%= statusToBootstrap(story.achievement) %>">
+            <%= story.achievement %>
         </span>
-        in
-        <a href="/contests/<%= story.contest.tag %>">
-            this Contest!
-        </a>
+        in <a href="/contests/<%= story.contest.tag %>">this</a> contest
     </div>
     <% } %>
     <div class="card-body">

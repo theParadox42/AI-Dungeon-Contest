@@ -19,11 +19,11 @@ module.exports = function(status) {
         case "judge":
             return "primary";
         case "winner":
-            return "warning";
+            return "success";
         case "runner-up":
-            return "warning";
+            return "success";
         case "popular":
-            return "warning";
+            return "success";
         default:
             return "secondary";
     }

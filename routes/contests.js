@@ -4,7 +4,7 @@ var express         = require("express"),
     Contest         = require("../models/contest"),
     Story           = require("../models/story"),
     User            = require("../models/user"),
-    validateContest = require("../utilities/validate-contest"),
+    validateContest = require("../utilities/validate/contest"),
     contestQuery    = require("../utilities/contest-query");
 
 // Contest Page

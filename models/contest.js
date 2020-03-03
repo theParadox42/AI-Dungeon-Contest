@@ -28,7 +28,21 @@ var contestSchema = new mongoose.Schema({
             type: mongoose.Schema.Types.ObjectId,
             ref: "Story"
         }
-    ]
+    ],
+    winners: {
+        winner: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Story"
+        },
+        runnerUp: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Story"
+        },
+        mostPopular: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Story"
+        }
+    }
 });
 
 module.exports = mongoose.model("Contest", contestSchema);

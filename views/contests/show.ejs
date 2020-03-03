@@ -20,15 +20,10 @@
     <code class="container-fluid d-block bg-black my-3 p-2 rounded">
         <%= contest.prompt %>
     </code>
-    <a class="btn btn-lg mb-1 btn-primary" href="/contests/<%= contest.tag %>/stories">
-        View Posted Stories
-    </a>
+    <a class="btn btn-lg mb-1 btn-primary" href="/contests/<%= contest.tag %>/stories">View Stories</a>
     <% if (contest.status == "open") { %>
-    <a class="btn btn-lg mb-1 btn-success" href="/contests/<%= contest.tag %>/stories/new">
-        Publish a story!
-    </a>
-    <% } %>
-    <% if (isAdmin) { %>
+    <a class="btn btn-lg mb-1 btn-success" href="/contests/<%= contest.tag %>/stories/new">Publish a story!</a>
+    <% } if (isAdmin) { %>
     <a class="btn btn-lg mb-1 btn-warning" href="/contests/<%= contest.tag %>/manage">Manage Contest</a>
     <a class="btn btn-lg mb-1 btn-danger" href="/contests/<%= contest.tag %>/delete">Delete Contest</a>
     <% } if(isJudge && contest.status == "judging") { %>

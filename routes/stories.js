@@ -4,7 +4,7 @@ var express         = require("express"),
     middleware      = require("../middleware"),
     Story           = require("../models/story"),
     Contest         = require("../models/contest"),
-    validateStory   = require("../utilities/validate-story"),
+    validateStory   = require("../utilities/validate/story"),
     sortStories     = require("../utilities/sort-stories"),
     deleteStory     = require("../utilities/delete-story");
 
