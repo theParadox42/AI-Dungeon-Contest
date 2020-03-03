@@ -1,0 +1,28 @@
+<%- include("../partials/header") -%>
+
+<div class="container">
+    <h1>Manage <%= profile.username %></h1>
+    <div class="text-muted">
+        <h5><strong>Discord:</strong> <%= profile.discordUsername %></h5>
+        <h5><strong>AI Dungeon:</strong> <%= profile.AIDUsername %></h5>
+    </div>
+    <h3>Manage Roles</h3>
+    <form action="/profile/<%= user.username %>/roles?_method=PUT" method="POST">
+        <% roleList.forEach(function(role) { %>
+        <div class="form-group">
+            <input type="checkbox" name="roles[]" id="<%= role.name %>Box" value="<%= role.name %>" class="form-control"<%= role.value ? " checked" : "" %><%= role.static ? " readonly" : "" %>>
+            <label for="<%= role.name %>Box">Member</label>
+        </div>
+        <% }) %>
+        <button class="btn btn-primary" type="submit">Save Roles</button>
+    </form>
+    
+    <hr>
+    <form action="/profile/<%= user.username %>?_method=DELETE" method="POST">
+        <button class="btn btn-danger">Delete User!</button>
+        <br>
+        <small class="text-muted">This will also delete all stories associated with them</small>
+    </form>
+</div>
+
+<%- include("../partials/footer") -%>
