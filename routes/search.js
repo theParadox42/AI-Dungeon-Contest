@@ -1,7 +1,7 @@
 var express = require("express"),
     router  = express.Router({ mergeParams: true }),
     Story   = require("../models/story"),
-    vs      = require("../utilities/validate-string");
+    vs      = require("../utilities/validate/string");
 
 router.get("/stories", function(req, res) {
     var query = vs(req.query.q) ? 

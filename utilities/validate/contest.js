@@ -1,4 +1,4 @@
-var vs = require("./validate-string");
+var vs = require("./string");
 
 function validateContest(body, noTag, noStatus) {
     if (vs(body.title) &&

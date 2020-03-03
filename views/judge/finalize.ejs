@@ -1,7 +1,28 @@
 <%- include("../partials/header") -%>
 
 <div class="container">
-    <h1>This is a WIP</h1>
+    <h1>Finalize Contest <%= contest.title %></h1>
+    <div>
+        <h2>Contest Winner</h2>
+        <% if (stories.winner) { %>
+        <p class="text-muted">Score of <%= stories.winner.rating || 0 %></p>
+        <%- include("../stories/story-card", { story: stories.winner }) -%>
+        <% } else { %>
+        <p class="text-muted">There won't be a winner for this contest</p>
+        <% } %>
+        <h2>Contest Runner Up</h2>
+        <% if (stories.runnerUp) { %>
+        <%- include("../stories/story-card", { story: stories.runnerUp }) -%>
+        <% } else { %>
+        <p class="text-muted">There won't be a runner up for this contest</p>
+        <% } %>
+        <h2>Most Popular Story</h2>
+        <% if (stories.mostPopular) { %>
+        <%- include("../stories/story-card", { story: stories.mostPopular }) -%>
+        <% } else { %>
+        <p class="text-muted">There isn't a most popular story for this contest</p>
+        <% } %>
+    </div>
 </div>
 
 <%- include("../partials/footer") -%>

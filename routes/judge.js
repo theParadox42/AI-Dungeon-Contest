@@ -109,14 +109,20 @@ router.get("/contests/:tag/finalize", middleware.isAdmin, middleware.contestIsJu
         } else if (!contest) {
             req.flash("error", "No contest found!");
         } else {
-            var awardStories;
+            var awardStories = {};
             if (contest.stories.length > 0) {
                 var ratedStories = contest.stories.slice().sort(function(s1, s2) {
                     return s2.rating - s1.rating;
                 });
-                var votedStories = contest.stories.splice().sort(function(s1, s2) {
+                var votedStories = contest.stories.slice().sort(function(s1, s2) {
                     return s2.votes.length - s1.votes.length;
                 });
+                awardStories.winner = ratedStories[0];
+                awardStories.runnerUp = ratedStories[1];
+                awardStories.mostPopular = votedStories[0];
+
+
+                console.log(contest.stories[0]);
             }
             return res.render("judge/finalize", { contest: contest, stories: awardStories });
         }

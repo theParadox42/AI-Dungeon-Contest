@@ -3,7 +3,7 @@ var express     = require("express"),
     passport    = require("passport"),
     User        = require("../models/user"),
     middleware  = require("../middleware"),
-    vs          = require("../utilities/validate-string");
+    vs          = require("../utilities/validate/string");
     deleteStory = require("../utilities/delete-story");
 
 // View

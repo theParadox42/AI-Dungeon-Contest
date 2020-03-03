@@ -8,6 +8,9 @@
     <div class="mb-2">
         <a href="/contests/<%= contest.tag %>" class="btn btn-primary">View Contest</a>
         <a href="/judge/contests" class="btn btn-info">Go Back to Contests</a>
+        <% if (isAdmin) { %>
+        <a href="/judge/contests/<%= contest.tag %>/finalize" class="btn btn-success">Declare Winners</a>
+        <% } %>
     </div>
     <h4>Stories You Haven't Judged</h4>
     <% if (stories.unjudged.length > 0) { %>
