@@ -16,25 +16,31 @@
                 <%= story.author.username %>
             </a>
         </h6>
-        <p class="card-text"><%= story.description %></p>
-        <a href="/contests/<%= story.contest.tag %>/stories/<%= story._id %>" class="btn btn-primary m-1">
-            Read Story!
-        </a>
-        <% if (story.judgingMode) { %>
-        <a href="/judge/contests/<%= story.contest.tag %>/stories/<%= story._id %>" class="btn btn-info">Judge Story</a>
-        <% } %>
-        <% if (user && (isAdmin || story.author.username == user.username)) { %>
-        <% if (story.author.username == user.username) { %>
-        <a href="/contests/<%= story.contest.tag %>/stories/<%= story._id %>/edit" class="btn btn-warning m-1">
-            Edit Story
-        </a>
-        <% } %>
-        <form action="/contests/<%= story.contest.tag %>/stories/<%= story._id %>?_method=DELETE" method="POST" class="d-inline m-1">
-            <button type="submit" class="btn btn-danger">
-                Delete story
-            </button>
-        </form>
-        <% } %>
+        <p class="card-text"><strong>Description:</strong> <%= story.description %></p>
+        <p class="card-text"><i class="fas fa-thumbs-up"></i> <span class="badge badge-light"><%= story.votes.length %></span></p>
+        <div>
+            <!-- Buttons -->
+            <a href="/contests/<%= story.contest.tag %>/stories/<%= story._id %>" class="btn btn-primary mb-2">View Story!</a>
+            <% if (user) { %>
+            <% if (story.votes.some(vote => user._id.equals(vote))) { %>
+            <button disabled="disabled" class="btn btn-info mb-2">Voted!</button>
+            <% } else { %>
+            <form action="/contests/<%= story.contest.tag %>/stories/<%= story._id %>/vote" method="POST" class="d-inline">
+                <button class="btn btn-info mb-2">Vote!</button>
+            </form>
+            <% } %>
+            <% } if (story.judgingMode) { %>
+            <a href="/judge/contests/<%= story.contest.tag %>/stories/<%= story._id %>" class="btn btn-info mb-2">Judge Story</a>
+            <% } if (user && (isAdmin || story.author.username == user.username)) { %>
+            <% if (story.author.username == user.username) { %>
+            <a href="/contests/<%= story.contest.tag %>/stories/<%= story._id %>/edit" class="btn btn-warning mb-2">Edit Story</a>
+            <% } %>
+            <form action="/contests/<%= story.contest.tag %>/stories/<%= story._id %>?_method=DELETE" method="POST"
+                class="d-inline">
+                <button type="submit" class="btn btn-danger  mb-2">Delete story</button>
+            </form>
+            <% } %>
+        </div>
         <% if (story.judgingMode) { %>
         <p>This story has been judged <%= story.scores.length %> times</p>
         <% } %>

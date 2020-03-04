@@ -1,14 +1,20 @@
 <%- include("../partials/header") -%>
 
 <div class="container">
-    <h1>Stories for the <strong><%= contest.title %></strong> contest here!</h1>
+    <h1 class="display-4 text-center">Stories for the <strong><%= contest.title %></strong> contest here!</h1>
     <% if (stories.length > 0) { %>
     <div class="row">
         <% stories.forEach(function(story) { %>
         <div class="col-12 col-lg-6 mb-2">
-            <% if (user && user.isJudge && contest.status == "judging") { %>
-                <% story.judgingMode = true %>
-            <% } %>
+            <%_ story.judgingMode = isJudge && contest.status == "judging" _%>
+            <% if (contest.status == "closed") { %>
+            <% if (story._id.equals(contest.winners.winner)) { %>
+            <h2>Contest Winner!</h2>
+            <% } else if (story._id.equals(contest.winners.runnerUp)) { %>
+            <h2>Contest Runner Up!</h2>
+            <% } else if (story._id.equals(contest.winners.popular)) { %>
+            <h2>The Most Popular Story for this Contest!</h2>
+            <% } } %>
             <%- include("story-card", { story: story }) -%>
         </div>
         <% }); %>

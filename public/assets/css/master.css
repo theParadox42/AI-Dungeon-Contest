@@ -23,3 +23,8 @@ hr {
 .shadow-light {
     box-shadow: 0 0.5rem 1rem rgba(255, 255, 255, 0.15) !important;
 }
+.form-control, .form-control:focus {
+    color: rgb(190, 190, 190);
+    background-color: rgb(23, 24, 24);
+    border-color: rgb(44, 46, 48);
+}

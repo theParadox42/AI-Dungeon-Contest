@@ -115,12 +115,10 @@ function getWinners(stories) {
         });
         awardStories.winner = stories[0];
         awardStories.runnerUp = stories[1];
-        /* Not until Voting Functionality Exists
         stories.sort(function (s1, s2) {
             return s2.votes.length - s1.votes.length;
         });
         awardStories.mostPopular = stories[0];
-        */
     }
     return awardStories;
 }
@@ -147,10 +145,9 @@ router.post("/contests/:tag/finalize", middleware.isAdmin, middleware.contestIsJ
         } else {
             var winners = getWinners(contest.stories);
             var awardKeys = {
-                "winner": "winner",
-                "runnerUp": "runner-up"//,
-                // Comes with a future release
-                // "mostPopular": "popular"
+                "mostPopular": "popular",
+                "runnerUp": "runner-up",
+                "winner": "winner"
             };
             for (var key in awardKeys) {
                 if (winners[key]) {
