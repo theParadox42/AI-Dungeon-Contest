@@ -2,12 +2,18 @@
 
 <div class="container">
     <h1><%= story.title %></h1>
-    <h4 class="text-light-gray">
-        Created by <a href="/profile/<%= story.author.username %>"><%= story.author.username %></a> <%= moment(story.createdAt).fromNow() %> at the <strong><a href="/contests/<%= contest.tag %>"><%= contest.title %></a></strong> contest.
-    </h4>
+    <div class="text-light-gray">
+        <p>
+            Created by <a href="/profile/<%= story.author.username %>"><%= story.author.username %></a>
+            <%= moment(story.createdAt).fromNow() %> at the <strong><a href="/contests/<%= contest.tag %>"><%= contest.title %></a></strong> contest.
+        </p>
+        <p>
+            Recieved <%= story.votes.length %> vote<%= story.votes.length != 1 ? "s" : undefined %>
+        </p>
+    </div>
     <div>
         <p>
-            Description: <%= story.description %>
+            <strong>Description:</strong> <%= story.description %>
         </p>
         <p>
             Click <a href="<%= story.link %>">here</a> to view the story

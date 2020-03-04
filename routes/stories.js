@@ -107,8 +107,8 @@ router.get("/:storyid", middleware.storyMatchesContest, function(req, res) {
         } else {
             storyData = JSON.parse(body);
         }
-        if (story.votes.some(vote => req.user._id.equals(vote)) {
-            story.voted = true;
+        if (req.story.votes.some(vote => req.user._id.equals(vote))) {
+            req.story.voted = true;
         }
         res.render("stories/show", { story: req.story, contest: req.contest, storyData: storyData });
     });
@@ -145,7 +145,7 @@ router.put("/:storyid", middleware.ownsStory, middleware.contestIsOpen, middlewa
 });
 // Vote story
 router.post("/:storyid/vote", middleware.loggedIn, middleware.storyMatchesContest, function(req, res) {
-    if (req.story.votes.some(vote => req.user._id.equals(vote)) {
+    if (req.story.votes.some(vote => req.user._id.equals(vote))) {
         req.flash("error", "You have already voted for that story!");
     } else {
         req.story.votes.push(req.user._id);
