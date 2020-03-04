@@ -152,7 +152,7 @@ router.post("/:storyid/vote", middleware.loggedIn, middleware.storyMatchesContes
         req.story.save();
         req.flash("success", "Voted story!");
     }
-    res.redirect(`/contests/${req.contest.tag}/stories/${req.story._id}`);
+    res.redirect("back");
 });
 // Delete a story
 router.delete("/:storyid", middleware.canDelete, function(req, res) {

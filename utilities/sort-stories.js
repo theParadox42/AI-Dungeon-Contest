@@ -10,7 +10,10 @@ function sortStories(stories) {
                 return -1;
             }
         }
-        return b.createdAt - a.createdAt;
+        if (b.votes.length == a.votes.length) {
+            return b.createdAt - a.createdAt;
+        }
+        return b.votes.length - a.votes.length;
     });
 };
 module.exports = sortStories;
