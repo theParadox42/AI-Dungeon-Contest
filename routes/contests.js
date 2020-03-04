@@ -24,11 +24,11 @@ router.get("/", function(req, res) {
     });
 });
 // Create form
-router.get("/new", middleware.isAdmin, function (req, res) {
+router.get("/new", middleware.isWriter, function (req, res) {
     res.render("contests/new");
 });
 // Create contest
-router.post("/", middleware.isAdmin, function(req, res) {
+router.post("/", middleware.isWriter, function(req, res) {
     var newContest = validateContest(req.body);
     if (newContest) {
         Contest.findOne({ tag: newContest.tag }, function(err, existingContest) {
@@ -41,7 +41,9 @@ router.post("/", middleware.isAdmin, function(req, res) {
                     username: req.user.username,
                     id: req.user._id
                 };
-                if (newContest.status == "open") {
+                if (newContest.status != "pending" && !res.locals.isAdmin) {
+                    newContest.status = "pending";
+                } else if (newContest.status == "open") {
                     newContest.openingDate = Date.now();
                 }
                 Contest.create(newContest, function(err, createdContest) {

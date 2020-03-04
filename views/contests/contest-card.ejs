@@ -24,11 +24,12 @@
         </a>
         <% if (contest.status == "open") { %>
         <a href="/contests/<%= contest.tag %>/stories/new" class="btn btn-success my-1">Submit a story!</a>
-        <% } %>
-        <% if (isJudge && contest.status == "judging") { %>
+        <% } else if (isJudge && contest.status == "judging") { %>
         <a href="/judge/contests/<%= contest.tag %>" class="btn btn-info my-1">Judge Contest</a>
+        <% } if (isAdmin) { %>
+        <% if (contest.status == "pending") { %>
+        <a href="/contests/<%= contest.tag %>/status/open">Accept Contest!</a>
         <% } %>
-        <% if (isAdmin) { %>
         <a href="/contests/<%= contest.tag %>/manage" class="btn btn-warning my-1">
             Manage Contest
         </a>
