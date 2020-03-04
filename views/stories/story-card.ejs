@@ -36,8 +36,8 @@
             <a href="/contests/<%= story.contest.tag %>/stories/<%= story._id %>/edit" class="btn btn-warning mb-2">Edit Story</a>
             <% } %>
             <form action="/contests/<%= story.contest.tag %>/stories/<%= story._id %>?_method=DELETE" method="POST"
-                class="d-inline mb-2">
-                <button type="submit" class="btn btn-danger">Delete story</button>
+                class="d-inline">
+                <button type="submit" class="btn btn-danger  mb-2">Delete story</button>
             </form>
             <% } %>
         </div>

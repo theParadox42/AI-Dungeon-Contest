@@ -2,7 +2,7 @@
 
 <div class="container">
     <h1 class="display-4 text-center">Finalize Contest "<%= contest.title %>"</h1>
-    <div>
+    <div class="mb-4">
         <h2 class="mt-2">Contest Winner</h2>
         <% if (stories.winner) { %>
         <p class="text-muted">Score of <%= stories.winner.rating || 0 %></p>
@@ -18,15 +18,12 @@
         <p class="text-muted">There won't be a runner up for this contest</p>
         <% } %>
         <h2 class="mt-2">Most Popular Story</h2>
-        <p class="text-muted">Not yet implemented</p>
-        <!-- 
         <% if (stories.mostPopular) { %>
         <p class="text-muted">Story recieved <%= stories.mostPopular.votes.length || 0 %> votes</p>
         <%- include("../stories/story-card", { story: stories.mostPopular }) -%>
         <% } else { %>
         <p class="text-muted">There isn't a most popular story for this contest</p>
         <% } %>
-        -->
     </div>
     <form action="/judge/contests/<%= contest.tag %>/finalize" method="POST">
         <button class="btn btn-success">
