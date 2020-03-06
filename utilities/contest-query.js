@@ -4,10 +4,6 @@ module.exports = function(req, res) {
         query.status = {
             $not: /(hidden|pending)/
         };
-    } else if (!res.locals.isAdmin) {
-        query.status = {
-            $not: "hidden"
-        }
     }
     return query;
 }

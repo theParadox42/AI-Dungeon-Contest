@@ -32,8 +32,11 @@
         <div class="form-group">
             <label for="status">Contest Status</label>
             <select class="form-control" name="status" id="status">
+                <option value="pending">Pending</option>
+                <% if (isAdmin) { %>
                 <option value="hidden">Hidden</option>
                 <option value="open">Open</option>
+                <% } %>
             </select>
         </div>
         <button type="submit" class="btn btn-primary">

@@ -29,6 +29,16 @@ middleware.isAdmin = function(req, res, next) {
         }
     });
 };
+middleware.isWriter = function(req, res, next) {
+    middleware.loggedIn(req, res, function () {
+        if (res.locals.isWriter) {
+            next();
+        } else {
+            req.flash("error", "You need to be an writer to do that!");
+            res.redirect("/");
+        }
+    });
+};
 middleware.isJudge = function(req, res, next) {
     middleware.loggedIn(req, res, function() {
         if (res.locals.isJudge) {
