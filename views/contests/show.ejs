@@ -27,7 +27,7 @@
     <a class="btn btn-lg mb-1 btn-warning" href="/contests/<%= contest.tag %>/manage">Manage Contest</a>
     <a class="btn btn-lg mb-1 btn-danger" href="/contests/<%= contest.tag %>/delete">Delete Contest</a>
     <% } if(isJudge && contest.status == "judging") { %>
-    <a class="btn btn-lg mb-1 btn-info" href="/contests/<%= contest.tag %>/judge">Judge Submissions</a>
+    <a class="btn btn-lg mb-1 btn-info" href="/judge/contests/<%= contest.tag %>">Judge Submissions</a>
     <% } %>
 </div>
 
