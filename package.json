@@ -1,6 +1,6 @@
 {
   "name": "ai-dungeon-contests",
-  "version": "1.4.1",
+  "version": "1.5.0",
   "description": "A website for managing AI Dungeon Contests",
   "main": "app.js",
   "scripts": {
