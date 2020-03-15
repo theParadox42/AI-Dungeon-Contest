@@ -22,7 +22,6 @@ var _               = require("dotenv").config(),
 app.set("view engine", "ejs");
 app.use(express.static(`${__dirname}/public`));
 app.use(bodyParser.urlencoded({ extended: true }));
-app.locals.moment = require("moment");
 app.use(methodOverride("_method"));
 
 // Set up mongoose
@@ -39,8 +38,9 @@ passport.deserializeUser(User.deserializeUser());
 // Flash and locals
 app.use(flash());
 app.use(require("./config/locals"));
-app.locals.moment = require("moment");
 app.locals.statusToBootstrap = require("./utilities/status-to-bootstrap");
+app.locals.moment = require("moment");
+app.locals.appVersion = require("./package.json").version;
 
 // Routes
 app.use("/contests/:tag/stories", require("./routes/stories"));

@@ -16,7 +16,7 @@
     <% if (stories.unjudged.length > 0) { %>
     <div class="row">
         <% stories.unjudged.forEach(function(story) { %>
-        <div class="col-12 col-lg-6">
+        <div class="col-12 col-lg-6 mb-2">
             <% story.judgingMode = true; %>
             <%- include("../stories/story-card", { story: story }) -%>
         </div>
@@ -29,7 +29,7 @@
     <% if (stories.judged.length > 0) { %>
     <div class="row">
         <% stories.judged.forEach(function(story) { %>
-        <div class="col-12 col-lg-6">
+        <div class="col-12 col-lg-6 mb-2">
             <% story.judgingMode = true; %>
             <%- include("../stories/story-card", { story: story }) -%>
         </div>
