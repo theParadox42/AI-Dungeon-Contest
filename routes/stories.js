@@ -107,8 +107,10 @@ router.get("/:storyid", middleware.storyMatchesContest, function(req, res) {
         } else {
             storyData = JSON.parse(body);
         }
-        if (req.story.votes.some(vote => req.user._id.equals(vote))) {
-            req.story.voted = true;
+        if (req.user) {
+            if (req.story.votes.some(vote => req.user._id.equals(vote))) {
+                req.story.voted = true;
+            }
         }
         res.render("stories/show", { story: req.story, contest: req.contest, storyData: storyData });
     });
