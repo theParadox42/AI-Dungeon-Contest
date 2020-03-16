@@ -1,13 +1,14 @@
 function sortStories(stories) {
     return stories.sort((a, b) => {
         if (b.achievement || a.achievement) {
+            var largeSortNumber = 10000000000;
             if (b.achievement && a.achievement) {
                 var orderList = ["winner", "runner-up", "popular"];
-                return orderList.indexOf(a.achievement) - orderList.indexOf(b.achievement);
+                return (orderList.indexOf(a.achievement) - orderList.indexOf(b.achievement)) * largeSortNumber;
             } else if (a.achievement) {
-                return 1;
+                return largeSortNumber;
             } else {
-                return -1;
+                return -largeSortNumber;
             }
         }
         if (b.votes.length == a.votes.length) {
