@@ -58,7 +58,8 @@ middleware.contestExists = function(req, res, next) {
         } else if (!foundContest) {
             req.flash("error", "No contest found!");
         } else {
-            if (foundContest.status != "hidden") {
+            var hiddenOrPending = foundContest.status.match(/(pending|hidden)/);
+            if (!hiddenOrPending) {
                 // A bit of regular maintenence
                 var today = new Date().toISOString();
                 if (moment(foundContest.closingDate).isAfter(today)) {
@@ -70,7 +71,7 @@ middleware.contestExists = function(req, res, next) {
                 }
             }
             // Check if its hidden or not
-            if ((foundContest.status == "hidden" && res.locals.isAdmin) || foundContest.status != "hidden") {
+            if ((hiddenOrPending && res.locals.isAdmin) || !hiddenOrPending) {
                 req.contest = foundContest;
                 return next();
             } else {
