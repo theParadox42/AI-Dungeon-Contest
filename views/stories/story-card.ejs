@@ -30,8 +30,11 @@
             </form>
             <% } %>
             <% } if (story.judgingMode) { %>
+            <% if (user && story.author.id.equals(user._id)) { %>
+            <button class="btn btn-info mb-2" disabled>Own Story</button>
+            <% } else { %>
             <a href="/judge/contests/<%= story.contest.tag %>/stories/<%= story._id %>" class="btn btn-info mb-2">Judge Story</a>
-            <% } if (user && (isAdmin || story.author.username == user.username)) { %>
+            <% } } if (user && (isAdmin || story.author.username == user.username)) { %>
             <% if (story.author.username == user.username) { %>
             <a href="/contests/<%= story.contest.tag %>/stories/<%= story._id %>/edit" class="btn btn-warning mb-2">Edit Story</a>
             <% } %>
