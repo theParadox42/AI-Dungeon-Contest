@@ -57,7 +57,7 @@ router.get("/contests/:tag/stories/:storyid", middleware.isJudge, middleware.con
     if (!req.story.referenceId) {
         req.story = validateStory.fixStory(req.story);
     }
-    request("https://api.aidungeon.io/explore/sessions/" + req.story.referenceId, function(error, response, body) {
+    request("https://api.aidungeon.io/explore/stories/" + req.story.referenceId, function(error, response, body) {
         var storyData;
         var userVerified = false;
         if (error || response.statusCode != 200) {
