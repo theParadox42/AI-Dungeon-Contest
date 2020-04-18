@@ -100,7 +100,7 @@ router.get("/:storyid", middleware.storyMatchesContest, function(req, res) {
     if (!req.story.referenceId) {
         req.story = validateStory.fixStory(req.story);
     }
-    request("https://api.aidungeon.io/explore/sessions/" + req.story.referenceId, function(error, response, body) {
+    request("https://api.aidungeon.io/explore/stories/" + req.story.referenceId, function(error, response, body) {
         var storyData;
         if (error || response.statusCode != 200) {
             storyData = "error";
