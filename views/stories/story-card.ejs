@@ -23,10 +23,10 @@
             <a href="/contests/<%= story.contest.tag %>/stories/<%= story._id %>" class="btn btn-primary mb-2">View Story!</a>
             <% if (user) { %>
             <% if (story.votes.some(vote => user._id.equals(vote))) { %>
-            <button disabled="disabled" class="btn btn-info mb-2">Voted!</button>
+            <button disabled="disabled" class="btn btn-outline-info mb-2">Voted!</button>
             <% } else { %>
             <form action="/contests/<%= story.contest.tag %>/stories/<%= story._id %>/vote" method="POST" class="d-inline">
-                <button class="btn btn-info mb-2">Vote!</button>
+                <button class="btn btn-outline-info mb-2">Vote!</button>
             </form>
             <% } %>
             <% } if (story.judgingMode) { %>

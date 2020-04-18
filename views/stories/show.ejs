@@ -18,10 +18,10 @@
         </p>
         <div>
             <% if (story.voted) { %>
-            <button class="btn btn-info" disabled>Voted!</button>
+            <button class="btn btn-outline-info" disabled>Voted!</button>
             <% } else if (user) { %>
             <form action="/contests/<%= contest.tag %>/stories/<%= story._id %>/vote" method="POST" class="d-inline">
-                <button class="btn btn-info" type="submit">Vote Up!</button>
+                <button class="btn btn-outline-info" type="submit">Vote Up!</button>
             </form>
             <% } else { %>
             <a href="/register" class="btn btn-info">Sign Up to Vote!</a>

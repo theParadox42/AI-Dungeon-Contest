@@ -2,6 +2,13 @@
 
 <div class="container">
     <h1><%= query.length > 0 ? `Story search results for "${query}"` : "View all Stories" %></h1>
+    <div>
+        <form class="form-inline my-2 my-lg-0" action="/search" method="GET">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search Stories" name="q" aria-label="Search" value="<%= query %>">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
+        <hr>
+    </div>
     <% if (stories.length > 0) { %>
     <div class="row">
         <% stories.forEach(function(story) { %>

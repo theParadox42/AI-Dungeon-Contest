@@ -28,3 +28,9 @@ hr {
     background-color: rgb(23, 24, 24);
     border-color: rgb(44, 46, 48);
 }
+a, a:hover {
+    color: rgb(31, 193, 214);
+}
+.text-muted a, .text-light-gray a, .text-muted a:hover, .text-light-gray a:hover {
+    color: rgb(26, 149, 165);
+}
