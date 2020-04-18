@@ -106,6 +106,7 @@ middleware.newStatusIsValid = function(req, res, next) {
         var options = ["hidden", "open", "judging", "closed"];
         if (options.includes(status)) {
             var approved = (contest.status == "open" && status == "hidden") ||
+                (contest.status == "pending" && ( status == "hidden" || status == "open")) ||
                 contest.status == "hidden" ||
                 ((contest.status == "judging" || contest.status == "closed") && status != "open") &&
                 contest.status != status;

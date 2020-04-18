@@ -22,7 +22,7 @@
         <% } else if (contest.status == "closed") { %>
         <a href="/contests/<%= contest.tag %>/status/judging" class="btn btn-success mb-1">Judge the Contest</a>
         <% } if (contest.status == "pending") { %>
-        <a href="/contests<%= contest.tag %>/status/open" class="btn btn-primary mb-1">Accept Contest and Open</a>
+        <a href="/contests/<%= contest.tag %>/status/open" class="btn btn-primary mb-1">Accept Contest and Open</a>
         <a href="/contests/<%= contest.tag %>/status/hidden" class="btn btn-secondary mb-1">Accept Contest but keep Hidden</a>
         <% } else if (contest.status != "hidden") { %>
         <a href="/contests/<%= contest.tag %>/status/hidden" class="btn btn-secondary mb-1">Hide Contest</a>
