@@ -20,7 +20,7 @@ var contestSchema = new mongoose.Schema({
     closingDate: Date,
     status: {
         type: String,
-        enum: ["hidden", "pending", "open", "judging", "closed"],
+        enum: ["pending", "hidden", "open", "judging", "closed"],
         default: "hidden"
     },
     stories: [
