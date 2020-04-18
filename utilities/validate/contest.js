@@ -14,7 +14,7 @@ function validateContest(body, noTag, noStatus) {
             closingDate: new Date(body.closingDate)
         }
         if (!noTag) validatedContest.tag = body.tag;
-        if (!noStatus) validateContest.status = body.status;
+        if (!noStatus) validatedContest.status = body.status;
         return validatedContest;
     }
     return false;

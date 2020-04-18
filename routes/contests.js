@@ -11,7 +11,6 @@ var express         = require("express"),
 router.get("/", function(req, res) {
     Contest.find(contestQuery(req, res), function(err, contests) {
         if (err) {
-            console.log(err);
             req.flash("error", "Error finding contests!");
             res.redirect("/");
         } else {
@@ -165,7 +164,7 @@ router.delete("/:tag", middleware.contestExists, middleware.isAdmin, function(re
                     deleteStory();
                     return;
                 }
-                res.redirect("back");
+                res.redirect("/contests");
             });
             return;
         }
