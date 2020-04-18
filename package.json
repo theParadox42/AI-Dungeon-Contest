@@ -1,6 +1,6 @@
 {
   "name": "ai-dungeon-contests",
-  "version": "1.5.5",
+  "version": "1.5.5.1",
   "description": "A website for managing AI Dungeon Contests",
   "main": "app.js",
   "scripts": {
@@ -23,7 +23,7 @@
   "bugs": {
     "url": "https://github.com/theParadox42/AI-Dungeon-Contests/issues"
   },
-  "homepage": "https://github.com/theParadox42/AI-Dungeon-Contests#readme",
+  "homepage": "http://contests.aidiscord.cc",
   "dependencies": {
     "body-parser": "^1.19.0",
     "connect-flash-plus": "^0.2.1",

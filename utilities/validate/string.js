@@ -1,3 +1,3 @@
-module.exports = function(value) {
+module.exports = value => {
     return typeof value == "string" && value.length > 0;
 }

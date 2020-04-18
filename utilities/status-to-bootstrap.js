@@ -1,4 +1,4 @@
-module.exports = function(status) {
+module.exports = status => {
     switch(status) {
         // Contest Status
         case "pending":
@@ -18,6 +18,7 @@ module.exports = function(status) {
             return "info";
         case "judge":
             return "primary";
+        // Achievement status
         case "winner":
             return "success";
         case "runner-up":

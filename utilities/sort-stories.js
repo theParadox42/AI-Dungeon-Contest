@@ -1,4 +1,4 @@
-function sortStories(stories) {
+module.exports = stories => {
     return stories.sort((a, b) => {
         if (b.achievement || a.achievement) {
             if (b.achievement && a.achievement) {
@@ -16,4 +16,3 @@ function sortStories(stories) {
         return b.votes.length - a.votes.length > 0 ? 10 : -10;
     });
 };
-module.exports = sortStories;

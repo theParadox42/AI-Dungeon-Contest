@@ -180,7 +180,7 @@ middleware.canJudgeStory = function(req, res, next) {
         middleware.storyMatchesContest(req, res, function () {
             if (req.story.author.id.equals(req.user._id)) {
                 req.flash("error", "You can't judge your own stories!");
-                res.redirect("/judge/contests/"+req.contest.tag);
+                res.redirect("/judge/contests/" + req.contest.tag);
             }
             return next();
         });

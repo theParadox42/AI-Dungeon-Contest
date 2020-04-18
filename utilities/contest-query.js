@@ -1,4 +1,4 @@
-module.exports = function(req, res) {
+module.exports = (req, res) => {
     var query = {};
     if (!res.locals.isWriter) {
         query.status = {

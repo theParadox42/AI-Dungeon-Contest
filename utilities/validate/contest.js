@@ -2,8 +2,8 @@ var vs = require("./string");
 
 function validateContest(body, noTag, noStatus) {
     if (vs(body.title) &&
-        ((vs(body.tag) && body.tag.match(/^[a-zA-Z0-9_-]*$/) && body.tag != "new") || noTag) &&
-        (vs(body.status) || noStatus) && 
+        (noTag ||(vs(body.tag) && body.tag.match(/^[a-zA-Z0-9_-]*$/) && body.tag != "new")) &&
+        (noStatus || vs(body.status)) && 
         vs(body.description) &&
         vs(body.prompt) &&
         body.closingDate) {
