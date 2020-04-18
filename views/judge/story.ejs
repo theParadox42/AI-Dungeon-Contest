@@ -11,26 +11,7 @@
         <%= userVerified ? 'Verified' : 'Unverified' %>
     </p>
     <small class="text-muted">Verified means that the story's username matches the user's AID username. If it is marked as unverified it might mean they didn't write the story.</small>
-    <div class="story-box bg-black p-3 my-3">
-        <% if (typeof storyData == "string" && storyData == "error") { %>
-        <h3 class="text-danger m-0">Error retrieving story data, make sure link is valid.</h3>
-        <% } else { %>
-        <h2>Story: <%= storyData.title %></h2>
-        <p>
-            Created by <strong>
-                <a href="/profilelink/aid/<%= storyData.user.username %>"><%= storyData.user.username %></a>
-            </strong>
-            <%= moment(storyData.createdAt).fromNow() %>
-        </p>
-        <% storyData.story.forEach(function(text) { %>
-        <% if (text.type == "output") { %>
-        <p class="story-output"><%= text.value %></p>
-        <% } else { %>
-        <p class="story-input"><i class="fas fa-arrow-right"></i> <%= text.value %></p>
-        <% } %>
-        <% }); %>
-        <% } %>
-    </div>
+    <%- include("../stories/story-box.ejs", { story: story, storyData: storyData }) -%>
     <div>
         <h3>Score Story</h3>
         <a href="/judge/criteria">View the criteria</a>
