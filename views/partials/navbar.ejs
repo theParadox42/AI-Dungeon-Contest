@@ -1,8 +1,8 @@
 <nav class="navbar navbar-expand-md navbar-dark bg-black fixed-top shadow-light">
 	<div class="container">
 		<a class="navbar-brand" href="/">
-			<span class="d-none d-xl-inline">AI Dungeon</span>
-			<span class="d-inline d-xl-none">AID</span>
+			<span class="d-inline d-md-none d-xl-inline">AI Dungeon</span>
+			<span class="d-none d-md-inline d-xl-none">AID</span>
 			Contests
 		</a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
@@ -14,16 +14,24 @@
 				<li class="nav-item">
 					<a class="nav-link" href="/contests">Contests</a>
 				</li>
-				<li class="nav-item dropdown">
-					<a class="nav-link dropdown-toggle" href="/" id="judgeDropdown" role="button" data-toggle="dropdown"
-						aria-haspopup="true" aria-expanded="false">
+				<li class="nav-item dropdown d-none d-md-inline">
+					<a class="nav-link dropdown-toggle" href="/" id="infoDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 						Info
 					</a>
-					<div class="dropdown-menu bg-dark shadow-light" aria-labelledby="judgeDropdown">
+					<div class="dropdown-menu bg-dark shadow-light" aria-labelledby="infoDropdown">
 						<a class="dropdown-item bg-dark text-light" href="/about">About</a>
 						<a class="dropdown-item bg-dark text-light" href="/rules">Rules</a>
 						<a class="dropdown-item bg-dark text-light" href="/judge/criteria">Criteria</a>
 					</div>
+				</li>
+				<li class="nav-item d-inline d-md-none">
+					<a href="/about" class="nav-link">About</a>
+				</li>
+				<li class="nav-item d-inline d-md-none">
+					<a href="/rules" class="nav-link">Rules</a>
+				</li>
+				<li class="nav-item d-inline d-md-none">
+					<a href="/judge-criteria" class="nav-link">Criteria</a>
 				</li>
 				<% if (isJudge) { %>
 				<li class="nav-item">
@@ -33,35 +41,37 @@
 			</ul>
 			<div class="navbar-nav ml-auto">
 				<ul class="navbar-nav">
-				<% if (user) { %>
-				<li class="nav-item d-none d-xl-inline">
-					<a class="nav-link" href="/profile">Profile</a>
-				</li>
-				<li class="nav-item d-none d-xl-inline">
-					<a class="nav-link" href="/logout">Logout</a>
-				</li>
-				<li class="nav-item dropdown d-inline d-xl-none">
-					<a class="nav-link dropdown-toggle" href="/" id="judgeDropdown" role="button" data-toggle="dropdown"
-						aria-haspopup="true" aria-expanded="false">
-						Account
-					</a>
-					<div class="dropdown-menu bg-dark shadow-light" aria-labelledby="judgeDropdown">
-						<a class="dropdown-item bg-dark text-light" href="/profile">Profile</a>
-						<a class="dropdown-item bg-dark text-light" href="/logout">Logout</a>
-					</div>
-				</li>
-				<% } else { %>
-				<li class="nav-item">
-					<a class="nav-link" href="/register">Sign up</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="/login">Login</a>
-				</li>
-				<% } %>
+					<% if (user) { %>
+					<li class="nav-item d-inline d-md-none d-xl-inline">
+						<a class="nav-link" href="/profile">Profile</a>
+					</li>
+					<li class="nav-item d-inline d-md-none d-xl-inline">
+						<a class="nav-link" href="/logout">Logout</a>
+					</li>
+					<li class="nav-item dropdown d-none d-md-inline d-xl-none">
+						<a class="nav-link dropdown-toggle" href="/" id="accountDropdown" role="button" data-toggle="dropdown"
+							aria-haspopup="true" aria-expanded="false">
+							Account
+						</a>
+						<div class="dropdown-menu bg-dark shadow-light" aria-labelledby="accountDropdown">
+							<a class="dropdown-item bg-dark text-light" href="/profile">Profile</a>
+							<a class="dropdown-item bg-dark text-light" href="/logout">Logout</a>
+						</div>
+					</li>
+					<% } else { %>
+					<li class="nav-item">
+						<a class="nav-link" href="/register">Sign up</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="/login">Login</a>
+					</li>
+					<% } %>
+					<li class="d-none d-md-inline d-xl-none nav-item">
+						<a class="nav-link" href="/search">Search</a>
+					</li>
 				</ul>
-				<form class="form-inline my-2 my-lg-0" action="/search" method="GET">
-					<input class="form-control mr-sm-2" type="search" placeholder="Search Stories" name="q"
-						aria-label="Search">
+				<form class="form-inline my-2 my-lg-0 d-inline d-md-none d-xl-inline" action="/search" method="GET">
+					<input class="form-control mr-sm-2" type="search" placeholder="Search Stories" name="q" aria-label="Search">
 					<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
 				</form>
 			</div>
