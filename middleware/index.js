@@ -58,7 +58,8 @@ middleware.contestExists = function(req, res, next) {
         } else if (!foundContest) {
             req.flash("error", "No contest found!");
         } else {
-            if (foundContest.status != "hidden") {
+            var hiddenOrPending = foundContest.status.match(/(pending|hidden)/);
+            if (!hiddenOrPending) {
                 // A bit of regular maintenence
                 var today = new Date().toISOString();
                 if (moment(foundContest.closingDate).isAfter(today)) {
@@ -70,7 +71,7 @@ middleware.contestExists = function(req, res, next) {
                 }
             }
             // Check if its hidden or not
-            if ((foundContest.status == "hidden" && res.locals.isAdmin) || foundContest.status != "hidden") {
+            if ((hiddenOrPending && res.locals.isAdmin) || !hiddenOrPending) {
                 req.contest = foundContest;
                 return next();
             } else {
@@ -105,6 +106,7 @@ middleware.newStatusIsValid = function(req, res, next) {
         var options = ["hidden", "open", "judging", "closed"];
         if (options.includes(status)) {
             var approved = (contest.status == "open" && status == "hidden") ||
+                (contest.status == "pending" && ( status == "hidden" || status == "open")) ||
                 contest.status == "hidden" ||
                 ((contest.status == "judging" || contest.status == "closed") && status != "open") &&
                 contest.status != status;
@@ -171,6 +173,17 @@ middleware.canDelete = function(req, res, next) {
             req.flash("error", "You can't delete that!");
             res.redirect("back");
         }
+    });
+};
+middleware.canJudgeStory = function(req, res, next) {
+    middleware.isJudge(req, res, function() {
+        middleware.storyMatchesContest(req, res, function () {
+            if (req.story.author.id.equals(req.user._id)) {
+                req.flash("error", "You can't judge your own stories!");
+                res.redirect("/judge/contests/"+req.contest.tag);
+            }
+            return next();
+        });
     });
 };
 

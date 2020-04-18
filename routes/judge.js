@@ -28,7 +28,7 @@ router.get("/contests", middleware.isJudge, function(req, res) {
 });
 // Show Stories and info for specific contest
 router.get("/contests/:tag", middleware.isJudge, middleware.contestIsJudging, function(req, res) {
-    Contest.findById(req.contest._id).populate("stories winners").exec(function (err, foundContest) {
+    Contest.findById(req.contest._id).populate("stories").exec(function (err, foundContest) {
         if (err) {
             req.flash("error", "Error finding contest!");
         } else if (!foundContest) {
@@ -53,11 +53,11 @@ router.get("/contests/:tag", middleware.isJudge, middleware.contestIsJudging, fu
     });
 });
 // Judge story
-router.get("/contests/:tag/stories/:storyid", middleware.isJudge, middleware.contestIsJudging, middleware.storyMatchesContest, function(req, res) {
+router.get("/contests/:tag/stories/:storyid", middleware.canJudgeStory, middleware.contestIsJudging, function(req, res) {
     if (!req.story.referenceId) {
         req.story = validateStory.fixStory(req.story);
     }
-    request("https://api.aidungeon.io/explore/sessions/" + req.story.referenceId, function(error, response, body) {
+    request("https://api.aidungeon.io/explore/stories/" + req.story.referenceId, function(error, response, body) {
         var storyData;
         var userVerified = false;
         if (error || response.statusCode != 200) {

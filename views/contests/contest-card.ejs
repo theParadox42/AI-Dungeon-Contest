@@ -28,7 +28,7 @@
         <a href="/judge/contests/<%= contest.tag %>" class="btn btn-info my-1">Judge Contest</a>
         <% } if (isAdmin) { %>
         <% if (contest.status == "pending") { %>
-        <a href="/contests/<%= contest.tag %>/status/open">Accept Contest!</a>
+        <a href="/contests/<%= contest.tag %>/status/open" class="btn btn-primary my-1">Accept Contest!</a>
         <% } %>
         <a href="/contests/<%= contest.tag %>/manage" class="btn btn-warning my-1">
             Manage Contest
