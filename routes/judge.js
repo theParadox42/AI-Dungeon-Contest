@@ -76,7 +76,7 @@ router.post("/contests/:tag/stories/:storyid/score", middleware.isJudge, middlew
     var scores = {};
     function validateScore(key) {
         var v = parseInt(req.body[key], 10);
-        if (typeof v == "number" && v >= 1 && v <= 10) {
+        if (!isNaN(v) && v >= 1 && v <= 10) {
             scores[key] = v;
             return true;
         }
