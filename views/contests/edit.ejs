@@ -26,7 +26,7 @@
         </div>
         <div class="form-group">
             <label for="closeDate">Closing Date</label>
-            <input type="date" name="closingDate" class="form-control" aria-describedby="dateHelp" value="<%= moment(contest.closingDate).add(1, 'day').format('YYYY-MM-DD') %>" min="<%= moment(contest.openingDate).add(2, 'day').format('YYYY-MM-DD') %>" required>
+            <input type="date" name="closingDate" class="form-control" aria-describedby="dateHelp" value="<%= moment(contest.closingDate).format('YYYY-MM-DD') %>" min="<%= moment(contest.openingDate).add(2, 'day').format('YYYY-MM-DD') %>" required>
             <small id="dateHelp" class="form-text text-muted">
                 Submissions will be blocked after the closing date. The opening date is configured automatically.
             </small>
