@@ -64,7 +64,7 @@ router.get("/contests/:tag/stories/:storyid", middleware.canJudgeStory, middlewa
             storyData = "error";
         } else {
             storyData = JSON.parse(body);
-            if (storyData.user.username == req.story.author.username) {
+            if (storyData.userId == req.story.author.username) {
                 userVerified = true;
             }
         }

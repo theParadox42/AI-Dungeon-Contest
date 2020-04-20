@@ -7,7 +7,7 @@
     <h2>Story: <%= storyData.title %></h2>
     <p>
         Created by <strong>
-            <a href="/profilelink/aid/<%= storyData.user.username %>"><%= storyData.user.username %></a>
+            <a href="/profilelink/aid/<%= storyData.userId %>"><%= storyData.userId %></a>
         </strong>
         <%= moment(storyData.createdAt).fromNow() %>
     </p>
