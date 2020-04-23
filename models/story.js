@@ -11,6 +11,11 @@ var storySchema = new mongoose.Schema({
     description: String,
     link: String,
     referenceId: String,
+    storyType: {
+        type: String,
+        enum: ["story", "adventure"],
+        default: "adventure"
+    },
     author: {
         username: String,
         id: {

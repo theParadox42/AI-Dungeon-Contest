@@ -11,9 +11,32 @@
             <label for="description">Story Description</label>
             <input type="text" name="description" id="description" class="form-control" required>
         </div>
-        <div class="form-group">
+        <h3>Story Type</h3>
+        <div class="form-check">
+            <input type="radio" name="storyType" value="adventure" id="storyTypeAdventure" class="form-check-input" checked required>
+            <label for="storyTypeAdventure" class="form-check-label">
+                Adventure
+            </label>
+            <span class="badge badge-success">Recommended</span>
+        </div>
+        <div class="form-check">
+            <input type="radio" name="storyType" value="story" id="storyTypeStory" class="form-check-input" required>
+            <label for="storyTypeStory" class="form-check-label">
+                Story
+            </label>
+        </div>
+        <hr>
+        <div class="form-group" id="adventureIdField">
+            <label for="referenceId">Adventure ID</label>
+            <input type="text" name="referenceId" id="referenceId" placeholder="XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX"
+                class="form-control" aria-describedby="referenceIdHelp" minlength="24" maxlength="48" required>
+            <small class="form-text text-muted" id="referenceIdHelp">
+                You can find the ID on the adventure page, under "My Stuff"
+            </small>
+        </div>
+        <div class="form-group" id="storyLinkField" style="display:none">
             <label for="link">Story Link</label>
-            <input type="url" name="link" id="link" class="form-control" placeholder="https://play.aidungeon.io/stories?story=storyid" pattern="https?:\/\/play.aidungeon.io\/stories\?story=.*" aria-describedby="linkHelp" required>
+            <input type="url" name="link" id="link" class="form-control" placeholder="https://play.aidungeon.io/stories?story=storyid" pattern="https?:\/\/play.aidungeon.io\/stories\?story=.*" aria-describedby="linkHelp">
             <small class="form-text text-muted" id="linkHelp">
                 In order to match the pattern it must be a valid link from AI Dungeon, starting with <code>http://</code> or <code>https://</code>
             </small>
@@ -23,5 +46,7 @@
         </submit>
     </form>
 </div>
+
+<script src="/assets/js/story-form.js"></script>
 
 <%- include("../partials/footer") -%>
