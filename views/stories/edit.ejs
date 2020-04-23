@@ -24,7 +24,7 @@
                 Story
             </label>
         </div>
-        <div class="form-group" id="adventureIdField" style="display:<%= story.storyType == 'adventure' ? 'block' : 'none' %>">
+        <div class="form-group" id="adventureIdField"<%= story.storyType == 'adventure' ? '' : 'style="display:none"' %>">
             <label for="referenceId">Adventure ID</label>
             <input type="text" name="referenceId" id="referenceId" placeholder="XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX"
                 class="form-control" aria-describedby="referenceIdHelp" minlength="24" maxlength="48" value="<%= story.referenceId %>" <%= story.storyType == 'adventure' ? ' required' : ''%>>
@@ -32,7 +32,7 @@
                 You can find the ID on the adventure page, under "My Stuff"
             </small>
         </div>
-        <div class="form-group" id="storyLinkField" style="display:<%= story.storyType == 'story' ? 'block' : 'none' %>">
+        <div class="form-group" id="storyLinkField"<%= story.storyType == 'story' ? '' : 'style="display:none"' %>">
             <label for="link">Story Link</label>
             <input type="url" name="link" id="link" class="form-control"
                 placeholder="https://play.aidungeon.io/stories?story=storyid"

@@ -1,3 +1,4 @@
+// it's so beautiful
 $("input:radio#storyTypeStory").change(() => {
     $("#adventureIdField").fadeOut(() => {
         $("#storyLinkField").fadeIn();

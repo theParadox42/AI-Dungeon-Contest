@@ -101,7 +101,8 @@ router.get("/:storyid", middleware.storyMatchesContest, function(req, res) {
         req.story = validateStory.fixStory(req.story);
     }
     
-    request("https://api.aidungeon.io/public/stories?publicId=" + req.story.referenceId, function(error, response, body) {
+    var path = req.story.storyType == "story" ? "/public/stories?publicId=" : "/public/adventure/";
+    request("https://api.aidungeon.io" + path + req.story.referenceId, function(error, response, body) {
         var storyData;
         if (error || response.statusCode != 200) {
             storyData = "error";
