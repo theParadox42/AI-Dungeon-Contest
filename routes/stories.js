@@ -6,7 +6,8 @@ var express         = require("express"),
     Contest         = require("../models/contest"),
     validateStory   = require("../utilities/validate/story"),
     sortStories     = require("../utilities/sort-stories"),
-    deleteStory     = require("../utilities/delete-story");
+    deleteStory     = require("../utilities/delete-story"),
+    getStoryURL     = require("../utilities/get-story-url");
 
 // Gets the stories for the current contest
 router.get("/", middleware.contestExists, function(req, res) {
@@ -101,8 +102,8 @@ router.get("/:storyid", middleware.storyMatchesContest, function(req, res) {
         req.story = validateStory.fixStory(req.story);
     }
     
-    var path = req.story.storyType == "story" ? "/public/stories?publicId=" : "/public/adventure/";
-    request("https://api.aidungeon.io" + path + req.story.referenceId, function(error, response, body) {
+    
+    request(getStoryURL(req.story), function(error, response, body) {
         var storyData;
         if (error || response.statusCode != 200) {
             storyData = "error";

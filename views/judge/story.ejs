@@ -7,10 +7,10 @@
         Read story on aidungeon.io
     </a>
     <p>Description: <%= story.description %></p>
-    <p class="badge badge-<%= userVerified ? 'success' : 'danger' %>">
+    <!-- <p class="badge badge-<%= userVerified ? 'success' : 'danger' %>">
         <%= userVerified ? 'Verified' : 'Unverified' %>
     </p>
-    <small class="text-muted">Verified means that the story's username matches the user's AID username. If it is marked as unverified it might mean they didn't write the story.</small>
+    <small class="text-muted">Verified means that the story's username matches the user's AID username. If it is marked as unverified it might mean they didn't write the story.</small> -->
     <%- include("../stories/story-box.ejs", { story: story, storyData: storyData }) -%>
     <div>
         <h3>Score Story</h3>

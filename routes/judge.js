@@ -4,7 +4,8 @@ var express     = require("express"),
     middleware  = require("../middleware"),
     Contest     = require("../models/contest"),
     User        = require("../models/user"),
-    storyRating = require("../utilities/story-rating");
+    storyRating = require("../utilities/story-rating"),
+    getStoryURL = require("../utilities/get-story-url");
 
 // Judging Home Page
 router.get("/", middleware.isJudge, function(req, res) {
@@ -57,18 +58,14 @@ router.get("/contests/:tag/stories/:storyid", middleware.canJudgeStory, middlewa
     if (!req.story.referenceId) {
         req.story = validateStory.fixStory(req.story);
     }
-    request("https://api.aidungeon.io/explore/stories/" + req.story.referenceId, function(error, response, body) {
+    request(getStoryURL(req.story), function(error, response, body) {
         var storyData;
-        var userVerified = false;
         if (error || response.statusCode != 200) {
             storyData = "error";
         } else {
             storyData = JSON.parse(body);
-            if (storyData.userId == req.story.author.username) {
-                userVerified = true;
-            }
         }
-        res.render("judge/story", { story: req.story, storyData: storyData, userVerified: userVerified });
+        res.render("judge/story", { story: req.story, storyData: storyData });
     });
 });
 // The post route for posting judging scores
